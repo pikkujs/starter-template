@@ -7,7 +7,6 @@
   ],
   "outDir": "packages/functions/.pikku",
   "remoteRpcWorkersFile": "packages/functions/src/pikku/rpc-remote.gen.ts",
-  "workflowRoutesFile": "packages/functions/src/pikku/workflow-routes.gen.ts",
   "clientFiles": {
     "rpcMapDeclarationFile": "packages/sdk/src/pikku/rpc-map.gen.d.ts",
     "httpMapDeclarationFile": "packages/sdk/src/pikku/http-map.gen.d.ts",

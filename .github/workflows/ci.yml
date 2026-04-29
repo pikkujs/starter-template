@@ -63,10 +63,13 @@ jobs:
           cp packages/functions/.env.example packages/functions/.env
           yarn dbmigrate
 
+      - name: Prepare logs dir
+        run: mkdir -p ci-logs
+
       - name: Start backend
         run: |
-          yarn dev > /tmp/backend.log 2>&1 &
-          echo $! > /tmp/backend.pid
+          yarn dev > ci-logs/backend.log 2>&1 &
+          echo $! > ci-logs/backend.pid
           for i in $(seq 1 60); do
             if curl -sf -X POST http://localhost:4003/hello -H 'content-type: application/json' -d '{}' >/dev/null; then
               echo "backend ready"
@@ -75,15 +78,15 @@ jobs:
             sleep 1
           done
           echo "backend failed to start"
-          cat /tmp/backend.log
+          cat ci-logs/backend.log
           exit 1
 
       - name: Start react-vite-mantine
         run: |
           PIKKU_API_URL=$PIKKU_API_URL \
             yarn workspace @project/app-react-vite-mantine dev --port 5173 \
-            > /tmp/vite.log 2>&1 &
-          echo $! > /tmp/vite.pid
+            > ci-logs/vite.log 2>&1 &
+          echo $! > ci-logs/vite.pid
           for i in $(seq 1 60); do
             if curl -sf http://localhost:5173 >/dev/null; then
               echo "vite ready"
@@ -92,7 +95,7 @@ jobs:
             sleep 1
           done
           echo "vite failed to start"
-          cat /tmp/vite.log
+          cat ci-logs/vite.log
           exit 1
 
       - name: Run e2e (react-vite-mantine)
@@ -109,12 +112,11 @@ jobs:
           name: e2e-reports
           path: |
             e2e/tests/reports
-            /tmp/backend.log
-            /tmp/vite.log
+            ci-logs
           if-no-files-found: ignore
 
       - name: Stop services
         if: always()
         run: |
-          [ -f /tmp/vite.pid ] && kill $(cat /tmp/vite.pid) 2>/dev/null || true
-          [ -f /tmp/backend.pid ] && kill $(cat /tmp/backend.pid) 2>/dev/null || true
+          [ -f ci-logs/vite.pid ] && kill $(cat ci-logs/vite.pid) 2>/dev/null || true
+          [ -f ci-logs/backend.pid ] && kill $(cat ci-logs/backend.pid) 2>/dev/null || true

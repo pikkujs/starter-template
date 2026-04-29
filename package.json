@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "prebuild": "pikku all",
+    "postinstall": "pikku all || true",
     "dev": "yarn workspace @project/functions dev",
     "dbmigrate": "yarn workspace @project/functions dbmigrate",
     "test:e2e": "yarn workspace @project/e2e test",

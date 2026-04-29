@@ -11,8 +11,8 @@ export function App() {
 
   useEffect(() => {
     fetch
-      .post('/hello' as never, {} as never)
-      .then((d: any) => setData(d))
+      .post('/hello', {})
+      .then((d) => setData(d))
       .catch((err: Error) => setData({ message: 'Hello, World!', timestamp: `error: ${err.message}` }))
   }, [fetch])
 

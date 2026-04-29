@@ -1,5 +1,9 @@
 export const dynamic = 'force-dynamic'
 
+// SSR fetches hit the backend directly — they bypass the /api/pikku proxy
+// route because they're already running on the server. If you add auth that
+// relies on browser cookies, forward them explicitly here (cookies/headers
+// flow through the proxy automatically for client-side calls).
 async function fetchHello() {
   const url = `${process.env.PIKKU_API_URL ?? 'http://localhost:4003'}/hello`
   try {
