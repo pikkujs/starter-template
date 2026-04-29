@@ -1,0 +1,29 @@
+{
+  "name": "@project/root",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "e2e"
+  ],
+  "scripts": {
+    "prebuild": "pikku all",
+    "dev": "yarn workspace @project/functions dev",
+    "dbmigrate": "yarn workspace @project/functions dbmigrate",
+    "test:e2e": "yarn workspace @project/e2e test",
+    "test:e2e:all": "node scripts/run-e2e-all.mjs",
+    "tsc": "yarn workspaces foreach --all run tsc",
+    "lint": "yarn workspaces foreach --all run lint"
+  },
+  "dependencies": {
+    "@pikku/addon-console": "^0.12.8"
+  },
+  "devDependencies": {
+    "@pikku/cli": "^0.12.21"
+  },
+  "fabric": {
+    "template": "starter-template",
+    "templateVersion": "0.0.3"
+  }
+}
