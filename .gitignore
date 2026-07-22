@@ -23,3 +23,7 @@ __fabric_scaffold.vite.config.mjs
 
 # Local dev secrets — generated on first `bun run dev`
 .env
+
+# Regenerated on every codegen/dev boot — a committed copy shadows the fresh one
+.pikku
+.reports

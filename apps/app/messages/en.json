@@ -72,5 +72,8 @@
   "home__body": "You're signed in to {name}.",
   "preferences__language": "Language",
   "preferences__theme": "Theme",
-  "preferences__color_scheme": "Color scheme"
+  "preferences__color_scheme": "Color scheme",
+  "dev_actors__cta": "Sign in as…",
+  "dev_actors__label": "Dev personas",
+  "dev_actors__error": "Unable to sign in"
 }
