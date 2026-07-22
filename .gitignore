@@ -20,3 +20,6 @@ vendor/
 .opencode
 .pikku-runtime
 __fabric_scaffold.vite.config.mjs
+
+# Local dev secrets — generated on first `bun run dev`
+.env

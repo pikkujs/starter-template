@@ -12,7 +12,7 @@
   "scripts": {
     "prebuild": "cd packages/functions && pikku all",
     "build": "bun run --filter '*' --if-present build",
-    "dev": "bun run --filter '@project/app' dev",
+    "dev": "bun scripts/dev.mjs",
     "tsc": "bun run --filter '*' tsc",
     "lint": "oxlint --config ../.oxlintrc.json apps packages",
     "format": "oxfmt --config ../.oxfmtrc.json apps packages",
