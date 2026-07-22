@@ -1,0 +1,9 @@
+{
+  // Consumed by @cloudflare/vite-plugin. `main` is TanStack Start's built-in
+  // server entry (no hand-written worker file); the plugin wires client assets
+  // and the ssr environment automatically.
+  "name": "app",
+  "main": "@tanstack/react-start/server-entry",
+  "compatibility_date": "2024-12-01",
+  "compatibility_flags": ["nodejs_compat"],
+}
