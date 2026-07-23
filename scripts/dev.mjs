@@ -12,6 +12,21 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+// The pikku CLI opens the local SQLite database through `node:sqlite`, which only
+// exists unflagged from Node 24. On an older Node the CLI is picked over bun by its
+// `#!/usr/bin/env node` shebang and dies with an opaque
+// `ERR_UNKNOWN_BUILTIN_MODULE: No such built-in module: node:sqlite` — so say why here.
+const nodeMajor = Number(process.versions.node.split('.')[0])
+if (nodeMajor < 24) {
+  console.error(
+    `dev: Node ${process.versions.node} is too old — this project needs Node 24+.\n` +
+      `     The pikku CLI runs under node (its shebang wins over bun) and opens the\n` +
+      `     database with node:sqlite, which older Node does not ship. Without it you\n` +
+      `     get "ERR_UNKNOWN_BUILTIN_MODULE: No such built-in module: node:sqlite".`,
+  )
+  process.exit(1)
+}
+
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const envPath = resolve(root, '.env')
 
