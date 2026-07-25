@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "packageManager": "bun@1.3.14",
-  "engines": {
-    "node": ">=24"
-  },
   "workspaces": [
     "apps/*",
     "packages/*",
@@ -14,7 +11,7 @@
     "!apps/_app_template_"
   ],
   "scripts": {
-    "prebuild": "cd packages/functions && pikku all",
+    "prebuild": "cd packages/functions && bunx --bun pikku all",
     "build": "bun run --filter '*' --if-present build",
     "dev": "bun scripts/dev.mjs",
     "tsc": "bun run --filter '*' tsc",

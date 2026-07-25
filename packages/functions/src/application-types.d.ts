@@ -19,10 +19,11 @@ export interface SingletonServices extends CoreSingletonServices<Config> {
   variables: TypedVariablesService
   secrets: TypedSecretService
   kysely: Kysely<DB>
-  // Resolved Better Auth instance, injected once by the generated pikkuServices
-  // wrapper from the `auth` factory. Typed as the factory's return so functions
-  // get better-auth's full server `api`/`handler` surface via DI.
-  auth: Awaited<ReturnType<typeof auth>>
+  // Lazy Better Auth factory, injected by the generated pikkuServices wrapper.
+  // MUST be the factory shape `() => Promise<AuthInstance>` to satisfy
+  // CoreSingletonServices['auth'] — call it (`await services.auth()`) to get
+  // better-auth's full server `api`/`handler` surface; it memoises on first call.
+  auth: () => Promise<Awaited<ReturnType<typeof auth>>>
   // Always constructed in services.ts, so declare it REQUIRED here — it is
   // optional in CoreSingletonServices, which otherwise makes every emailService
   // use read as possibly-undefined and forces needless `!`/guards in functions.
