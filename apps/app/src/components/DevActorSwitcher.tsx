@@ -19,7 +19,11 @@ export const DevActorSwitcher: FC = () => {
   return (
     <Menu position="top-end" withArrow>
       <Menu.Target>
-        <Button size="xs" variant="light" style={{ position: 'fixed', bottom: 16, right: 16, zIndex: 1000 }}>
+        <Button
+          size="xs"
+          variant="light"
+          style={{ position: 'fixed', bottom: 16, right: 16, zIndex: 1000 }}
+        >
           {m.dev_actors__cta()}
         </Button>
       </Menu.Target>
@@ -28,7 +32,11 @@ export const DevActorSwitcher: FC = () => {
         {actors.map((actor) => {
           const busy = signIn.isPending && signIn.variables === actor.email
           return (
-            <Menu.Item key={actor.key} disabled={signIn.isPending} onClick={() => signIn.mutate(actor.email)}>
+            <Menu.Item
+              key={actor.key}
+              disabled={signIn.isPending}
+              onClick={() => signIn.mutate(actor.email)}
+            >
               <Text size="sm" fw={500}>
                 {asI18n(busy ? `${actor.name} …` : actor.name)}
               </Text>
