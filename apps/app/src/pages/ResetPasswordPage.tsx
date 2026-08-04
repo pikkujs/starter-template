@@ -16,14 +16,16 @@ export const ResetPasswordPage: FC = () => {
   const navigate = useNavigate()
   const appName = m.app__name()
   // Better Auth appends ?token=… to the redirectTo we handed it in the email.
-  const { token } = useSearch({ from: '/reset-password' })
+  // The route ID, not the URL: a non-nested route file (app_.reset-password.tsx)
+  // keeps its underscore in the ID while serving /app/reset-password.
+  const { token } = useSearch({ from: '/app_/reset-password' })
 
   const reset = useMutation({
     mutationFn: (values: { password: string; confirm: string }) =>
       resetPassword(values.password, token ?? ''),
     // The reset does not mint a session and the token carries no email we could
     // sign in with, so hand them to /login with the new password in hand.
-    onSuccess: () => navigate({ to: '/login' }),
+    onSuccess: () => navigate({ to: '/app/login' }),
   })
 
   const form = useForm({
@@ -34,7 +36,7 @@ export const ResetPasswordPage: FC = () => {
   const footer = (
     <>
       {m.auth__reset__footer_prompt()}{' '}
-      <Anchor component={Link} to="/login">
+      <Anchor component={Link} to="/app/login">
         {m.auth__reset__footer_action()}
       </Anchor>
     </>
@@ -50,7 +52,7 @@ export const ResetPasswordPage: FC = () => {
         description={m.auth__reset__missing_token()}
         footer={footer}
       >
-        <Button component={Link} to="/forgot-password" fullWidth>
+        <Button component={Link} to="/app/forgot-password" fullWidth>
           {m.auth__forgot__cta()}
         </Button>
       </AuthShell>

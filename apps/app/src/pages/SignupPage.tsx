@@ -46,7 +46,7 @@ export const SignupPage: FC = () => {
       footer={
         <>
           {m.auth__signup__footer_prompt()}{' '}
-          <Anchor component={Link} to="/login">
+          <Anchor component={Link} to="/app/login">
             {m.auth__signup__footer_action()}
           </Anchor>
         </>

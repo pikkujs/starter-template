@@ -1,5 +1,11 @@
-import { useEffect, useState } from 'react'
-import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
+import { useEffect, useState, type ReactNode } from 'react'
+import {
+  createRootRoute,
+  HeadContent,
+  Outlet,
+  Scripts,
+  type ErrorComponentProps,
+} from '@tanstack/react-router'
 import {
   ColorSchemeScript,
   DirectionProvider,
@@ -31,6 +37,8 @@ import {
 import { defaultLocale, localeDir, supportedLocales, setActiveLocale } from '@/i18n/config'
 import { apiUrl } from '@/lib/env'
 import { PreferencesContext } from '@/contexts/preferences'
+import { DefaultErrorPage } from '@/components/DefaultErrorPage'
+import { DefaultNotFoundPage } from '@/components/DefaultNotFoundPage'
 
 const LOCALE_KEY = 'app-locale'
 const THEME_KEY = 'app-theme'
@@ -64,15 +72,42 @@ export const Route = createRootRoute({
       { title: 'Pikku App' },
     ],
   }),
-  component: RootDocument,
+  notFoundComponent: DefaultNotFoundPage,
+  // Wrapped in the document, unlike notFoundComponent. A not-found renders
+  // through this route's Outlet so it already has <html> and the providers
+  // around it; an error *replaces* the root component, so without this wrapper
+  // the error page would be returned as a bare fragment — no document, no
+  // MantineProvider, no stylesheet — exactly when the user is already having a
+  // bad time.
+  errorComponent: (props: ErrorComponentProps) => (
+    <RootDocument>
+      <DefaultErrorPage {...props} />
+    </RootDocument>
+  ),
+  component: RootComponent,
 })
 
-function RootDocument() {
+function RootComponent() {
+  return (
+    <RootDocument>
+      <Outlet />
+    </RootDocument>
+  )
+}
+
+// The HTML document and providers. Takes children rather than rendering <Outlet />
+// itself so the error path above can reuse it: only the children differ.
+function RootDocument({ children }: { children: ReactNode }) {
   // Seed from the build-time active theme (active.json) so the applied theme
   // drives the initial + SSR render; useEffect syncs from localStorage after
   // hydration. Seeding 'default' here was the "applied theme never shows" bug.
   const [themeId, setThemeIdRaw] = useState(activeId)
-  const [locale, setLocaleRaw] = useState(defaultLocale)
+  // Same idea for the locale: seed from the build-time default (i18n/active.json,
+  // the language this app's own users speak) so the FIRST paint — server-rendered
+  // <html lang dir> included — is already in it, then let a saved preference win
+  // after hydration. Widened to string because every consumer here takes one
+  // (setLocale, localeDir); `defaultLocale` is a literal union.
+  const [locale, setLocaleRaw] = useState<string>(defaultLocale)
   // Transient override from the fabric console live-preview (not persisted) —
   // the console injects a full theme spec into the iframe so the builder sees
   // the look instantly. Takes precedence over the persisted theme.
@@ -196,9 +231,7 @@ function RootDocument() {
             <DirectionSync locale={locale} />
             <PreferencesContext.Provider value={{ locale, themeId, setLocale, setThemeId }}>
               <QueryClientProvider client={queryClient}>
-                <PikkuProvider pikku={pikku}>
-                  <Outlet />
-                </PikkuProvider>
+                <PikkuProvider pikku={pikku}>{children}</PikkuProvider>
               </QueryClientProvider>
             </PreferencesContext.Provider>
           </MantineProvider>

@@ -2,7 +2,7 @@ import { pikkuScenario } from '#pikku/workflow/pikku-workflow-types.gen.js'
 
 /**
  * A scenario is a story of RPC calls told through a synthetic persona (an
- * "actor" — see scenarios.actors in pikku.config.json). Every step runs over
+ * "actor" — one exists per persona declared with definePersonas). Every step runs over
  * the REAL transport with the actor's session cookie, so a passing scenario
  * proves the deployed API works exactly as a signed-in user would experience it.
  *

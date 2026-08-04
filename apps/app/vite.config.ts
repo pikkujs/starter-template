@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import { paraglideVitePlugin } from '@inlang/paraglide-js'
 import { fileURLToPath, URL } from 'node:url'
+import { crossSiteSession } from './dev/cross-site-session.plugin'
 
 // Plain TanStack Start config (Node target) — used for local sandbox dev. This
 // template is deploy-provider agnostic: it ships NO @cloudflare/vite-plugin. At
@@ -11,11 +12,15 @@ import { fileURLToPath, URL } from 'node:url'
 // here — that would double-apply it and couple the template to a provider.
 export default defineConfig({
   plugins: [
-    // Compile messages/*.json → src/paraglide so `m`/`mKey` resolve, with HMR
+    // Compile messages/*.json → src/paraglide so `m` resolves, with HMR
     // on message edits. Must run first.
     paraglideVitePlugin({ project: './project.inlang', outdir: './src/paraglide' }),
     tanstackStart(),
     react(),
+    // Dev-only (apply: 'serve'), and nothing in src/ imports it: keeps the app
+    // signed in inside the console's cross-site preview iframe on browsers that
+    // drop third-party cookies. See dev/cross-site-session.plugin.ts.
+    crossSiteSession(),
   ],
   resolve: {
     alias: {

@@ -8,7 +8,7 @@ import { pikkuBetterAuth } from '#pikku'
  *
  * `pikkuBetterAuth` has no side effects: the pikku CLI statically inspects this single
  * exported `auth` const and generates the catch-all `/api/auth/**` HTTP wiring,
- * the session-bridge middleware, and a `wireSecret` for `BETTER_AUTH_SECRET` (and
+ * the session-bridge middleware, and a `defineSecret` for `BETTER_AUTH_SECRET` (and
  * one per social provider, if you add any) — so the auth routes and secret
  * requirements flow through normal inspection into the deploy manifest.
  *

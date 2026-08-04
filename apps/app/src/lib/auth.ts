@@ -6,7 +6,7 @@ import { apiUrl } from './env'
 // auth base (`<apiUrl>/auth`): better-auth's withPath only appends its default
 // `/api/auth` when baseURL has no path, and apiUrl() already carries `/api`, so
 // a bare apiUrl() would leave the client calling `/api/get-session` (404) and
-// the app would loop back to /login. Cookies ride every request so the session
+// the app would loop back to /app/login. Cookies ride every request so the session
 // round-trips across origins.
 //
 // Lazily constructed: createAuthClient validates baseURL with `new URL()` at
@@ -121,7 +121,7 @@ export async function signInWithGoogle(callbackURL = '/app') {
 }
 
 // Ask Better Auth to email a reset link. `redirectTo` is where the link lands —
-// our /reset-password route, which reads the token off the query string.
+// our /app/reset-password route, which reads the token off the query string.
 //
 // This ALWAYS resolves, even for an address with no account: telling an
 // anonymous caller whether an email is registered is account enumeration, so the
@@ -130,7 +130,7 @@ export async function signInWithGoogle(callbackURL = '/app') {
 export async function requestPasswordReset(email: string) {
   const { error } = await authClient().requestPasswordReset({
     email,
-    redirectTo: `${window.location.origin}/reset-password`,
+    redirectTo: `${window.location.origin}/app/reset-password`,
   })
   if (error) {
     throw new Error('Unable to send the reset email')

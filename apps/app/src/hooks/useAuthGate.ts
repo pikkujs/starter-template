@@ -36,7 +36,7 @@ export function useRequireAuthentication() {
     let cancelled = false
     void getAuthSession().then((session) => {
       if (!cancelled && !session.user?.email) {
-        void navigate({ to: '/login' })
+        void navigate({ to: '/app/login' })
       }
     })
     return () => {

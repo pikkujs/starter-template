@@ -6,7 +6,7 @@ import {
   NoopAuditService,
   createInvocationAudit,
 } from '@pikku/core/services'
-import { createAuditedKysely, KyselyCredentialService } from '@pikku/kysely'
+import { createAuditedKysely } from '@pikku/kysely'
 import { pikkuServices, pikkuWireServices } from '../.pikku/pikku-types.gen.js'
 import { TypedSecretService } from '../.pikku/secrets/pikku-secrets.gen.js'
 import { TypedVariablesService } from '../.pikku/variables/pikku-variables.gen.js'
@@ -40,24 +40,14 @@ export const createSingletonServices = pikkuServices(async (config, existingServ
   const kysely: Kysely<DB> = existingServices.kysely
 
   // Per-user credential store (wire.getCredential) — needed by addons imported
-  // with --auth per-user/delegated. CREDENTIALS_KEY is a genuinely-optional
-  // secret: without it the app runs fine, credential-using addon calls fail
-  // with a clear error from the addon's wire services.
-  let credentialService = existingServices?.credentialService
-  if (!credentialService) {
-    const credentialsKey = await secrets.getSecret('CREDENTIALS_KEY').catch(() => null)
-    if (credentialsKey) {
-      // Cast via the constructor's own parameter type: duplicate kysely installs
-      // make Kysely nominally incompatible (#private) across packages.
-      const kyselyCredentials = new KyselyCredentialService(
-        kysely as unknown as ConstructorParameters<typeof KyselyCredentialService>[0],
-        { key: credentialsKey },
-      )
-      // Self-creates the credentials table (ifNotExists) — get/set do not auto-init.
-      await kyselyCredentials.init()
-      credentialService = kyselyCredentials
-    }
-  }
+  // with --auth per-user/delegated. A deployed stage injects it: credentials are
+  // sealed to the stage, and only its secrets Worker holds the key. There is no
+  // fallback because there is no key to fall back to — the template used to
+  // build a `KyselyCredentialService` from a `CREDENTIALS_KEY` secret, which was
+  // the stage's own KEK handed to every unit. Outside a stage the app runs fine
+  // and credential-using addon calls fail with a clear error from the addon's
+  // wire services; wire your own `credentialService` here if you need one.
+  const credentialService = existingServices?.credentialService
 
   const litellmProxyUrl = process.env.LITELLM_PROXY_URL ?? null
   const litellmApiKey = process.env.LITELLM_API_KEY ?? null

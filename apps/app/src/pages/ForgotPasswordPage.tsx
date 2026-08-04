@@ -28,7 +28,7 @@ export const ForgotPasswordPage: FC = () => {
   const footer = (
     <>
       {m.auth__forgot__footer_prompt()}{' '}
-      <Anchor component={Link} to="/login">
+      <Anchor component={Link} to="/app/login">
         {m.auth__forgot__footer_action()}
       </Anchor>
     </>
@@ -44,7 +44,7 @@ export const ForgotPasswordPage: FC = () => {
         description={m.auth__forgot__sent_description({ email: request.variables })}
         footer={footer}
       >
-        <Button component={Link} to="/login" variant="default" fullWidth>
+        <Button component={Link} to="/app/login" variant="default" fullWidth>
           {m.auth__forgot__footer_action()}
         </Button>
       </AuthShell>

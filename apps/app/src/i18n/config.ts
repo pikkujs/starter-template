@@ -4,14 +4,31 @@
 // message functions (`m`).
 //
 // Add a language: drop `messages/<lang>.json` next to `en.json`, add the code to
-// `project.inlang/settings.json` `locales`, and recompile. Content is reachable
-// via the `/<lang>` URL prefix (e.g. `/de`); the base locale (`en`) needs none.
+// `project.inlang/settings.json` `locales`, and recompile — or just run
+// `fabric i18n --add-locale <lang>`, which does both. Content is reachable via
+// the `/<lang>` URL prefix (e.g. `/de`); the base locale (`en`) needs none.
 import { useSyncExternalStore } from 'react'
 import { locales, baseLocale, overwriteGetLocale } from '../paraglide/runtime.js'
+import active from './active.json'
 
 export const supportedLocales = locales
-export const defaultLocale = baseLocale
 export type Locale = (typeof locales)[number]
+
+/**
+ * The locale a first-time visitor opens the app in — the language the app speaks
+ * to its own users, picked when the project was created and written into
+ * `active.json` by `fabric i18n --default-locale <code>`.
+ *
+ * Deliberately not Paraglide's `baseLocale`: that one names the message SOURCE
+ * (`messages/en.json`), the catalog every other locale is cloned from and
+ * translated against, so it has to stay `en` for `--add-locale` to work. Seeding
+ * the whole app from it is what made an Arabic app open in English LTR until the
+ * user found the switcher. Falls back to the base locale when the pick was never
+ * compiled (locale dropped from `settings.json` after it was chosen).
+ */
+export const defaultLocale: Locale = (locales as readonly string[]).includes(active.defaultLocale)
+  ? (active.defaultLocale as Locale)
+  : baseLocale
 
 const RTL_LOCALES = new Set(['ar', 'he', 'fa', 'ur'])
 // Direction for a locale — RTL for Arabic/Hebrew/Farsi/Urdu, else LTR. Set this

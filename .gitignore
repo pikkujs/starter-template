@@ -27,3 +27,6 @@ __fabric_scaffold.vite.config.mjs
 # Regenerated on every codegen/dev boot — a committed copy shadows the fresh one
 .pikku
 .reports
+
+# Agent critique/review scratch — local to a working copy, never part of the template
+.impeccable
