@@ -15,7 +15,7 @@
     "@mantine/core": "^9.2.1",
     "@mantine/dates": "^9.2.1",
     "@mantine/hooks": "^9.2.1",
-    "@pikku/assistant-ui": "^0.12.8",
+    "@pikku/assistant-ui": "^0.12.9",
     "@pikku/mantine": "^0.12.8",
     "@pikku/react": "^0.12.5",
     "@project/functions-sdk": "workspace:*",
