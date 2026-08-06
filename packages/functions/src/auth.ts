@@ -25,12 +25,17 @@ import { pikkuBetterAuth } from '#pikku'
 // sendResetPassword/verification emails. It runs lazily after all services exist,
 // so never re-construct a service here or reach for a dynamic import.
 export const auth = pikkuBetterAuth(async ({ kysely, secrets, variables, emailService }) => {
-  const BETTER_AUTH_SECRET = await secrets.getSecret('BETTER_AUTH_SECRET')
+  // `.reveal()` at the sink, not earlier: getSecret hands back a nominal
+  // SecretValue that no concretely-typed parameter accepts, so every disclosure
+  // is one greppable call. Better Auth wants the raw string, and this is where
+  // it stops being a secret in the type system.
+  const BETTER_AUTH_SECRET = (await secrets.getSecret('BETTER_AUTH_SECRET')).reveal()
   // Genuinely optional: unset simply disables /api/auth/sign-in/actor (scenarios
   // off for this deployment) — the actor plugin refuses all sign-ins
   // without it.
   const SCENARIO_ACTOR_SECRET = await secrets
     .getSecret('SCENARIO_ACTOR_SECRET')
+    .then((value) => value.reveal())
     .catch(() => undefined)
   // Fabric operator admin: the RSA public key the control plane's token is
   // verified against. The Fabric deployer pushes FABRIC_AUTH_PUBLIC_KEY onto
