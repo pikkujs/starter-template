@@ -24,7 +24,7 @@ export const ShellSettings: FC<{ orientation?: 'vertical' | 'horizontal' }> = ({
     // A full load, not a router navigation — drops every cached query and the
     // client's in-memory session along with the cookie.
     onSuccess: () => {
-      window.location.href = '/app/login'
+      window.location.href = '/app/auth/login'
     },
   })
 

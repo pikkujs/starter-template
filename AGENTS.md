@@ -8,12 +8,12 @@ Three fixed slots, so a URL means the same thing in every app built from this te
 - **`/app`** — the signed-in application. EVERY screen you build goes under here
   (`/app/orders`, `/app/orders/$orderId`), named to match its route file
   (`app.orders.$orderId.tsx`). The `app.tsx` layout renders the shell and gates everything
-  nested under it. The auth screens live at `/app/login`, `/app/signup`, `/app/forgot-password`
-  and `/app/reset-password` but must NOT be gated — so their files use TanStack's non-nested
+  nested under it. The auth screens live at `/app/auth/login`, `/app/auth/signup`, `/app/auth/forgot-password`
+  and `/app/auth/reset-password` but must NOT be gated — so their files use TanStack's non-nested
   segment, `app_.login.tsx`: same URL prefix, outside the `app.tsx` layout. Writing
   `app.login.tsx` instead puts the login page behind the gate that redirects to it.
 - **`/`** — the marketing homepage. Everything outside `/app` is brand register. The starter has none, so `/` redirects to `/app` and the
-  app's own gate forwards a signed-out visitor to `/app/login`. Building a landing page means
+  app's own gate forwards a signed-out visitor to `/app/auth/login`. Building a landing page means
   replacing `src/routes/index.tsx` with a component; nothing else changes.
 
 ## Navigation and the phone
@@ -35,8 +35,10 @@ Below `sm` the sidebar is gone and one of two components replaces it — never b
 
 ## Components
 
-A reusable **component kit** is available via `fabric scaffold --name component-kit` — lay it
-down ONCE into `apps/app/src/components/`, then import each from `@/components/<Name>`.
+A reusable **component kit** installs one piece at a time: `fabric scaffold --name
+component-panel,component-datatable` writes them into `apps/app/src/components/` (with
+whatever they depend on) and replies with their props, so you never read them back.
+Import each from `@/components/<Name>`. Take the ones a screen composes, when you build it.
 **Compose these instead of hand-rolling UI** — it is faster, consistent, and already themed.
 
 ## Available components

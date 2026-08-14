@@ -87,7 +87,7 @@ function ensureStarted(): void {
 
 /**
  * Record an event. Typed against the registry in
- * `packages/functions/src/analytics/registry.ts` — an unknown name or a wrong
+ * `packages/functions/src/__fabric_analytics__/registry.ts` — an unknown name or a wrong
  * payload is a build error, not a silently forked series.
  */
 export function recordEvent<Name extends AnalyticsEvent['name']>(

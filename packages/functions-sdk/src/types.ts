@@ -29,4 +29,4 @@ export type RPCOutput<Name extends keyof FlattenedRPCMap> = FlattenedRPCMap[Name
 // browser bundle. This is what makes `analytics.event()` typed at the call site:
 // the event name and its payload come from the one zod union the ingest
 // validates against, so a typo is a build error rather than a forked series.
-export type { AnalyticsEvent } from '../../functions/src/analytics/registry.js'
+export type { AnalyticsEvent } from '../../functions/src/__fabric_analytics__/registry.js'

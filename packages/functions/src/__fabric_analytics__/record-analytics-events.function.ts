@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { pikkuSessionlessFunc } from '#pikku'
-import { analyticsEvent } from '../analytics/registry.js'
-import { forwardAnalyticsEvents } from '../__fabric_analytics__/fabric-analytics.js'
+import { analyticsEvent } from './registry.js'
+import { forwardAnalyticsEvents } from './fabric-analytics.js'
 
 export const RecordAnalyticsEventsInput = z.object({
   events: z

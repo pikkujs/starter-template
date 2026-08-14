@@ -17,7 +17,6 @@ yarn.lock
 
 # Injected/symlinked at sandbox runtime — never commit
 vendor/
-.opencode
 .pikku-runtime
 __fabric_scaffold.vite.config.mjs
 

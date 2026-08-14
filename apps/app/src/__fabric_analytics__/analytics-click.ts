@@ -1,4 +1,4 @@
-import { recordRawEvent } from '@/lib/analytics'
+import { recordRawEvent } from './analytics'
 
 /**
  * The `data-analytics-click` listener — sugar over `recordEvent()` for the

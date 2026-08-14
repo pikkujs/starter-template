@@ -1,4 +1,4 @@
-import { recordEvent } from '@/lib/analytics'
+import { recordEvent } from './analytics'
 
 /**
  * Access to the analytics client.

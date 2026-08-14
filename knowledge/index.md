@@ -41,9 +41,9 @@ turn as the note. Release history is `CHANGELOG.md` at the repo root, not a note
 ```
 knowledge/
   index.md                      # this note: what the project is; links to each section
-  slices/
+  milestones/
     index.md
-    01-the-daily-entry.md       # type: slice — one buildable piece, with its scenario
+    01-the-daily-entry.md       # type: milestone — one buildable piece, with its scenario
   entities/
     index.md
     entry.md                    # type: entity — what it's made of, how it ends
@@ -67,7 +67,7 @@ knowledge/
 Only `index.md` ships with the template. **Create a section the turn you have a note to put
 in it**, with its `index.md` in the same turn — an empty section is not a placeholder to fill
 in later, it is a section that shouldn't exist yet. The sections are load-bearing, not a
-style: a build starts only when `slices/`, `entities/` or `decisions/` holds a note. Flat
+style: a build starts only when `milestones/`, `entities/` or `decisions/` holds a note. Flat
 `product.md` / `glossary.md` files at this root are **not** a knowledge base — they leave the
 project unbuildable.
 

@@ -10,7 +10,7 @@ import { apiUrl } from '@/lib/env'
 // is enough for Chromium — but WebKit ignores `Partitioned` and blocks
 // third-party cookie writes outright, and every browser on iOS is WebKit. So on
 // a phone, sign-in returns 200, the cookie is discarded, the next request is
-// anonymous, and the app bounces back to /app/login.
+// anonymous, and the app bounces back to /app/auth/login.
 //
 // WebKit does allow partitioned localStorage in a third-party frame, so the
 // cookies live there instead: the server echoes what it just set in

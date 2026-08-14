@@ -30,7 +30,7 @@
   },
   "scaffold": {
     "pikkuDir": "packages/functions/src/scaffold",
-    "console": true,
+    "console": false,
     "rpc": true,
     "agent": { "auth": false },
     "workflow": { "auth": false },
@@ -38,21 +38,21 @@
     "events": { "auth": false }
   },
   "scenarios": {
-    "emailDomain": "actors.local",
-    "environments": {
-      "local": {
-        "apiUrl": "http://localhost:3000",
-        "appUrl": "http://localhost:7104",
-        "signInPath": "/api/auth/sign-in/actor"
-      },
-      "sandbox": {
-        "apiUrl": "http://localhost:4000",
-        "signInPath": "/api/auth/sign-in/actor"
-      },
-      "coverage": {
-        "apiUrl": "http://localhost:4010",
-        "signInPath": "/api/auth/sign-in/actor"
-      }
+    "emailDomain": "actors.local"
+  },
+  "environments": {
+    "local": {
+      "apiUrl": "http://localhost:3000",
+      "appUrl": "http://localhost:7104",
+      "signInPath": "/api/auth/sign-in/actor"
+    },
+    "sandbox": {
+      "apiUrl": "http://localhost:4000",
+      "signInPath": "/api/auth/sign-in/actor"
+    },
+    "coverage": {
+      "apiUrl": "http://localhost:4010",
+      "signInPath": "/api/auth/sign-in/actor"
     }
   }
 }

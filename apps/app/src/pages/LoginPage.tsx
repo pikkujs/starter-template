@@ -42,14 +42,14 @@ export const LoginPage: FC = () => {
         onAuthSubmit={(values) => signIn.mutate(values)}
         onGoogle={() => google.mutate()}
         secondaryAction={
-          <Anchor component={Link} to="/app/forgot-password">
+          <Anchor component={Link} to="/app/auth/forgot-password">
             {m.auth__login__forgot_action()}
           </Anchor>
         }
         footer={
           <>
             {m.auth__login__footer_prompt()}{' '}
-            <Anchor component={Link} to="/app/signup">
+            <Anchor component={Link} to="/app/auth/signup">
               {m.auth__login__footer_action()}
             </Anchor>
           </>

@@ -1,12 +1,12 @@
 /**
- * Replaces e2e/tests/features/auth.feature.
+ * Replaces the login half of e2e/tests/features/auth.feature.
  *
  * The gherkin drove the login form: "a test account exists" → "the user signs
  * in through the login form" → "they land on the app". Scenario actors are
  * signed in by the runner before the first step, so there is no form to drive
  * and no signed-out state to start from. What that gherkin actually proved —
  * a real session, carried in a real cookie, admitted to the gated area — is
- * proved here by opening `/app` and not being bounced to `/app/login`.
+ * proved here by opening `/app` and not being bounced to `/app/auth/login`.
  *
  * This is the same claim over a shorter path, and it now covers the actor
  * sign-in endpoint too, which is what every other browser scenario depends on.
@@ -14,9 +14,9 @@
  * it as an API scenario against `/api/auth/sign-in/email`, which is where a
  * wrong password is actually refused.
  */
-import { pikkuFeature, pikkuScenario } from '#pikku/workflow/pikku-workflow-types.gen.js'
+import { pikkuScenario } from '#pikku/workflow/pikku-workflow-types.gen.js'
 
-/** The gated area. `staticRoutes` skips /app/login, so only this scenario asserts the guard. */
+/** The gated area. `staticRoutes` skips /app/auth/login, so only this scenario asserts the guard. */
 const APP_HOME = '/app'
 
 export const signedInActorReachesTheAppScenario = pikkuScenario<
@@ -67,11 +67,4 @@ export const signedInActorReachesTheAppScenario = pikkuScenario<
 
     return { pathname: landed.pathname, email: session.email }
   },
-})
-
-export const authFeature = pikkuFeature({
-  name: 'Authentication',
-  description: 'A signed-in session reaches the gated app and identifies its user',
-  tags: ['auth', 'smoke'],
-  scenarios: [signedInActorReachesTheAppScenario],
 })

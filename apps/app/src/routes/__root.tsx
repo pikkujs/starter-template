@@ -37,8 +37,8 @@ import {
 } from '@project/mantine-themes'
 import { defaultLocale, localeDir, supportedLocales, setActiveLocale } from '@/i18n/config'
 import { apiUrl } from '@/lib/env'
-import { registerAnalyticsClickListener } from '@/lib/analytics-click'
-import { recordEvent } from '@/lib/analytics'
+import { registerAnalyticsClickListener } from '@/__fabric_analytics__/analytics-click'
+import { recordEvent } from '@/__fabric_analytics__/analytics'
 import { PreferencesContext } from '@/contexts/preferences'
 import { DefaultErrorPage } from '@/components/DefaultErrorPage'
 import { DefaultNotFoundPage } from '@/components/DefaultNotFoundPage'
@@ -151,7 +151,7 @@ function RootDocument({ children }: { children: ReactNode }) {
 
   // One delegated listener for every `data-analytics-click` in the app,
   // including portalled content (modals, menus, dropdowns) — see
-  // lib/analytics-click.ts for why it must be capture-phase.
+  // __fabric_analytics__/analytics-click.ts for why it must be capture-phase.
   useEffect(() => registerAnalyticsClickListener(), [])
 
   // The matched route id (`/app/account`), not `location.pathname`. A pathname

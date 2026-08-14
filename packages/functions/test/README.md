@@ -2,7 +2,21 @@
 
 Scenarios run against the **live app** — the sandbox dev server, or a local
 `bun run dev`. They are discovered by `pikku` because `packages/functions/test`
-is in `srcDirectories`, so a `*.feature.ts` here needs no registration.
+is in `srcDirectories`, so a file here needs no registration.
+
+## Layout — one declaration per file
+
+```
+test/
+  steps/       one stepper per file    — <verb>.step.ts
+  scenarios/   one scenario per file   — <what-it-proves>.scenario.ts
+  features/    one feature per file    — <domain>.feature.ts
+  lib/         shared helpers, no declarations
+```
+
+A feature imports its scenarios; a scenario names its steps by the string in
+`name:`, never by import. Discovery is content-based, so a new file is picked up
+the moment it exists — nothing lists them.
 
 Run them:
 
@@ -23,9 +37,9 @@ run it after `pikku all`, which is what actually generates them.
 the already-running app on every build. They sign in and navigate, nothing
 more, so they are safe against the normal server.
 
-- `scenarios/auth.feature.ts` — a signed-in session reaches the gated `/app`
+- `features/auth.feature.ts` — a signed-in session reaches the gated `/app`
   and the server agrees who it is.
-- `scenarios/pages.feature.ts` — every static route renders with no HTTP error,
+- `features/pages.feature.ts` — every static route renders with no HTTP error,
   no failed or 5xx app API call, no uncaught exception, and no console error.
   Routes come from the generated route tree, so new pages are swept
   automatically.
@@ -43,7 +57,7 @@ The runner opens one BrowserContext per actor and signs each in at
 
 - There is no signed-out state. A gherkin-style "logs in through the form"
   scenario has nothing to drive — assert the outcome (admitted to the gated
-  area) instead, as `auth.feature.ts` does.
+  area) instead, as `signed-in-actor-reaches-the-app.scenario.ts` does.
 - A scenario that _creates_ an identity clears the context first
   (`browser.context.clearCookies()`), because signing up while another user's
   cookie is attached is refused outright.
@@ -73,7 +87,8 @@ explicitly. Never return a Playwright `Locator` or `Page`.
 
 ## Extending
 
-Add `scenarios/<domain>.feature.ts`, plus `scenarios/<domain>.steps.ts` if it
-needs verbs the generic ones don't cover. Keep `scenarios/browser.steps.ts`
-generic. Failure screenshots land in `.pikku/scenario-failures/` — read them
-before believing an error message.
+Add `scenarios/<what-it-proves>.scenario.ts` and list it in a
+`features/<domain>.feature.ts`. A verb the generic steps don't cover gets its own
+`steps/<verb>.step.ts`; the ones already in `steps/` stay generic, and anything
+they share goes in `lib/`. Failure screenshots land in
+`.pikku/scenario-failures/` — read them before believing an error message.

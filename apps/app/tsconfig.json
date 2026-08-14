@@ -19,5 +19,5 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "dev", "vite.config.ts", "wrangler.jsonc"]
+  "include": ["src", "dev", "build", "vite.config.ts", "wrangler.jsonc"]
 }

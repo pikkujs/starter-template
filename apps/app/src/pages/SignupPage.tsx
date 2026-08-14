@@ -6,7 +6,7 @@ import { m } from '@/i18n/messages'
 import { useLocale } from '@/i18n/config'
 import { AuthCard, type AuthFormValues } from '@/components/AuthCard'
 import { EMAIL_IN_USE, registerWithPassword, signInWithGoogle } from '@/lib/auth'
-import { useAnalytics } from '@/hooks/useAnalytics'
+import { useAnalytics } from '@/__fabric_analytics__/useAnalytics'
 
 export const SignupPage: FC = () => {
   useLocale()
@@ -54,7 +54,7 @@ export const SignupPage: FC = () => {
       footer={
         <>
           {m.auth__signup__footer_prompt()}{' '}
-          <Anchor component={Link} to="/app/login">
+          <Anchor component={Link} to="/app/auth/login">
             {m.auth__signup__footer_action()}
           </Anchor>
         </>

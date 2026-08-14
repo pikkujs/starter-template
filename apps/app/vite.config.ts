@@ -4,6 +4,7 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import { paraglideVitePlugin } from '@inlang/paraglide-js'
 import { fileURLToPath, URL } from 'node:url'
 import { crossSiteSession } from './dev/cross-site-session.plugin'
+import { testIds } from './build/testids.plugin'
 
 // Plain TanStack Start config (Node target) — used for local sandbox dev. This
 // template is deploy-provider agnostic: it ships NO @cloudflare/vite-plugin. At
@@ -16,6 +17,11 @@ export default defineConfig({
     // on message edits. Must run first.
     paraglideVitePlugin({ project: './project.inlang', outdir: './src/paraglide' }),
     tanstackStart(),
+    // Stamps the `data-testid`s browser scenarios address controls by, derived from each
+    // control's i18n message key. A standalone pre-transform rather than a `babel` option
+    // on react(): @vitejs/plugin-react@6 (rolldown/oxc) drops that option, and this must
+    // not quietly stop running on the bump. NOT dev-only — scenarios drive the built app.
+    testIds(),
     react(),
     // Dev-only (apply: 'serve'), and nothing in src/ imports it: keeps the app
     // signed in inside the console's cross-site preview iframe on browsers that

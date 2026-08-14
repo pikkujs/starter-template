@@ -1,3 +1,0 @@
--- Dev seed (applied via `pikku db seed` after `pikku db migrate`).
--- The starter is auth-only, so there's nothing to seed yet. Add your own
--- INSERT … ON CONFLICT DO NOTHING rows here as you grow the schema.
