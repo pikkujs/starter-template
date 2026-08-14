@@ -10,7 +10,8 @@
     "./pikku/pikku-rpc.gen": "./src/pikku/pikku-rpc.gen.ts",
     "./pikku/rpc-map.gen": "./src/pikku/rpc-map.gen.d.ts",
     "./pikku/http-map.gen": "./src/pikku/http-map.gen.d.ts",
-    "./pikku/*": "./src/pikku/*"
+    "./pikku/*.js": "./src/pikku/*.ts",
+    "./pikku/*": ["./src/pikku/*.ts", "./src/pikku/*", "./src/pikku/*.d.ts"]
   },
   "dependencies": {
     "@pikku/fetch": "^0.12.9",
