@@ -10,7 +10,9 @@
         "command": ["yarn", "dev"],
         "port": 7104,
         "healthPath": "/"
-      }
+      },
+      "serves": "visitor",
+      "personas": ["visitor"]
     }
   }
 }

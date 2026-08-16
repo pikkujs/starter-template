@@ -1,5 +1,12 @@
 # Building in this project
 
+## Personas
+
+Add this app's people to `packages/functions/src/personas.ts`. Keep `visitor` — the shipped
+scenarios name `actors.visitor`, and PKU677 requires a browser step's actor to be a literal
+`actors.<name>`, so they cannot pick one dynamically. Removing it stops `actors.visitor`
+type-checking, which fails `pikku all`, and nothing you write after that registers.
+
 ## Routing
 
 Three fixed slots, so a URL means the same thing in every app built from this template:

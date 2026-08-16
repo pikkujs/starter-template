@@ -51,6 +51,11 @@ export default defineConfig({
         target: process.env.VITE_API_PROXY ?? 'http://localhost:3000',
         changeOrigin: false,
         rewrite: (path) => path.replace(/^\/api/, ''),
+        // Forward the WebSocket upgrade too, so a pikku channel over /api works
+        // the day someone adds one. Nothing here opens a socket yet; without
+        // this the handshake would stop at Vite and fail in local dev only,
+        // since Caddy already carries upgrades in the sandbox.
+        ws: true,
       },
       // File content: the pikku dev server serves uploads (PUT) and assets (GET)
       // AT these prefixes (pikku.config.json content.uploadUrlPrefix/assetUrlPrefix),
