@@ -2,10 +2,10 @@
 
 ## Personas
 
-Add this app's people to `packages/functions/src/personas.ts`. Keep `visitor` — the shipped
-scenarios name `actors.visitor`, and PKU677 requires a browser step's actor to be a literal
-`actors.<name>`, so they cannot pick one dynamically. Removing it stops `actors.visitor`
-type-checking, which fails `pikku all`, and nothing you write after that registers.
+`packages/functions/src/personas.ts` declares this app's people, primary role first — the
+person who uses it daily, not the one who administers it. The shipped `visitor` is a
+placeholder to replace, and `fabric build-complete` refuses a build that left it beside real
+roles, naming every edit that removal needs.
 
 ## Routing
 
@@ -17,8 +17,8 @@ Three fixed slots, so a URL means the same thing in every app built from this te
   (`app.orders.$orderId.tsx`). The `app.tsx` layout renders the shell and gates everything
   nested under it. The auth screens live at `/app/auth/login`, `/app/auth/signup`, `/app/auth/forgot-password`
   and `/app/auth/reset-password` but must NOT be gated — so their files use TanStack's non-nested
-  segment, `app_.login.tsx`: same URL prefix, outside the `app.tsx` layout. Writing
-  `app.login.tsx` instead puts the login page behind the gate that redirects to it.
+  segment, `app_.auth.login.tsx`: same URL prefix, outside the `app.tsx` layout. Writing
+  `app.auth.login.tsx` instead puts the login page behind the gate that redirects to it.
 - **`/`** — the marketing homepage. Everything outside `/app` is brand register. The starter has none, so `/` redirects to `/app` and the
   app's own gate forwards a signed-out visitor to `/app/auth/login`. Building a landing page means
   replacing `src/routes/index.tsx` with a component; nothing else changes.
@@ -39,37 +39,3 @@ Below `sm` the sidebar is gone and one of two components replaces it — never b
   transport), or for a canvas tool that wants every pixel. It needs
   `header={{ height: { base: MOBILE_HEADER_HEIGHT, sm: 0 } }}` on the shell plus a
   `<AppShell.Header hiddenFrom="sm">` to sit in, and no foot spacer.
-
-## Components
-
-A reusable **component kit** installs one piece at a time: `fabric scaffold --name
-component-panel,component-datatable` writes them into `apps/app/src/components/` (with
-whatever they depend on) and replies with their props, so you never read them back.
-Import each from `@/components/<Name>`. Take the ones a screen composes, when you build it.
-**Compose these instead of hand-rolling UI** — it is faster, consistent, and already themed.
-
-## Available components
-
-Layout:
-
-- `PageHeader` — page title + optional description + right-aligned `actions` slot. Use one per page.
-- `Panel` — bordered section with an optional titled header (`title`, `description`, `actions`). The workhorse container.
-- `StatCard` — a single metric tile (`label`, `value`, optional `icon`, `color`).
-- `StatGrid` — responsive row of `StatCard`s; pass `stats={[{label, value, icon}]}`.
-
-Data (feed these the output of an RPC you implement):
-
-- `DataTable` — generic typed table. Props: `columns` (`{key, header, render?, align?}`), `rows`, `rowKey`, optional `loading`/`empty`/`onRowClick`. Implement a `listX` RPC and pass its rows.
-- `BarChart` — dependency-free horizontal bars from `data={[{label, value, color?}]}`. Good for status/count breakdowns from a stats RPC.
-
-State (already used by the app):
-
-- `EmptyState`, `PageLoader`, `NotFoundState`, `ServerErrorState`, `UserCard`.
-
-## How to build a feature page
-
-1. Implement the backend RPCs (`pikku-rpc` / `pikku-kysely` skills): a `listX` and any mutations, with zod input/output and `auth: true`. Scope rows to the signed-in user (`where('userId','=',session.userId)`).
-2. Fetch with `usePikkuQuery('listX', {})` and mutate with `usePikkuMutation('createX')` (from `@project/functions-sdk/pikku/api.gen`).
-3. Build the page by composing the kit from `@/components/<Name>`: `PageHeader` + `Panel` + `DataTable`/`StatGrid`/`BarChart`. Pass i18n strings (`m.key()`) into the component props.
-
-These are props-only components — they never fetch data themselves. You own the page that wires RPC data into them.
