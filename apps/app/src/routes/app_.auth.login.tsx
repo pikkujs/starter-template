@@ -1,12 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { LoginPage } from '@/pages/LoginPage'
-import { useRedirectIfAuthenticated } from '@/hooks/useAuthGate'
+import { redirectIfAuthenticated } from '@/lib/auth-gate'
 
 export const Route = createFileRoute('/app_/auth/login')({
-  component: LoginRoute,
+  ssr: false,
+  beforeLoad: redirectIfAuthenticated,
+  component: LoginPage,
 })
-
-function LoginRoute() {
-  useRedirectIfAuthenticated()
-  return <LoginPage />
-}

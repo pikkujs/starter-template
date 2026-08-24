@@ -45,7 +45,16 @@ export const MobileNavDrawer: FC<{ items: NavItem[] }> = ({ items }) => {
         size={280}
         padding="md"
         title={<Wordmark name={m.app__name()} size={20} />}
-        overlayProps={{ backgroundOpacity: 0.55, blur: 2 }}
+        overlayProps={{ backgroundOpacity: 0.55 }}
+        transitionProps={{
+          transition: {
+            in: { transform: 'translateX(0)' },
+            out: { transform: 'translateX(-100%)' },
+            transitionProperty: 'transform',
+          },
+          duration: 240,
+          timingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)',
+        }}
       >
         <Stack gap="sm">
           <NavList items={items} onNavigate={close} />

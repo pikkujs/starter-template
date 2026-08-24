@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { staticRoutes, sweepAllPages } from '@pikku/playwright'
-import { pikkuScenarioStep } from '#pikku/workflow/pikku-workflow-types.gen.js'
+import { pikkuScenarioStep } from '#pikku/scenarios'
 import { session } from '../lib/browser-vocabulary.js'
 
 export const SweepsAllPagesInput = z.object({

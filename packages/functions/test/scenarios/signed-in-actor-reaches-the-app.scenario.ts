@@ -19,7 +19,7 @@
  * primary role — this scenario must name one literally, because PKU677 requires a
  * browser step's actor to be a literal `actors.<name>`.
  */
-import { pikkuScenario } from '#pikku/workflow/pikku-workflow-types.gen.js'
+import { pikkuScenario } from '#pikku/scenarios'
 
 /** The gated area. `staticRoutes` skips /app/auth/login, so only this scenario asserts the guard. */
 const APP_HOME = '/app'
@@ -53,9 +53,14 @@ export const signedInActorReachesTheAppScenario = pikkuScenario<
     // The guard check is a `then` rather than an `if`/`throw`: this is the claim
     // the scenario exists to make, and only a `then` counts toward witness
     // coverage. A ladder with no assertion fails inspection outright (PKU680).
-    await scenario.then('stays in the app', 'restsOnPath', { path: APP_HOME }, {
-      actor: actors.visitor,
-    })
+    await scenario.then(
+      'stays in the app',
+      'restsOnPath',
+      { path: APP_HOME },
+      {
+        actor: actors.visitor,
+      },
+    )
 
     // The same session over the API: the browser is admitted AND the server
     // agrees who it is. One without the other is a half-proven login.

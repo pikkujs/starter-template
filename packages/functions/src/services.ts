@@ -7,12 +7,12 @@ import {
   createInvocationAudit,
 } from '@pikku/core/services'
 import { createAuditedKysely } from '@pikku/kysely'
-import { pikkuServices, pikkuWireServices } from '../.pikku/pikku-types.gen.js'
+import { pikkuServices, pikkuWireServices } from '#pikku/setup'
 import { TypedSecretService } from '../.pikku/secrets/pikku-secrets.gen.js'
 import { TypedVariablesService } from '../.pikku/variables/pikku-variables.gen.js'
 import { CFWorkerSchemaService } from '@pikku/schema-cfworker'
 import type { Kysely } from 'kysely'
-import type { VercelAIAgentRunner } from '@pikku/ai-vercel'
+import type { VercelAgentRunner } from '@pikku/ai-vercel'
 import { GeneratedTemplateEmailService } from './lib/email-service.js'
 import type { DB } from '#pikku/db/schema.gen.js'
 
@@ -51,7 +51,7 @@ export const createSingletonServices = pikkuServices(async (config, existingServ
 
   const litellmProxyUrl = process.env.LITELLM_PROXY_URL ?? null
   const litellmApiKey = process.env.LITELLM_API_KEY ?? null
-  let aiAgentRunner: VercelAIAgentRunner | undefined
+  let aiAgentRunner: VercelAgentRunner | undefined
   if (litellmProxyUrl && litellmApiKey) {
     // The AI SDKs (~3MB) are stubbed out of non-agent units at bundle time —
     // only units with the `ai-model` capability keep them. So import them
@@ -59,7 +59,7 @@ export const createSingletonServices = pikkuServices(async (config, existingServ
     // stubbed unit the import yields `{}` and the runner is simply not built.
     const aiVercel = await import('@pikku/ai-vercel')
     const aiSdk = await import('@ai-sdk/openai')
-    if (aiVercel.VercelAIAgentRunner && aiSdk.createOpenAI) {
+    if (aiVercel.VercelAgentRunner && aiSdk.createOpenAI) {
       const provider = aiSdk.createOpenAI({
         name: 'litellm',
         baseURL: litellmProxyUrl,
@@ -70,7 +70,7 @@ export const createSingletonServices = pikkuServices(async (config, existingServ
       // writes (`openai/gpt-5`, `deepseek/deepseek-v4-pro`).
       //
       // Each entry must be a NON-CALLABLE OBJECT with explicitly named methods,
-      // because VercelAIAgentRunner.getModel resolves the shapes differently:
+      // because VercelAgentRunner.getModel resolves the shapes differently:
       //
       // - a callable provider takes the `language` fast path — `provider(modelId)` —
       //   which in @ai-sdk/openai v3 is the RESPONSES api (`/v1/responses`), not
@@ -89,7 +89,7 @@ export const createSingletonServices = pikkuServices(async (config, existingServ
         transcription: (modelId: string) => provider.transcription(modelId),
         speech: (modelId: string) => provider.speech(modelId),
       }
-      aiAgentRunner = new aiVercel.VercelAIAgentRunner({
+      aiAgentRunner = new aiVercel.VercelAgentRunner({
         openai: litellm,
         anthropic: litellm,
         google: litellm,

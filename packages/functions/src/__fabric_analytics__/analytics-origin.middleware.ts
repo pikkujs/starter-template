@@ -1,8 +1,8 @@
-// `pikkuMiddleware` comes from '#pikku', not '@pikku/core': the generated helper
+// `pikkuMiddleware` comes from '#pikku/middleware', not '@pikku/core': the generated helper
 // is already bound to this app's SingletonServices, while the core one is typed
 // against CoreSingletonServices and will not accept a handler that reads app
 // services.
-import { pikkuMiddleware } from '#pikku'
+import { pikkuMiddleware } from '#pikku/middleware'
 import { InvalidOriginError } from '@pikku/core/errors'
 import { allowedOrigins } from '../lib/cors-origins.js'
 
@@ -80,15 +80,11 @@ export const analyticsOriginMiddleware = pikkuMiddleware({
     // own Host is the allowlist in the common case and needs no configuration.
     const hostHeader = request.header('host')
     const forwardedProto = request.header('x-forwarded-proto')
-    const hostOrigin = hostHeader
-      ? toOrigin(`${forwardedProto ?? 'https'}://${hostHeader}`)
-      : null
+    const hostOrigin = hostHeader ? toOrigin(`${forwardedProto ?? 'https'}://${hostHeader}`) : null
 
     const configured = await allowedOrigins(variables)
     if (!isAllowedAnalyticsOrigin(requestOrigin, hostOrigin, configured)) {
-      throw new InvalidOriginError(
-        `Analytics ingest rejected origin ${requestOrigin ?? '(none)'}`,
-      )
+      throw new InvalidOriginError(`Analytics ingest rejected origin ${requestOrigin ?? '(none)'}`)
     }
 
     await next()

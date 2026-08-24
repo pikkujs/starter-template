@@ -3,7 +3,7 @@ import { ActionIcon, Box, useMantineColorScheme } from '@pikku/mantine/core'
 import { m } from '@/i18n/messages'
 import { useLocale } from '@/i18n/config'
 
-const SunGlyph = () => (
+export const SunGlyph = () => (
   <svg
     width="15"
     height="15"
@@ -19,7 +19,7 @@ const SunGlyph = () => (
   </svg>
 )
 
-const MoonGlyph = () => (
+export const MoonGlyph = () => (
   <svg
     width="15"
     height="15"

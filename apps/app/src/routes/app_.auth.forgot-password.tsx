@@ -1,12 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage'
-import { useRedirectIfAuthenticated } from '@/hooks/useAuthGate'
+import { redirectIfAuthenticated } from '@/lib/auth-gate'
 
 export const Route = createFileRoute('/app_/auth/forgot-password')({
-  component: ForgotPasswordRoute,
+  ssr: false,
+  beforeLoad: redirectIfAuthenticated,
+  component: ForgotPasswordPage,
 })
-
-function ForgotPasswordRoute() {
-  useRedirectIfAuthenticated()
-  return <ForgotPasswordPage />
-}

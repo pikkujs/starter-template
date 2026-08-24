@@ -16,7 +16,7 @@
  * primary role — this scenario must name one literally, because PKU677 requires a
  * browser step's actor to be a literal `actors.<name>`.
  */
-import { pikkuScenario } from '#pikku/workflow/pikku-workflow-types.gen.js'
+import { pikkuScenario } from '#pikku/scenarios'
 
 export const everyPageLoadsScenario = pikkuScenario<void, { routes: string[] }>({
   title: 'Every page loads cleanly when signed in',

@@ -1,12 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { AppShell } from '@/components/AppShell'
-import { useRequireAuthentication } from '@/hooks/useAuthGate'
+import { requireAuthentication } from '@/lib/auth-gate'
 
 export const Route = createFileRoute('/app')({
-  component: AppLayout,
+  ssr: false,
+  beforeLoad: requireAuthentication,
+  component: AppShell,
 })
-
-function AppLayout() {
-  useRequireAuthentication()
-  return <AppShell />
-}

@@ -36,6 +36,7 @@ import {
   type Theme,
 } from '@project/mantine-themes'
 import { defaultLocale, localeDir, supportedLocales, setActiveLocale } from '@/i18n/config'
+import { appMeta } from '@/app-meta'
 import { apiUrl } from '@/lib/env'
 import { registerAnalyticsClickListener } from '@/__fabric_analytics__/analytics-click'
 import { recordEvent } from '@/__fabric_analytics__/analytics'
@@ -68,13 +69,7 @@ function DirectionSync({ locale }: { locale: string }) {
 }
 
 export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'Pikku App' },
-    ],
-  }),
+  head: () => ({ meta: appMeta }),
   notFoundComponent: DefaultNotFoundPage,
   // Wrapped in the document, unlike notFoundComponent. A not-found renders
   // through this route's Outlet so it already has <html> and the providers
@@ -127,6 +122,7 @@ function RootDocument({ children }: { children: ReactNode }) {
     const savedTheme = localStorage.getItem(THEME_KEY)
     const savedAgainst = localStorage.getItem(THEME_SAVED_ACTIVE_KEY)
     if (savedTheme && themes[savedTheme] && savedAgainst === activeId) {
+      // oxlint-disable-next-line react/set-state-in-effect -- SSR cannot read localStorage
       setThemeIdRaw(savedTheme)
     } else if (savedTheme) {
       localStorage.removeItem(THEME_KEY)

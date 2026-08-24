@@ -8,9 +8,7 @@ import type { Plugin } from 'vite'
 // no-op (ES modules are cached, and the install itself is idempotent).
 const ROOT_ROUTE = /[\\/]src[\\/]routes[\\/]__root\.tsx(?:$|\?)/
 
-const CLIENT_MODULE = fileURLToPath(
-  new URL('./cross-site-session.client.ts', import.meta.url),
-)
+const CLIENT_MODULE = fileURLToPath(new URL('./cross-site-session.client.ts', import.meta.url))
 
 /**
  * Dev-only: relay the Better Auth session cookie through localStorage so the app

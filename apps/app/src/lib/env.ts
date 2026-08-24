@@ -24,3 +24,21 @@ export function apiUrl(): string {
   }
   return window.location.origin + '/api'
 }
+
+/**
+ * The path this frontend is mounted under. A non-primary Fabric app is served at
+ * `/_frontend/<slug>/` on the sandbox's single origin, which the runtime hands to
+ * vite as FABRIC_FRONTEND_BASE — so BASE_URL is the only truth about the prefix.
+ */
+export function basePath(): string {
+  const base = import.meta.env.BASE_URL || '/'
+  return base.endsWith('/') ? base.slice(0, -1) : base
+}
+
+/**
+ * Absolute in-app href for anything the router does not resolve itself — a raw
+ * `window.location` assignment or a URL handed to Better Auth to redirect back to.
+ */
+export function appHref(path: string): string {
+  return `${basePath()}${path}`
+}

@@ -44,19 +44,23 @@ export const SignOutGlyph = navGlyph(
 )
 /** Three dots: zero-length segments with a round cap render as circles. */
 export const MoreGlyph = navGlyph('M5 12h.01M12 12h.01M19 12h.01')
+/** The paired chevrons that mark a row as a menu trigger rather than a link. */
+export const SelectorGlyph = navGlyph('M8 9l4-4 4 4M8 15l4 4 4-4')
+export const CheckGlyph = navGlyph('M20 6 9 17l-5-5')
 
 /**
  * EDIT ME — one entry per screen. The only place navigation is defined.
  *
  * A hook, not a constant, because `useLocale()` re-renders callers on a language
  * switch and labels must be `m.*()` calls (the i18n gate rejects plain strings).
+ *
+ * Destinations only. Account, preferences and sign-out belong to `ShellSettings`,
+ * which every shell mounts — listing `/app/account` here too would light two rows
+ * for one screen.
  */
 export function useNavItems(): NavItem[] {
   useLocale()
-  return [
-    { to: '/app', label: m.nav__home(), Icon: HomeGlyph },
-    { to: '/app/account', label: m.nav__account(), Icon: AccountGlyph },
-  ]
+  return [{ to: '/app', label: m.nav__home(), Icon: HomeGlyph }]
 }
 
 /**

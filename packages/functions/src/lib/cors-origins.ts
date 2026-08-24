@@ -1,6 +1,6 @@
 import { defineVariable } from '@pikku/core/variable'
 import { z } from 'zod'
-import type { SingletonServices } from '#pikku'
+import type { SingletonServices } from '#pikku/function'
 
 // The CLI requires `schema` to be a named export, not an inline `z.string()`.
 export const CorsOriginsSchema = z.string()
@@ -13,6 +13,7 @@ defineVariable({
     'Comma-separated list of origins allowed to call this API from a browser, e.g. "https://app.example.com". Also the allowlist the analytics ingest enforces server-side. Unset falls back to FRONTEND_URL plus localhost.',
   variableId: 'CORS_ORIGINS',
   schema: CorsOriginsSchema,
+  optional: true,
 })
 
 defineVariable({
@@ -22,6 +23,7 @@ defineVariable({
     "This app's own web origin. Used as the single-entry CORS allowlist when CORS_ORIGINS is not set.",
   variableId: 'FRONTEND_URL',
   schema: FrontendUrlSchema,
+  optional: true,
 })
 
 /**
@@ -39,9 +41,7 @@ defineVariable({
  * Shared with the analytics origin lock so the server-side check enforces
  * exactly the list CORS advertises; two lists would drift and disagree.
  */
-export async function allowedOrigins(
-  variables: SingletonServices['variables'],
-): Promise<string[]> {
+export async function allowedOrigins(variables: SingletonServices['variables']): Promise<string[]> {
   const configured = await variables.get('CORS_ORIGINS')
   if (configured) {
     return configured

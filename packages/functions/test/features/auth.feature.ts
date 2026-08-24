@@ -1,4 +1,4 @@
-import { pikkuFeature } from '#pikku/workflow/pikku-workflow-types.gen.js'
+import { pikkuFeature } from '#pikku/scenarios'
 import { signedInActorReachesTheAppScenario } from '../scenarios/signed-in-actor-reaches-the-app.scenario.js'
 
 export const authFeature = pikkuFeature({

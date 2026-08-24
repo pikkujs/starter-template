@@ -1,9 +1,9 @@
 import { cors } from '@pikku/core/middleware'
-// `pikkuMiddleware`/`addHTTPMiddleware` come from '#pikku', not '@pikku/core':
+// `pikkuMiddleware`/`addHTTPMiddleware` come from '#pikku/middleware', not '@pikku/core':
 // the generated helpers are bound to this app's SingletonServices, while the
 // core ones are typed against CoreSingletonServices and reject a handler that
 // reads an app service.
-import { pikkuMiddleware, addHTTPMiddleware } from '#pikku'
+import { pikkuMiddleware, addHTTPMiddleware } from '#pikku/middleware'
 import { allowedOrigins } from '../lib/cors-origins.js'
 
 /**

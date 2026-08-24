@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { pikkuScenarioStep } from '#pikku/workflow/pikku-workflow-types.gen.js'
+import { pikkuScenarioStep } from '#pikku/scenarios'
 import {
   ControlInput,
   addressesOnScreen,

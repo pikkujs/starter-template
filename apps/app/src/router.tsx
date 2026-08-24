@@ -2,6 +2,7 @@ import { createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 import { DefaultErrorPage } from '@/components/DefaultErrorPage'
 import { DefaultNotFoundPage } from '@/components/DefaultNotFoundPage'
+import { basePath } from '@/lib/env'
 
 // TanStack Start discovers this `getRouter` factory to build a router per
 // request (server) and once on the client (hydration). routeTree.gen.ts is
@@ -10,6 +11,7 @@ import { DefaultNotFoundPage } from '@/components/DefaultNotFoundPage'
 export function getRouter() {
   return createRouter({
     routeTree,
+    basepath: basePath() || '/',
     scrollRestoration: true,
     defaultPreload: 'intent',
     // These router defaults are the ones that actually fire for page failures.

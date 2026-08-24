@@ -49,7 +49,10 @@ function flush(): void {
     if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
       // A Blob with an explicit type is what makes the beacon arrive as JSON;
       // a bare string is sent as text/plain and the ingest would reject it.
-      const queued = navigator.sendBeacon(endpoint(), new Blob([body], { type: 'application/json' }))
+      const queued = navigator.sendBeacon(
+        endpoint(),
+        new Blob([body], { type: 'application/json' }),
+      )
       if (queued) return
       // The beacon queue is full or the payload is over the browser's cap —
       // fall through to keepalive rather than silently dropping the batch.

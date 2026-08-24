@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { AppShell as MantineAppShell, Box, Stack } from '@pikku/mantine/core'
+import { AppShell as MantineAppShell, Box, Divider, Stack } from '@pikku/mantine/core'
 import { Outlet } from '@tanstack/react-router'
 import { m } from '@/i18n/messages'
 import { useLocale } from '@/i18n/config'
@@ -36,7 +36,8 @@ export const AppShell: FC = () => {
             <NavList items={navItems} />
           </Box>
 
-          <Box mt="auto">
+          <Box mt="auto" pt="xs">
+            <Divider mb="xs" />
             <ShellSettings />
           </Box>
         </Stack>

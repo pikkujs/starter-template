@@ -4,7 +4,7 @@ import { useLocale } from '@/i18n/config'
 import { supportedLocales } from '@/i18n/config'
 import { usePreferences } from '@/contexts/preferences'
 
-const LOCALE_LABELS: Record<string, string> = {
+export const LOCALE_LABELS: Record<string, string> = {
   en: 'English',
   ar: 'العربية',
   zh: '中文',

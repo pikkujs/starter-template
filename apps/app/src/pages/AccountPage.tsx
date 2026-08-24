@@ -19,19 +19,12 @@ import { usePikkuQuery } from '@project/functions-sdk/pikku/api.gen'
 import { m, asI18n } from '@/i18n/messages'
 import { useLocale } from '@/i18n/config'
 import { changePassword } from '@/lib/auth'
+import { initials } from '@/lib/initials'
 
 type PasswordFormValues = { currentPassword: string; newPassword: string; confirmPassword: string }
 
 const required = (value: string): I18nString | undefined =>
   value.trim() ? undefined : m.validation__required()
-
-const initials = (name: string | null, email: string): string => {
-  const source = name?.trim() || email.split('@')[0] || '?'
-  const parts = source.split(/\s+/).filter(Boolean)
-  const chars =
-    parts.length > 1 ? `${parts[0]![0]}${parts[parts.length - 1]![0]}` : source.slice(0, 2)
-  return chars.toUpperCase()
-}
 
 export const AccountPage: FC = () => {
   useLocale()

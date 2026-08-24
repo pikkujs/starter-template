@@ -1,4 +1,4 @@
-import { pikkuFeature } from '#pikku/workflow/pikku-workflow-types.gen.js'
+import { pikkuFeature } from '#pikku/scenarios'
 import { everyPageLoadsScenario } from '../scenarios/every-page-loads.scenario.js'
 
 export const pagesFeature = pikkuFeature({

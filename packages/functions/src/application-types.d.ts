@@ -1,4 +1,9 @@
-import type { CoreServices, CoreSingletonServices, CoreConfig, CoreUserSession } from '@pikku/core'
+import type {
+  CoreServices,
+  CoreSingletonServices,
+  CoreConfig,
+  CoreUserSession,
+} from '@pikku/core/types'
 import type { AuditLog, EmailService } from '@pikku/core/services'
 import type { Kysely } from 'kysely'
 import type { DB } from '#pikku/db/schema.gen.js'

@@ -1,7 +1,6 @@
 import { betterAuth } from 'better-auth'
-import { admin } from 'better-auth/plugins'
-import { actor, fabric } from '@pikku/better-auth'
-import { pikkuBetterAuth } from '#pikku'
+import { actor, ban, fabric } from '@pikku/better-auth'
+import { pikkuBetterAuth } from '#pikku/auth'
 
 /**
  * Better Auth configuration — email + password sign-in.
@@ -16,7 +15,7 @@ import { pikkuBetterAuth } from '#pikku'
  * (and the database) off the injected `services`; the resolved instance is then
  * available to every function as `services.auth`. Better Auth is given the app's
  * own kysely: the CamelCasePlugin maps Better Auth's camelCase field names onto
- * the snake_case columns created in db/sqlite/0001-init.sql, keeping the whole DB
+ * the snake_case columns created in db/sqlite/0001-better-auth.sql, keeping the whole DB
  * on one naming convention. To offer Google / GitHub / ... add a `socialProviders`
  * entry (and a button on the login page) — the CLI will wire its secret too.
  */
@@ -35,13 +34,17 @@ export const auth = pikkuBetterAuth(async ({ kysely, secrets, variables, emailSe
   // without it.
   const SCENARIO_ACTOR_SECRET = await secrets
     .getSecret('SCENARIO_ACTOR_SECRET')
-    .then((value) => value.reveal())
+    .then((value) => value?.reveal())
     .catch(() => undefined)
   // Fabric operator admin: the RSA public key the control plane's token is
   // verified against. The Fabric deployer pushes FABRIC_AUTH_PUBLIC_KEY onto
   // every stage; locally it's simply absent, which disables /sign-in/fabric.
   // Asymmetric — the app verifies, it can never forge an operator login.
   const FABRIC_AUTH_PUBLIC_KEY = await variables.get('FABRIC_AUTH_PUBLIC_KEY')
+  // This stage's own identity. Every stage verifies the same public key, so
+  // without it an operator token is admin on all of them at once; a token
+  // carrying `aud` is refused unless this matches. Fabric binds it on deploy.
+  const FABRIC_STAGE_ID = await variables.get('FABRIC_STAGE_ID')
 
   return betterAuth({
     secret: BETTER_AUTH_SECRET,
@@ -68,26 +71,31 @@ export const auth = pikkuBetterAuth(async ({ kysely, secrets, variables, emailSe
     session: { cookieCache: { enabled: true } },
     advanced: { database: { generateId: 'uuid' } },
     // Scenario actors: synthetic users (user.actor = true, see
-    // db/sqlite/0002-user-actor.sql) signed in by pikkuScenario via
+    // db/sqlite/0001-better-auth.sql) signed in by pikkuScenario via
     // POST /api/auth/sign-in/actor { email, secret }. Never signs in real users.
     //
-    // admin(): exposes /api/auth/admin/* (listUsers, setRole, impersonateUser,
-    // …) so an app admin can list and "view as" their end-users — this is what
-    // the Fabric console's Users tab drives. Adds role/banned/impersonatedBy
-    // columns (see db/sqlite/0003-admin.sql). No user is an admin by default:
-    // grant it by setting a user's `role` to 'admin' (or pass
-    // `adminUserIds: [...]` here) — the admin API refuses non-admins.
+    // ban(): the enforcement half of better-auth's admin() plugin — the
+    // banned/banReason/banExpires columns (see db/sqlite/0001-better-auth.sql) and the
+    // session hook that refuses a banned user a session. It makes no
+    // authorization decision: who may ban is decided by the `admin:users:ban`
+    // scope on the RPC. Listing, banning and "view as" are @pikku/addon-admin's
+    // scoped RPCs (src/addons/admin.addon.ts), which is what the console's Users
+    // tab calls — administering an app is ordinary application behaviour and
+    // must not depend on better-auth's `role` column.
     //
     // fabric(): exposes /api/auth/sign-in/fabric — the Fabric control plane
     // mints a short-lived RS256 token and signs in as a synthetic `fabric: true`
-    // admin operator (db/sqlite/0004-fabric.sql), so the console Users tab can
-    // list/impersonate real users without the operator being one of them. It
-    // pairs with admin() and verifies against FABRIC_AUTH_PUBLIC_KEY; missing
-    // key disables the endpoint.
+    // operator (db/sqlite/0001-better-auth.sql) granted the umbrella `admin` scope, so
+    // the console Users tab can list/impersonate real users without the operator
+    // being one of them. Verifies against FABRIC_AUTH_PUBLIC_KEY; missing key
+    // disables the endpoint.
     plugins: [
       actor({ secret: SCENARIO_ACTOR_SECRET }),
-      admin(),
-      fabric({ publicKey: FABRIC_AUTH_PUBLIC_KEY }),
+      ban(),
+      fabric({
+        publicKey: FABRIC_AUTH_PUBLIC_KEY,
+        audience: FABRIC_STAGE_ID,
+      }),
     ],
   })
 })
