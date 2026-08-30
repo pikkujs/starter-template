@@ -38,7 +38,8 @@
     "agent": true,
     "workflow": true,
     "scenarios": true,
-    "events": true
+    "events": true,
+    "virtualUser": true
   },
   "scenarios": {
     "emailDomain": "actors.local"

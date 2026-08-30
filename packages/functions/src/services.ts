@@ -6,7 +6,11 @@ import {
   NoopAuditService,
   createInvocationAudit,
 } from '@pikku/core/services'
-import { createAuditedKysely } from '@pikku/kysely'
+import {
+  createAuditedKysely,
+  KyselyVirtualUserRunStore,
+  KyselyVirtualUserScheduleStore,
+} from '@pikku/kysely'
 import { pikkuServices, pikkuWireServices } from '#pikku/setup'
 import { TypedSecretService } from '../.pikku/secrets/pikku-secrets.gen.js'
 import { TypedVariablesService } from '../.pikku/variables/pikku-variables.gen.js'
@@ -98,6 +102,11 @@ export const createSingletonServices = pikkuServices(async (config, existingServ
     }
   }
 
+  const virtualUserRunStore =
+    existingServices?.virtualUserRunStore ?? new KyselyVirtualUserRunStore(kysely as any)
+  const virtualUserScheduleStore =
+    existingServices?.virtualUserScheduleStore ?? new KyselyVirtualUserScheduleStore(kysely as any)
+
   return {
     ...(existingServices ?? {}),
     config,
@@ -108,6 +117,8 @@ export const createSingletonServices = pikkuServices(async (config, existingServ
     emailService,
     audit,
     kysely,
+    virtualUserRunStore,
+    virtualUserScheduleStore,
     ...(credentialService ? { credentialService } : {}),
     ...(aiAgentRunner ? { aiAgentRunner } : {}),
   }

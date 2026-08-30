@@ -79,15 +79,28 @@ export async function registerWithPassword(
   }
 }
 
-// Scenario personas exposed by the sandbox dev server (empty in production, where
-// none of the VITE_DEV_* vars are set). Powers the dev-only "Sign in as" switcher.
+// Scenario personas the dev server bakes in (empty in production, where none of the
+// VITE_DEV_* vars are set). Powers the dev-only "Sign in as" switcher.
 export type DevActor = { key: string; email: string; name: string; jobTitle: string }
+function devActorSecrets(): Record<string, string> {
+  const raw = import.meta.env.VITE_DEV_ACTOR_SECRETS
+  if (!import.meta.env.DEV || typeof raw !== 'string') return {}
+  try {
+    const parsed = JSON.parse(raw)
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {}
+  } catch (error) {
+    console.error('Failed to parse VITE_DEV_ACTOR_SECRETS', error)
+    return {}
+  }
+}
+
 export function devActors(): DevActor[] {
   const raw = import.meta.env.VITE_DEV_ACTORS
   if (!import.meta.env.DEV || typeof raw !== 'string') return []
+  const secrets = devActorSecrets()
   try {
     const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) ? parsed : []
+    return Array.isArray(parsed) ? parsed.filter((actor: DevActor) => !!secrets[actor.email]) : []
   } catch (error) {
     console.error('Failed to parse VITE_DEV_ACTORS', error)
     return []
@@ -95,9 +108,9 @@ export function devActors(): DevActor[] {
 }
 
 // Sign in as a scenario actor via Better Auth's actor endpoint — no password,
-// using the shared secret the sandbox dev server injects. Dev-only.
+// using that address's own credential, minted by the dev server. Dev-only.
 export async function signInAsActor(email: string): Promise<void> {
-  const secret = import.meta.env.VITE_SCENARIO_ACTOR_SECRET
+  const secret = devActorSecrets()[email]
   if (!secret) throw new Error('Actor sign-in is unavailable')
   const res = await fetch(`${apiUrl()}/auth/sign-in/actor`, {
     method: 'POST',

@@ -29,9 +29,9 @@ export const auth = pikkuBetterAuth(async ({ kysely, secrets, variables, emailSe
   // is one greppable call. Better Auth wants the raw string, and this is where
   // it stops being a secret in the type system.
   const BETTER_AUTH_SECRET = (await secrets.getSecret('BETTER_AUTH_SECRET')).reveal()
-  // Genuinely optional: unset simply disables /api/auth/sign-in/actor (scenarios
-  // off for this deployment) — the actor plugin refuses all sign-ins
-  // without it.
+  // Optional: the secret alone never opens /api/auth/sign-in/actor. The plugin
+  // gates on `pikku dev`, or on PIKKU_ALLOW_ACTOR_SIGN_IN for a stage meant to
+  // run scenarios, and warns when a secret is set against a shut gate.
   const SCENARIO_ACTOR_SECRET = await secrets
     .getSecret('SCENARIO_ACTOR_SECRET')
     .then((value) => value?.reveal())
