@@ -57,6 +57,10 @@
     "coverage": {
       "apiUrl": "http://localhost:4010",
       "signInPath": "/api/auth/sign-in/actor"
+    },
+    "stage": {
+      "apiUrl": "https://replaced-by-the-deployer/api",
+      "signInPath": "/auth/sign-in/actor"
     }
   }
 }
