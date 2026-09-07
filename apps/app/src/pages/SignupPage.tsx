@@ -6,7 +6,7 @@ import { m } from '@/i18n/messages'
 import { useLocale } from '@/i18n/config'
 import { AuthCard, type AuthFormValues } from '@/components/AuthCard'
 import { EMAIL_IN_USE, registerWithPassword, signInWithGoogle } from '@/lib/auth'
-import { useAnalytics } from '@/__fabric_analytics__/useAnalytics'
+import { useAnalytics } from '@/scaffold/fabric/analytics/useAnalytics'
 
 export const SignupPage: FC = () => {
   useLocale()

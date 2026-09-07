@@ -1,21 +1,41 @@
 import { PikkuRPC } from '@project/functions-sdk/pikku/pikku-rpc.gen'
+import { createIsomorphicFn } from '@tanstack/react-start'
+import { getRequestHeader, getRequestUrl } from '@tanstack/react-start/server'
 import { apiUrl } from './env'
 
 /**
  * A PikkuRPC client for code that runs OUTSIDE React — route `beforeLoad` gates, mostly.
  * Components use the usePikku* hooks and the provider in __root.tsx instead.
  *
- * Built lazily on first use: apiUrl() returns a relative placeholder during SSR, so
- * constructing at module scope would bake that in. Every caller is client-only.
+ * `beforeLoad` runs on BOTH sides, so this has two implementations and
+ * `createIsomorphicFn` keeps each out of the other's bundle. The browser reuses one
+ * client. The server builds a fresh one per request and forwards that request's own
+ * cookie header — a module-scope singleton there would serve one visitor's session to
+ * the next. Deployed, the API answers on the same hostname under `/api`, so the request
+ * URL is the base; local dev has VITE_API_URL at build time and points straight at it.
  */
 let client: PikkuRPC | null = null
 
+const resolveRpc = createIsomorphicFn()
+  .client((): PikkuRPC => {
+    if (!client) {
+      client = new PikkuRPC()
+      client.setServerUrl(apiUrl())
+    }
+    return client
+  })
+  .server((): PikkuRPC => {
+    const perRequest = new PikkuRPC()
+    perRequest.setServerUrl(
+      import.meta.env.VITE_API_URL ?? new URL('/api', getRequestUrl()).toString(),
+    )
+    const cookie = getRequestHeader('cookie')
+    if (cookie) perRequest.pikkuFetch.setHeader('cookie', cookie)
+    return perRequest
+  })
+
 export function rpc(): PikkuRPC {
-  if (!client) {
-    client = new PikkuRPC()
-    client.setServerUrl(apiUrl())
-  }
-  return client
+  return resolveRpc()
 }
 
 /**

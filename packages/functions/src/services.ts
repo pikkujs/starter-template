@@ -16,7 +16,6 @@ import { TypedSecretService } from '../.pikku/secrets/pikku-secrets.gen.js'
 import { TypedVariablesService } from '../.pikku/variables/pikku-variables.gen.js'
 import { CFWorkerSchemaService } from '@pikku/schema-cfworker'
 import type { Kysely } from 'kysely'
-import type { VercelAgentRunner } from '@pikku/ai-vercel'
 import { GeneratedTemplateEmailService } from './lib/email-service.js'
 import type { DB } from '#pikku/db/schema.gen.js'
 
@@ -53,55 +52,6 @@ export const createSingletonServices = pikkuServices(async (config, existingServ
   // wire services; wire your own `credentialService` here if you need one.
   const credentialService = existingServices?.credentialService
 
-  const litellmProxyUrl = process.env.LITELLM_PROXY_URL ?? null
-  const litellmApiKey = process.env.LITELLM_API_KEY ?? null
-  let aiAgentRunner: VercelAgentRunner | undefined
-  if (litellmProxyUrl && litellmApiKey) {
-    // The AI SDKs (~3MB) are stubbed out of non-agent units at bundle time —
-    // only units with the `ai-model` capability keep them. So import them
-    // dynamically and guard on the module resolving to a real export; in a
-    // stubbed unit the import yields `{}` and the runner is simply not built.
-    const aiVercel = await import('@pikku/ai-vercel')
-    const aiSdk = await import('@ai-sdk/openai')
-    if (aiVercel.VercelAgentRunner && aiSdk.createOpenAI) {
-      const provider = aiSdk.createOpenAI({
-        name: 'litellm',
-        baseURL: litellmProxyUrl,
-        apiKey: litellmApiKey,
-      })
-      // Every provider name maps to the one proxy — the vendor is chosen by the
-      // model id on the other side, so these differ only in the prefix a caller
-      // writes (`openai/gpt-5`, `deepseek/deepseek-v4-pro`).
-      //
-      // Each entry must be a NON-CALLABLE OBJECT with explicitly named methods,
-      // because VercelAgentRunner.getModel resolves the shapes differently:
-      //
-      // - a callable provider takes the `language` fast path — `provider(modelId)` —
-      //   which in @ai-sdk/openai v3 is the RESPONSES api (`/v1/responses`), not
-      //   chat. Our LiteLLM entries are all `mode: chat`, so that hands a Chat
-      //   Completions stream to a Responses parser and dies.
-      // - a plain function satisfies `language` and NOTHING else, so
-      //   `aiAgentRunner.transcribe` / `.generateSpeech` fail with "Provider
-      //   'openai' does not support transcription models". That is what this
-      //   shape replaces: audio was unreachable from a stock sandbox even though
-      //   the proxy has routed STT/TTS all along.
-      //
-      // `.transcription` / `.speech` reach the proxy's `audio_transcription` /
-      // `audio_speech` entries (whisper-large-v3-turbo, kokoro-82m).
-      const litellm = {
-        languageModel: (modelId: string) => provider.chat(modelId),
-        transcription: (modelId: string) => provider.transcription(modelId),
-        speech: (modelId: string) => provider.speech(modelId),
-      }
-      aiAgentRunner = new aiVercel.VercelAgentRunner({
-        openai: litellm,
-        anthropic: litellm,
-        google: litellm,
-        deepseek: litellm,
-      })
-    }
-  }
-
   const virtualUserRunStore =
     existingServices?.virtualUserRunStore ?? new KyselyVirtualUserRunStore(kysely as any)
   const virtualUserScheduleStore =
@@ -120,7 +70,6 @@ export const createSingletonServices = pikkuServices(async (config, existingServ
     virtualUserRunStore,
     virtualUserScheduleStore,
     ...(credentialService ? { credentialService } : {}),
-    ...(aiAgentRunner ? { aiAgentRunner } : {}),
   }
 })
 

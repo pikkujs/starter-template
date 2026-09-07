@@ -4,7 +4,7 @@
 // services.
 import { pikkuMiddleware } from '#pikku/middleware'
 import { InvalidOriginError } from '@pikku/core/errors'
-import { allowedOrigins } from '../lib/cors-origins.js'
+import { allowedOrigins } from '../../../lib/cors-origins.js'
 
 /**
  * Normalise a URL to its origin — scheme + host + port, nothing else.

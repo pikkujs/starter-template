@@ -1,12 +1,12 @@
 /**
  * Fabric-injected product-analytics forwarder. The deploy container drops this
- * file into the user's `packages/functions/src/__fabric_analytics__/` before
+ * file into the user's `packages/functions/src/scaffold/fabric/analytics/` before
  * `pikku bootstrap` runs, overwriting the copy that ships in the template. The
  * template's copy exists only so the app typechecks and runs locally; fabric
  * owns the deployed one so the transport can change without touching anyone's
  * repo.
  *
- * Unlike `__fabric_telemetry__` this is NOT middleware — there is no invocation
+ * Unlike `scaffold/fabric/telemetry` this is NOT middleware — there is no invocation
  * to wrap. The template's `/analytics` ingest function calls it with the events
  * it accepted and the identity it resolved from the session.
  *

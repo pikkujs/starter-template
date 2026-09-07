@@ -3,7 +3,6 @@ import { SignupPage } from '@/pages/SignupPage'
 import { redirectIfAuthenticated } from '@/lib/auth-gate'
 
 export const Route = createFileRoute('/app_/auth/signup')({
-  ssr: false,
   beforeLoad: redirectIfAuthenticated,
   component: SignupPage,
 })

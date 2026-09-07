@@ -13,7 +13,7 @@ import { analyticsOriginMiddleware } from './analytics-origin.middleware.js'
  * platform concern rather than one route's, and is not built yet. Until it is,
  * treat volume through here as unbounded.
  *
- * It lives in `__fabric_analytics__/` so the build-complete journey-coverage gate skips
+ * It lives in `scaffold/fabric/analytics/` so the build-complete journey-coverage gate skips
  * it: that gate asks whether a real user journey exercises each mutation, and this one
  * ships with the template rather than answering anything a user asked for. Sitting in
  * `functions/` and `wires/http/` it read as an ordinary uncovered mutation and made

@@ -38,8 +38,8 @@ import {
 import { defaultLocale, localeDir, supportedLocales, setActiveLocale } from '@/i18n/config'
 import { appMeta } from '@/app-meta'
 import { apiUrl } from '@/lib/env'
-import { registerAnalyticsClickListener } from '@/__fabric_analytics__/analytics-click'
-import { recordEvent } from '@/__fabric_analytics__/analytics'
+import { registerAnalyticsClickListener } from '@/scaffold/fabric/analytics/analytics-click'
+import { recordEvent } from '@/scaffold/fabric/analytics/analytics'
 import { PreferencesContext } from '@/contexts/preferences'
 import { DefaultErrorPage } from '@/components/DefaultErrorPage'
 import { DefaultNotFoundPage } from '@/components/DefaultNotFoundPage'
@@ -147,7 +147,7 @@ function RootDocument({ children }: { children: ReactNode }) {
 
   // One delegated listener for every `data-analytics-click` in the app,
   // including portalled content (modals, menus, dropdowns) — see
-  // __fabric_analytics__/analytics-click.ts for why it must be capture-phase.
+  // scaffold/fabric/analytics/analytics-click.ts for why it must be capture-phase.
   useEffect(() => registerAnalyticsClickListener(), [])
 
   // The matched route id (`/app/account`), not `location.pathname`. A pathname

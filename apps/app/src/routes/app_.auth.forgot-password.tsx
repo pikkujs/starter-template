@@ -3,7 +3,6 @@ import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage'
 import { redirectIfAuthenticated } from '@/lib/auth-gate'
 
 export const Route = createFileRoute('/app_/auth/forgot-password')({
-  ssr: false,
   beforeLoad: redirectIfAuthenticated,
   component: ForgotPasswordPage,
 })

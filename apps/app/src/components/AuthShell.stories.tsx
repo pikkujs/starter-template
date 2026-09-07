@@ -8,12 +8,14 @@ export default {
   component: AuthShell,
   group: 'Auth',
   description:
-    'The frame every auth screen shares — sign in, sign up, forgot and reset password. Only the children change.',
+    'The frame every auth screen shares — sign in, sign up, forgot and reset password. A branded panel carries the wordmark and description, the column beside it carries the title and the form. Only the children change.',
   argTypes: {
-    appName: { description: 'Wordmark above the card.' },
-    title: { description: 'Card heading.' },
-    description: { description: 'One line under the heading.' },
-    footer: { description: 'Muted line below the card — usually a link to the other screen.' },
+    appName: { description: 'Wordmark on the brand panel.' },
+    title: { description: 'Heading above the form.' },
+    description: {
+      description: 'The display line on the brand panel; moves under the heading on small screens.',
+    },
+    footer: { description: 'Muted line below the form — usually a link to the other screen.' },
     children: { description: 'The form. The shell owns everything around it.', control: false },
   },
 } satisfies StoryMeta

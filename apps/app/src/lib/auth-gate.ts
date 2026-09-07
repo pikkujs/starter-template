@@ -13,8 +13,11 @@ export const APP_HOME = '/app'
  * Anything else is a real failure and is rethrown so the error boundary shows it instead of
  * silently bouncing to login.
  *
- * Every route using one must also set `ssr: false`: the session cookie is host-only on
- * the API origin, so the SSR worker cannot send it.
+ * These run during SSR too, and must: a gate that only runs in the browser means the
+ * server sends an empty document and the route is invisible to a cold load. `rpc()`
+ * forwards the request's cookie on the server, so the session resolves there and a
+ * signed-out visitor gets a real redirect instead of a flash of app shell. Never add
+ * `ssr: false` to a route to make a gate work — that is the thing this replaced.
  */
 export async function requireAuthentication(): Promise<{ session: GetSessionOutput }> {
   try {

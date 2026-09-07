@@ -1,5 +1,5 @@
 import { betterAuth } from 'better-auth'
-import { actor, ban, fabric } from '@pikku/better-auth'
+import { ACTOR_SIGN_IN_OPT_IN_ENV, pikkuActor, pikkuBan, pikkuFabric } from '@pikku/better-auth'
 import { pikkuBetterAuth } from '#pikku/auth'
 
 /**
@@ -30,8 +30,8 @@ export const auth = pikkuBetterAuth(async ({ kysely, secrets, variables, emailSe
   // it stops being a secret in the type system.
   const BETTER_AUTH_SECRET = (await secrets.getSecret('BETTER_AUTH_SECRET')).reveal()
   // Optional: the secret alone never opens /api/auth/sign-in/actor. The plugin
-  // gates on `pikku dev`, or on PIKKU_ALLOW_ACTOR_SIGN_IN for a stage meant to
-  // run scenarios, and warns when a secret is set against a shut gate.
+  // gates on `pikku dev`, or on the opt-in below for a stage meant to run
+  // scenarios, and warns when a secret is set against a shut gate.
   const SCENARIO_ACTOR_SECRET = await secrets
     .getSecret('SCENARIO_ACTOR_SECRET')
     .then((value) => value?.reveal())
@@ -45,6 +45,10 @@ export const auth = pikkuBetterAuth(async ({ kysely, secrets, variables, emailSe
   // without it an operator token is admin on all of them at once; a token
   // carrying `aud` is refused unless this matches. Fabric binds it on deploy.
   const FABRIC_STAGE_ID = await variables.get('FABRIC_STAGE_ID')
+  // The scenario opt-in, read through `variables` rather than left to
+  // process.env: Fabric pushes it as a binding on every non-production stage,
+  // and a Worker has no populated environment for the plugin to find it in.
+  const ALLOW_ACTOR_SIGN_IN = await variables.get(ACTOR_SIGN_IN_OPT_IN_ENV)
 
   return betterAuth({
     secret: BETTER_AUTH_SECRET,
@@ -90,9 +94,12 @@ export const auth = pikkuBetterAuth(async ({ kysely, secrets, variables, emailSe
     // being one of them. Verifies against FABRIC_AUTH_PUBLIC_KEY; missing key
     // disables the endpoint.
     plugins: [
-      actor({ secret: SCENARIO_ACTOR_SECRET }),
-      ban(),
-      fabric({
+      pikkuActor({
+        secret: SCENARIO_ACTOR_SECRET,
+        allowSignIn: ALLOW_ACTOR_SIGN_IN,
+      }),
+      pikkuBan(),
+      pikkuFabric({
         publicKey: FABRIC_AUTH_PUBLIC_KEY,
         audience: FABRIC_STAGE_ID,
       }),
