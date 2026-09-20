@@ -4,8 +4,12 @@
 
 `packages/functions/src/personas.ts` declares this app's people, primary role first — the
 person who uses it daily, not the one who administers it. The shipped `visitor` is a
-placeholder to replace, and `fabric build-complete` refuses a build that left it beside real
-roles, naming every edit that removal needs.
+placeholder to replace, not to add to: a build that leaves it beside real roles ships a
+synthetic health-check user as the person this app is for, and every consumer that takes the
+first actor believes it. Removing it is four coordinated edits in one pass — the
+`definePersonas` call, `pikkufabric.config.json`, and the two shipped scenarios that name
+`actors.visitor` literally, which PKU677 forbids writing generically. Under fabric,
+`fabric build-complete` refuses a build that left it and names every edit.
 
 ## Routing
 

@@ -1,3 +1,4 @@
+import path from 'node:path'
 import type { PluginObj, NodePath, types as BabelTypes } from '@babel/core'
 
 /**
@@ -143,7 +144,35 @@ function literalIdentity(attributes: BabelTypes.JSXOpeningElement['attributes'])
   return null
 }
 
-export default function injectTestIds({ types: t }: { types: typeof BabelTypes }): PluginObj {
+export interface InjectTestIdsOptions {
+  /**
+   * Stamp `data-fabric-src="src/routes/app.orders.tsx:42"` beside every testid.
+   *
+   * Off unless fabric turns it on for the build, because this writes the app's
+   * own source layout into markup an end user can read in view-source. It is
+   * also the expensive half of the changes panel: one attribute per addressable
+   * element, where the panel's own code is one chunk.
+   *
+   * The path is interned per module — one string constant the elements in that
+   * file concatenate their line onto — so a file with forty controls ships its
+   * path once rather than forty times.
+   */
+  sourceAnchors?: boolean
+  /** Repo root the stamped paths are relative to. Defaults to the build's cwd. */
+  root?: string
+}
+
+export default function injectTestIds(
+  { types: t }: { types: typeof BabelTypes },
+  options: InjectTestIdsOptions = {},
+): PluginObj {
+  const anchors = options.sourceAnchors === true
+  const root = options.root ?? process.cwd()
+
+  let anchorIdentifier: BabelTypes.Identifier | null = null
+  let anchorPath: string | null = null
+  let anchorUsed = false
+
   const attributeName = (attribute: BabelTypes.JSXOpeningElement['attributes'][number]) =>
     attribute.type === 'JSXAttribute' && attribute.name.type === 'JSXIdentifier'
       ? attribute.name.name
@@ -165,6 +194,29 @@ export default function injectTestIds({ types: t }: { types: typeof BabelTypes }
     element.attributes.push(t.jsxAttribute(t.jsxIdentifier('data-testid'), t.stringLiteral(value)))
   }
 
+  /**
+   * Anchors go on elements that are ALREADY claimed by a hand-written testid too
+   * — knowing an element's name and knowing where its JSX lives are different
+   * questions, and the author answering the first does not answer the second.
+   */
+  const anchor = (element: BabelTypes.JSXOpeningElement) => {
+    if (!anchors || !anchorIdentifier) return
+    const line = element.loc?.start.line
+    if (!line) return
+    if (element.attributes.some((attribute) => attributeName(attribute) === 'data-fabric-src')) {
+      return
+    }
+    anchorUsed = true
+    element.attributes.push(
+      t.jsxAttribute(
+        t.jsxIdentifier('data-fabric-src'),
+        t.jsxExpressionContainer(
+          t.binaryExpression('+', t.cloneNode(anchorIdentifier), t.stringLiteral(`:${line}`)),
+        ),
+      ),
+    )
+  }
+
   /** A component is a PascalCase function — the same rule React itself uses to tell them apart. */
   const componentName = (path: NodePath<BabelTypes.Function>): string | null => {
     const node = path.node
@@ -181,8 +233,29 @@ export default function injectTestIds({ types: t }: { types: typeof BabelTypes }
   return {
     name: 'pikku-inject-testids',
     visitor: {
+      Program: {
+        enter(program, state) {
+          anchorIdentifier = null
+          anchorPath = null
+          anchorUsed = false
+          if (!anchors || !state.filename) return
+          anchorPath = path.relative(root, state.filename).split(path.sep).join('/')
+          anchorIdentifier = program.scope.generateUidIdentifier('fabricSrc')
+        },
+        exit(program) {
+          if (!anchorUsed || !anchorIdentifier || !anchorPath) return
+          program.unshiftContainer(
+            'body',
+            t.variableDeclaration('const', [
+              t.variableDeclarator(anchorIdentifier, t.stringLiteral(anchorPath)),
+            ]),
+          )
+        },
+      },
+
       JSXOpeningElement(path) {
         if (!isInteractive(tagName(path.node.name))) return
+        anchor(path.node)
         if (claimed(path.node)) return
 
         let key: string | null = null
@@ -228,6 +301,7 @@ export default function injectTestIds({ types: t }: { types: typeof BabelTypes }
           ReturnStatement(statement) {
             const returned = statement.node.argument
             if (returned?.type !== 'JSXElement') return
+            anchor(returned.openingElement)
             if (claimed(returned.openingElement)) return
             // A component whose root IS a control (a lone `<Select>` wrapped in nothing)
             // keeps its OWN key — the more specific address, and there is nothing inside it

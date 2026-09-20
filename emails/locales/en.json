@@ -19,5 +19,14 @@
     "cta": "Choose a new password",
     "fallback": "If the button does not work, copy and paste this URL into your browser:",
     "expiry": "This link expires in 1 hour. If you did not ask for a reset, you can safely ignore this email."
+  },
+  "magicLink": {
+    "subject": "Your sign-in link for {{appName}}",
+    "preview": "Use the link inside to sign in — no password needed.",
+    "heading": "Sign in to {{appName}}",
+    "intro": "Use the link below to sign in as {{email}}. No password needed — you can set one once you are in.",
+    "cta": "Sign in",
+    "fallback": "If the button does not work, copy and paste this URL into your browser:",
+    "expiry": "This link expires in 7 days and can only be used once. If you were not expecting it, you can safely ignore this email."
   }
 }

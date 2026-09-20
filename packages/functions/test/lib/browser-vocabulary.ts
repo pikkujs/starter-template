@@ -2,9 +2,8 @@ import { z } from 'zod'
 import type { ActorSession } from '@pikku/playwright'
 
 /**
- * Shared plumbing for the generic browser steps, the scenario equivalent of what
- * `registerBrowserSteps` from `@pikku/cucumber/browser` used to supply. Nothing here is a
- * step — one stepper per file lives in `test/steps/`.
+ * Shared plumbing for the generic browser steps. Nothing here is a step — one
+ * stepper per file lives in `test/steps/`.
  *
  * The runner opens one BrowserContext per actor and signs it in at `signInPath` BEFORE the
  * first step runs, so there is no "log in" step and no signed-out state to drive. A scenario
@@ -98,3 +97,24 @@ export function currentPath(actor: ActorSession, fallback = ''): string {
 
 /** `/app/` and `/app` are the same route; compare them as such. */
 export const normalisePath = (path: string) => path.replace(/\/+$/, '') || '/'
+
+export const HYDRATED_SELECTOR = 'html[data-app-hydrated="true"]'
+
+/**
+ * Server-rendered markup already has a `<main>`, so the driver's `gotoApp` settles before
+ * React has attached; a `fill` into an inert input is destroyed by the first render and the
+ * scenario fails as "the submit did nothing". The app publishes the attribute from
+ * `apps/app/src/routes/__root.tsx` once the router is idle; its absence is fatal on purpose.
+ */
+export async function readyToBeUsed(actor: ActorSession, timeout = 10_000): Promise<void> {
+  try {
+    await actor.page.waitForSelector(HYDRATED_SELECTOR, { state: 'attached', timeout })
+  } catch {
+    throw new Error(
+      `The app never declared itself interactive (\`${HYDRATED_SELECTOR}\` was still absent ` +
+        `after ${timeout}ms), so anything typed or pressed here would be thrown away by the ` +
+        `first render. Check that apps/app/src/routes/__root.tsx still publishes it. ` +
+        `The browser rests on ${currentPath(actor)} with: ${await addressesOnScreen(actor)}`,
+    )
+  }
+}

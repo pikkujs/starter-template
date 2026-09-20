@@ -109,3 +109,49 @@ test('a component whose root is a control keeps the control key, not the compone
     ['preferences__theme'],
   )
 })
+
+const anchored = (source: string): string =>
+  babel.transformSync(source, {
+    filename: `${process.cwd()}/src/routes/app/today.tsx`,
+    babelrc: false,
+    configFile: false,
+    parserOpts: { plugins: ['jsx', 'typescript'] },
+    plugins: [[injectTestIds, { sourceAnchors: true }]],
+  })?.code ?? ''
+
+test('no source anchors unless fabric asks for them', () => {
+  assert.ok(!stamp('<Button>{m.entry__save()}</Button>').includes('data-fabric-src'))
+})
+
+test('an anchored control carries its file and line', () => {
+  const code = anchored('<Button>{m.entry__save()}</Button>')
+  assert.match(code, /const (\w+) = "src\/routes\/app\/today\.tsx"/)
+  assert.match(code, /data-fabric-src=\{\w+ \+ ":1"\}/)
+})
+
+// The path is what makes anchors expensive, so it is written once per module and
+// every element in it concatenates only its own line.
+test('the path is interned once per module', () => {
+  const code = anchored(`
+    <div>
+      <Button>{m.a()}</Button>
+      <Button>{m.b()}</Button>
+    </div>
+  `)
+  assert.equal(code.match(/"src\/routes\/app\/today\.tsx"/g)?.length, 1)
+  assert.equal(code.match(/data-fabric-src=/g)?.length, 2)
+})
+
+// A hand-written testid answers what the element IS; it does not answer where its
+// JSX lives, which is the question the anchor exists for.
+test('a control with its own testid still gets an anchor', () => {
+  const code = anchored('<Button data-testid="row-42">{m.entry__save()}</Button>')
+  assert.match(code, /data-fabric-src=/)
+  assert.equal(code.match(/data-testid/g)?.length, 1)
+})
+
+test('a component root is anchored as well as named', () => {
+  const code = anchored('const EntryForm = () => { return <div><Text>hi</Text></div> }')
+  assert.match(code, /data-testid="entry-form"/)
+  assert.match(code, /data-fabric-src=/)
+})

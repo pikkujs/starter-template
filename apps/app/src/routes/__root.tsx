@@ -162,6 +162,15 @@ function RootDocument({ children }: { children: ReactNode }) {
     recordEvent('page_viewed', { path: routeId })
   }, [routeId])
 
+  const routerIsLoading = useRouterState({ select: (state) => state.isLoading })
+  useEffect(() => {
+    if (routerIsLoading) {
+      delete document.documentElement.dataset.appHydrated
+    } else {
+      document.documentElement.dataset.appHydrated = 'true'
+    }
+  }, [routerIsLoading])
+
   // Fabric console live-preview: postMessage injects a theme spec to override
   // the active theme without persisting. Accepts `theme` (a full spec) or the
   // legacy `palette`; null resets to the persisted theme.

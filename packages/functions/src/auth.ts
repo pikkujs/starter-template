@@ -1,6 +1,11 @@
 import { betterAuth } from 'better-auth'
+import { magicLink } from 'better-auth/plugins'
 import { ACTOR_SIGN_IN_OPT_IN_ENV, pikkuActor, pikkuBan, pikkuFabric } from '@pikku/better-auth'
 import { pikkuBetterAuth } from '#pikku/auth'
+import {
+  personaConfigs,
+  personaEnvironments,
+} from '#pikku/scenarios/pikku-personas.gen.js'
 
 /**
  * Better Auth configuration — email + password sign-in.
@@ -23,7 +28,14 @@ import { pikkuBetterAuth } from '#pikku/auth'
 // destructure whatever you need, e.g. `{ kysely, secrets, emailService }` to wire
 // sendResetPassword/verification emails. It runs lazily after all services exist,
 // so never re-construct a service here or reach for a dynamic import.
-export const auth = pikkuBetterAuth(async ({ kysely, secrets, variables, emailService }) => {
+export const auth = pikkuBetterAuth(async ({
+  kysely,
+  secrets,
+  variables,
+  emailService,
+  scopeService,
+  logger,
+}) => {
   // `.reveal()` at the sink, not earlier: getSecret hands back a nominal
   // SecretValue that no concretely-typed parameter accepts, so every disclosure
   // is one greppable call. Better Auth wants the raw string, and this is where
@@ -94,6 +106,43 @@ export const auth = pikkuBetterAuth(async ({ kysely, secrets, variables, emailSe
     // being one of them. Verifies against FABRIC_AUTH_PUBLIC_KEY; missing key
     // disables the endpoint.
     plugins: [
+      // Email sign-in links, and — with `disableSignUp: true` — the invite
+      // flow. THE FLAG IS THE WHOLE SEMANTIC:
+      //
+      //   disableSignUp: true  (shipped)  a link only ever signs in an email
+      //                                   that ALREADY has a user row, so
+      //                                   sending one IS the invitation:
+      //                                   create the user with no password
+      //                                   (admin:createUser takes none), grant
+      //                                   their roles, mail them a link. An
+      //                                   unknown address is refused with
+      //                                   `new_user_signup_disabled`.
+      //
+      //   disableSignUp: false            a link to an unknown address CREATES
+      //                                   the user and signs them in. That is
+      //                                   passwordless public sign-up, not an
+      //                                   invite — flip it only if anyone may
+      //                                   join, and reword the magic-link email
+      //                                   accordingly.
+      //
+      // Either way the click sets emailVerified, so acceptance doubles as
+      // verification. Seven days because an invite sits in an inbox until
+      // someone gets round to it; the plugin's own default is five minutes,
+      // which is right for a sign-in link and useless for an invitation.
+      magicLink({
+        disableSignUp: true,
+        expiresIn: 60 * 60 * 24 * 7,
+        storeToken: 'hashed',
+        sendMagicLink: async ({ email, url }) => {
+          await emailService.send({
+            to: email,
+            template: {
+              name: 'magic-link',
+              data: { email, signInUrl: url },
+            },
+          })
+        },
+      }),
       pikkuActor({
         secret: SCENARIO_ACTOR_SECRET,
         allowSignIn: ALLOW_ACTOR_SIGN_IN,
@@ -102,6 +151,12 @@ export const auth = pikkuBetterAuth(async ({ kysely, secrets, variables, emailSe
       pikkuFabric({
         publicKey: FABRIC_AUTH_PUBLIC_KEY,
         audience: FABRIC_STAGE_ID,
+        scopeService,
+        logger,
+        personas: {
+          personas: personaConfigs,
+          environments: personaEnvironments,
+        },
       }),
     ],
   })

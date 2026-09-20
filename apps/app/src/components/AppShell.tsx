@@ -13,7 +13,7 @@ import { TAB_BAR_FOOT } from './layout/mobileLayout'
  * STARTER-SHELL-DEFAULT — the marker for "this app never picked a silhouette", read
  * by the orchestrator's init-app-chrome (which pre-writes a real shell over it) and
  * by the build-complete gate (which refuses a build still wearing it). Every
- * `fabric scaffold --name shell` recipe replaces this file, so the marker's absence
+ * `fabric examples --name shell` recipe replaces this file, so the marker's absence
  * means a silhouette was chosen. Don't delete it to silence the gate — pick a shell.
  */
 export const AppShell: FC = () => {

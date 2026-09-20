@@ -15,9 +15,9 @@
     "@mantine/core": "^9.2.1",
     "@mantine/dates": "^9.2.1",
     "@mantine/hooks": "^9.2.1",
-    "@pikku/assistant-ui": "^0.12.12",
-    "@pikku/mantine": "^0.12.12",
-    "@pikku/react": "^0.12.9",
+    "@pikku/assistant-ui": "^0.12.13",
+    "@pikku/mantine": "^0.12.14",
+    "@pikku/react": "^0.12.12",
     "@project/functions-sdk": "workspace:*",
     "@project/mantine-themes": "workspace:*",
     "@tanstack/react-form": "^1.0.0",
@@ -38,11 +38,11 @@
     "@inlang/paraglide-js": "^2.20.0",
     "@tanstack/router-generator": "^1.132.0",
     "@types/babel__core": "^7.20.5",
-    "@types/node": "^22",
+    "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^4.5.2",
-    "typescript": "^5.9",
+    "typescript": "^6.0.3",
     "vite": "^7.0.0"
   }
 }

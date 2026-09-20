@@ -16,8 +16,13 @@ const JSX_FILE = /\.[jt]sx$/
  *
  * NOT `apply: 'serve'`: scenarios drive the built sandbox app as well as the dev server, so
  * a dev-only stamp would leave every deployed app unaddressable.
+ *
+ * The source anchors ride along on the same parse, but only when fabric asks
+ * for them — they put the app's file layout in view-source, and the panel that
+ * reads them is gated on the same flag.
  */
 export function testIds(): Plugin {
+  const sourceAnchors = process.env.FABRIC_CHANGES_PANEL === 'true'
   return {
     name: 'pikku:testids',
     enforce: 'pre',
@@ -31,7 +36,7 @@ export function testIds(): Plugin {
         configFile: false,
         sourceMaps: true,
         parserOpts: { plugins: ['jsx', 'typescript'] },
-        plugins: [injectTestIds],
+        plugins: [[injectTestIds, { sourceAnchors }]],
       })
       if (!result?.code) return null
       return { code: result.code, map: result.map }
