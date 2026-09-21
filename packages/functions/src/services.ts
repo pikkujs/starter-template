@@ -17,6 +17,7 @@ import { TypedVariablesService } from '../.pikku/variables/pikku-variables.gen.j
 import { CFWorkerSchemaService } from '@pikku/schema-cfworker'
 import type { Kysely } from 'kysely'
 import { GeneratedTemplateEmailService } from './lib/email-service.js'
+import { DeclaredFlagSource, declareFlagsTo } from './lib/declared-flag-source.js'
 import type { DB } from '#pikku/db/schema.gen.js'
 
 export const createSingletonServices = pikkuServices(async (config, existingServices) => {
@@ -52,6 +53,11 @@ export const createSingletonServices = pikkuServices(async (config, existingServ
   // wire services; wire your own `credentialService` here if you need one.
   const credentialService = existingServices?.credentialService
 
+  // The declarations live in this app and the injected store was built before
+  // it loaded, so this is where the two are introduced — see `declareFlagsTo`.
+  const featureFlags = existingServices?.featureFlags ?? new DeclaredFlagSource()
+  declareFlagsTo(featureFlags)
+
   const virtualUserRunStore =
     existingServices?.virtualUserRunStore ?? new KyselyVirtualUserRunStore(kysely as any)
   const virtualUserScheduleStore =
@@ -66,6 +72,7 @@ export const createSingletonServices = pikkuServices(async (config, existingServ
     logger,
     emailService,
     audit,
+    featureFlags,
     kysely,
     virtualUserRunStore,
     virtualUserScheduleStore,

@@ -1,5 +1,6 @@
 import { redirect } from '@tanstack/react-router'
 import { fetchSession, type GetSessionOutput } from './session'
+import { refreshSessionCookie, startSessionRefresh } from './session-refresh'
 import { isUnauthorized } from './rpc'
 
 export const APP_HOME = '/app'
@@ -21,12 +22,32 @@ export const APP_HOME = '/app'
  */
 export async function requireAuthentication(): Promise<{ session: GetSessionOutput }> {
   try {
-    return { session: await fetchSession() }
+    const session = await fetchSession()
+    /* Signed in: keep the cookie from ageing out under them. Idempotent. */
+    startSessionRefresh()
+    return { session }
   } catch (error) {
-    if (isUnauthorized(error)) {
-      throw redirect({ to: '/app/auth/login' })
+    if (!isUnauthorized(error)) throw error
+
+    /*
+     * Signed out, or merely stale? The API reads one short-lived cookie and has no
+     * database behind it, so a user whose `session_data` aged out looks exactly like
+     * one who never signed in — while their `session_token` is still good. Ask Better
+     * Auth to rebuild the cookie from the session it has on record, and if that
+     * produces one, the answer was stale rather than absent. Only a second refusal is
+     * a real sign-out. See session-refresh.ts.
+     */
+    if (await refreshSessionCookie()) {
+      try {
+        const session = await fetchSession()
+        startSessionRefresh()
+        return { session }
+      } catch (retryError) {
+        if (!isUnauthorized(retryError)) throw retryError
+      }
     }
-    throw error
+
+    throw redirect({ to: '/app/auth/login' })
   }
 }
 
