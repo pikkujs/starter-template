@@ -3,7 +3,8 @@ import { magicLink } from 'better-auth/plugins'
 import { ACTOR_SIGN_IN_OPT_IN_ENV, pikkuActor, pikkuBan, pikkuFabric } from '@pikku/better-auth'
 import { pikkuBetterAuth } from '#pikku/auth'
 import { sessionCookieCacheMaxAge } from './lib/session-cookie.js'
-import { personaConfigs, personaEnvironments } from '#pikku/scenarios/pikku-personas.gen.js'
+import { devSwitcherOn } from './lib/dev-switcher.js'
+import { personaConfigs, personaEnvironments, personaList } from '#pikku/scenarios/pikku-personas.gen.js'
 
 /**
  * Better Auth configuration — email + password sign-in.
@@ -27,7 +28,7 @@ import { personaConfigs, personaEnvironments } from '#pikku/scenarios/pikku-pers
 // sendResetPassword/verification emails. It runs lazily after all services exist,
 // so never re-construct a service here or reach for a dynamic import.
 export const auth = pikkuBetterAuth(
-  async ({ kysely, secrets, variables, emailService, scopeService, logger }) => {
+  async ({ kysely, secrets, variables, emailService, scopeService, featureFlags, logger }) => {
     // `.reveal()` at the sink, not earlier: getSecret hands back a nominal
     // SecretValue that no concretely-typed parameter accepts, so every disclosure
     // is one greppable call. Better Auth wants the raw string, and this is where
@@ -158,6 +159,10 @@ export const auth = pikkuBetterAuth(
         pikkuActor({
           secret: SCENARIO_ACTOR_SECRET,
           allowSignIn: ALLOW_ACTOR_SIGN_IN,
+          personaSignIn: {
+            personas: personaList,
+            allowed: () => devSwitcherOn(featureFlags, ALLOW_ACTOR_SIGN_IN),
+          },
         }),
         pikkuBan(),
         pikkuFabric({

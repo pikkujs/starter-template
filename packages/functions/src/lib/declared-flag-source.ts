@@ -1,27 +1,6 @@
-import { CachedFlagSource } from '@pikku/core/flag'
-import type { DeclaredFlag, FlagConfigSnapshot } from '@pikku/core/flag'
+import type { DeclaredFlag } from '@pikku/core/flag'
 import type { FeatureFlagSource } from '@pikku/core/services'
-import { FEATURE_FLAGS, FEATURE_FLAGS_FALLBACK } from '#pikku/scopes/pikku-flags.gen.js'
-
-/**
- * Serves the flags this app declares, with no store behind them.
- *
- * Every flag reads at its declared default until a real source is wired, which
- * is what a project wants before it has somewhere to keep overrides — the admin
- * screen still lists what exists, so a flag is discoverable the moment it is
- * declared rather than only once someone has built a store.
- *
- * REPLACE this with a store-backed source to make a flag switchable at runtime.
- */
-export class DeclaredFlagSource extends CachedFlagSource {
-  constructor() {
-    super({ declared: FEATURE_FLAGS })
-  }
-
-  protected async fetchSnapshot(): Promise<FlagConfigSnapshot> {
-    return FEATURE_FLAGS_FALLBACK
-  }
-}
+import { FEATURE_FLAGS } from '#pikku/scopes/pikku-flags.gen.js'
 
 /**
  * Tell a flag source which flags this app declares.

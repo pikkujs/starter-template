@@ -2,19 +2,20 @@ import type { FC } from 'react'
 import { Button, Menu, Text } from '@pikku/mantine/core'
 import { useNavigate } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
-import { devActors, signInAsActor } from '@/lib/auth'
+import { usePikkuQuery } from '@project/functions-sdk/pikku/api.gen'
+import { appSlug } from '@/app-meta'
+import { signInAsPersona } from '@/lib/auth'
 import { asI18n, m } from '@/i18n/messages'
 
-// Dev-only floating "Sign in as" switcher: one click signs in as any declared
-// scenario persona (no password), so you can view the app as each user kind.
-// Renders nothing in production or when the sandbox exposes no actors.
+/** Floating "Sign in as" persona switcher; renders nothing unless the devSwitcher flag is on. */
 export const DevActorSwitcher: FC = () => {
   const navigate = useNavigate()
-  const actors = devActors()
+  const list = usePikkuQuery('listDevActors', { app: appSlug })
   const signIn = useMutation({
-    mutationFn: (email: string) => signInAsActor(email),
+    mutationFn: (id: string) => signInAsPersona(id),
     onSuccess: () => navigate({ to: '/app' }),
   })
+  const actors = list.data?.actors ?? []
   if (actors.length === 0) return null
   return (
     <Menu position="top-end" withArrow>
@@ -30,12 +31,12 @@ export const DevActorSwitcher: FC = () => {
       <Menu.Dropdown>
         <Menu.Label>{m.dev_actors__label()}</Menu.Label>
         {actors.map((actor) => {
-          const busy = signIn.isPending && signIn.variables === actor.email
+          const busy = signIn.isPending && signIn.variables === actor.id
           return (
             <Menu.Item
-              key={actor.key}
+              key={actor.id}
               disabled={signIn.isPending}
-              onClick={() => signIn.mutate(actor.email)}
+              onClick={() => signIn.mutate(actor.id)}
             >
               <Text size="sm" fw={500}>
                 {asI18n(busy ? `${actor.name} …` : actor.name)}
