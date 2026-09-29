@@ -26,6 +26,9 @@
   "dev": {
     "db": true
   },
+  "deploy": {
+    "bundler": "esbuild"
+  },
   "content": {
     "uploadUrlPrefix": "/upload",
     "assetUrlPrefix": "/content",

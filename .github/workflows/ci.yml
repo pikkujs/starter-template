@@ -40,8 +40,10 @@ jobs:
         env:
           PORT: '3000'
           PIKKU_DATA_DIR: ${{ runner.temp }}/pikku-data
+          BETTER_AUTH_SECRET: ci-only-not-a-real-secret-0123456789
         run: |
           mkdir -p "$PIKKU_DATA_DIR"
+          ./root db migrate
           ./root > "$RUNNER_TEMP/standalone.log" 2>&1 &
           if ! curl -fsS --retry 30 --retry-delay 1 --retry-all-errors -o /dev/null http://localhost:3000/api/auth/get-session; then
             cat "$RUNNER_TEMP/standalone.log"
