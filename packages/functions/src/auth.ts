@@ -4,7 +4,11 @@ import { ACTOR_SIGN_IN_OPT_IN_ENV, pikkuActor, pikkuBan, pikkuFabric } from '@pi
 import { pikkuBetterAuth } from '#pikku/auth'
 import { sessionCookieCacheMaxAge } from './lib/session-cookie.js'
 import { devSwitcherOn } from './lib/dev-switcher.js'
-import { personaConfigs, personaEnvironments, personaList } from '#pikku/scenarios/pikku-personas.gen.js'
+import {
+  personaConfigs,
+  personaEnvironments,
+  personaList,
+} from '#pikku/scenarios/pikku-personas.gen.js'
 
 /**
  * Better Auth configuration — email + password sign-in.
