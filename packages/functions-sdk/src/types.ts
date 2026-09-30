@@ -27,6 +27,6 @@ export type RPCOutput<Name extends keyof FlattenedRPCMap> = FlattenedRPCMap[Name
 // The analytics registry, re-exported for the frontend. Same reach as the
 // `.pikku` import above, and type-only, so nothing backend ends up in the
 // browser bundle. This is what makes `analytics.event()` typed at the call site:
-// the event name and its payload come from the one zod union the ingest
-// validates against, so a typo is a build error rather than a forked series.
-export type { AnalyticsEvent } from '../../functions/src/scaffold/fabric/analytics/registry.js'
+// the event name and its payload come from the one zod union the generated
+// ingest validates against, so a typo is a build error rather than a forked series.
+export type { AnalyticsEvent } from '../../functions/src/scaffold/analytics/analytics.gen.js'

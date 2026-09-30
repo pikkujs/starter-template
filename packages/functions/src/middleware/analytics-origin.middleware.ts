@@ -2,9 +2,9 @@
 // is already bound to this app's SingletonServices, while the core one is typed
 // against CoreSingletonServices and will not accept a handler that reads app
 // services.
-import { pikkuMiddleware } from '#pikku/middleware'
+import { pikkuMiddleware, addHTTPMiddleware } from '#pikku/middleware'
 import { InvalidOriginError } from '@pikku/core/errors'
-import { allowedOrigins } from '../../../lib/cors-origins.js'
+import { allowedOrigins } from '../lib/cors-origins.js'
 
 /**
  * Normalise a URL to its origin — scheme + host + port, nothing else.
@@ -90,3 +90,7 @@ export const analyticsOriginMiddleware = pikkuMiddleware({
     await next()
   },
 })
+
+// The ingest itself is generated (`scaffold.analytics`), so it has no middleware slot
+// of its own; the origin lock is attached to its route here instead.
+addHTTPMiddleware('/analytics', [analyticsOriginMiddleware])
