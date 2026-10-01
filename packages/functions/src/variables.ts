@@ -2,7 +2,7 @@
  * Variables the deployer injects that no scaffold declares for it.
  *
  * `deploy.steps.ts` seeds one `<FRONTEND>_URL` per entry in
- * `pikkufabric.config.json`'s `frontends` at the stage's own scope, so this
+ * `pikku.config.json`'s `frontends` at the stage's own scope, so this
  * project's single `app` frontend gets `APP_URL`. Without a declaration the row
  * exists with nothing claiming it and the cascade dashboard reports it as
  * "set but not declared". Add one of these per frontend you add.

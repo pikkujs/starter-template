@@ -14,7 +14,7 @@
  * daily, not the one who administers it — FIRST.
  *
  * Replacing it means four edits in one pass, listed in AGENTS.md: this file,
- * `pikkufabric.config.json`, and the two shipped scenarios that name `actors.visitor`
+ * `pikku.config.json`, and the two shipped scenarios that name `actors.visitor`
  * literally. PKU677 requires a browser step's actor to be a literal `actors.<name>`,
  * so those two cannot pick one dynamically — rename the persona without editing them
  * and `actors.visitor` stops type-checking, which fails `pikku all`, and a failed type
