@@ -3,8 +3,6 @@ import { magicLink } from 'better-auth/plugins'
 import { ACTOR_SIGN_IN_OPT_IN_ENV, pikkuActor, pikkuBan, pikkuFabric } from '@pikku/better-auth'
 import { pikkuBetterAuth } from '#pikku/auth'
 import { sessionCookieCacheMaxAge } from './lib/session-cookie.js'
-import { devSwitcherOn } from './lib/dev-switcher.js'
-import { oauthProxyAuth } from './lib/oauth-proxy.js'
 import {
   personaConfigs,
   personaEnvironments,
@@ -65,11 +63,8 @@ export const auth = pikkuBetterAuth(
     // policy decision an operator may want to change per stage.
     const SESSION_COOKIE_CACHE_MAX_AGE = await sessionCookieCacheMaxAge(variables, logger)
 
-    const oauthProxy = await oauthProxyAuth({ variables, secrets, stageId: FABRIC_STAGE_ID })
-
     return betterAuth({
       secret: BETTER_AUTH_SECRET,
-      socialProviders: oauthProxy.socialProviders,
       database: { db: kysely, type: 'sqlite' },
       emailAndPassword: {
         enabled: true,
@@ -169,7 +164,7 @@ export const auth = pikkuBetterAuth(
           allowSignIn: ALLOW_ACTOR_SIGN_IN,
           personaSignIn: {
             personas: personaList,
-            allowed: () => devSwitcherOn(featureFlags, ALLOW_ACTOR_SIGN_IN),
+            featureFlags,
           },
         }),
         pikkuBan(),
@@ -183,7 +178,6 @@ export const auth = pikkuBetterAuth(
             environments: personaEnvironments,
           },
         }),
-        ...oauthProxy.plugins,
       ],
     })
   },

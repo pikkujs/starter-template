@@ -5,7 +5,9 @@ import { useMutation } from '@tanstack/react-query'
 import { m } from '@/i18n/messages'
 import { useLocale } from '@/i18n/config'
 import { AuthCard, type AuthFormValues } from '@/components/AuthCard'
-import { DevActorSwitcher } from '@/components/DevActorSwitcher'
+import { DevActorSwitcher } from '@pikku/mantine/dev'
+import { apiUrl } from '@/lib/env'
+import { appSlug } from '@/app-meta'
 import { INVALID_CREDENTIALS, signInWithGoogle, signInWithPassword } from '@/lib/auth'
 
 export const LoginPage: FC = () => {
@@ -55,7 +57,12 @@ export const LoginPage: FC = () => {
           </>
         }
       />
-      <DevActorSwitcher />
+      <DevActorSwitcher
+        apiUrl={apiUrl()}
+        app={appSlug}
+        onSignedIn={() => navigate({ to: '/app' })}
+        label={m.dev_actors__cta()}
+      />
     </>
   )
 }

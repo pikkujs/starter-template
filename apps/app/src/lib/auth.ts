@@ -79,18 +79,6 @@ export async function registerWithPassword(
   }
 }
 
-// Sign in as a declared persona, no password. The server refuses unless the
-// devSwitcher flag is on and the stage allows actor sign-in.
-export async function signInAsPersona(id: string): Promise<void> {
-  const res = await fetch(`${apiUrl()}/auth/sign-in/persona`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({ id }),
-  })
-  if (!res.ok) throw new Error('Unable to sign in as persona')
-}
-
 // Continue with Google. Better Auth redirects the browser to the provider and
 // back to `callbackURL` on success, so this never resolves on the happy path —
 // it throws only when the provider isn't configured / the request is rejected.
