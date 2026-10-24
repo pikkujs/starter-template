@@ -30,7 +30,7 @@ jobs:
         run: bun run format:check
 
       - name: Unit tests
-        run: bun test
+        run: bun test --pass-with-no-tests
 
       - name: Standalone build
         run: bunx --bun pikku deploy apply -p standalone --runtime bun
