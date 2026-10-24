@@ -15,10 +15,15 @@ const inputVariants = cva(
     defaultVariants: {
       layout: 'default',
     },
-  }
+  },
 )
 
-function Input({ className, type, layout, ...props }: WithLabels<React.ComponentProps<'input'> & VariantProps<typeof inputVariants>>) {
+function Input({
+  className,
+  type,
+  layout,
+  ...props
+}: WithLabels<React.ComponentProps<'input'> & VariantProps<typeof inputVariants>>) {
   return (
     <input
       type={type}
@@ -27,7 +32,7 @@ function Input({ className, type, layout, ...props }: WithLabels<React.Component
         inputVariants({ layout }),
         'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
         'aria-invalid:border-destructive aria-invalid:ring-destructive/20',
-        className
+        className,
       )}
       {...props}
     />

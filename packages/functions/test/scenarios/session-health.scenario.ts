@@ -17,10 +17,7 @@ import { pikkuScenario } from '#pikku/scenarios'
  * with your own role virtual users (admin/operator/…), this keeps working untouched —
  * never edit it just to name a different virtual user.
  */
-export const sessionHealthScenario = pikkuScenario<
-  void,
-  { email: string; userId: string }
->({
+export const sessionHealthScenario = pikkuScenario<void, { email: string; userId: string }>({
   title: 'Session health (scenario)',
   tags: ['scenario'],
   func: async ({ logger }, _input, { scenario, virtualUsers }) => {
@@ -31,7 +28,7 @@ export const sessionHealthScenario = pikkuScenario<
     const [virtualUser] = Object.values(virtualUsers ?? {})
     if (!virtualUser) {
       throw new Error(
-        'sessionHealthScenario needs at least one run virtual user — run via `pikku scenario run <environment>`'
+        'sessionHealthScenario needs at least one run virtual user — run via `pikku scenario run <environment>`',
       )
     }
     logger.debug('session-health scenario starting')
@@ -39,7 +36,7 @@ export const sessionHealthScenario = pikkuScenario<
       'a virtual user signs in and reads their session',
       'getSession',
       {},
-      { virtualUser }
+      { virtualUser },
     )
     return { email: session.email, userId: session.userId }
   },

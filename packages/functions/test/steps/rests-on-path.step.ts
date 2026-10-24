@@ -38,7 +38,7 @@ export const restsOnPath = pikkuScenarioStep({
     if (normalisePath(pathname) !== normalisePath(path)) {
       throw new Error(
         `Expected to be on ${path}, but the browser rests on ${pathname}. ` +
-          `A bounce to a login route means the session cookie did not carry, or the route guard rejected it.`
+          `A bounce to a login route means the session cookie did not carry, or the route guard rejected it.`,
       )
     }
     return { pathname }

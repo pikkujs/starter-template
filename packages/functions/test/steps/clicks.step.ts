@@ -47,7 +47,7 @@ export const clicks = pikkuScenarioStep({
           `${await addressesOnScreen(virtualUser)} ` +
           `If several matched, the key is on more than one control at once — scope it with ` +
           `\`within\` (a component's kebab-cased name) or \`containing\` (text in its row). ` +
-          `Underlying: ${underlying(error)}`
+          `Underlying: ${underlying(error)}`,
       )
     }
     return { testId: input.testId, pathname: currentPath(virtualUser) }

@@ -11,7 +11,8 @@ export const LoginPage: FC = () => {
   const navigate = useNavigate()
 
   const signIn = useMutation({
-    mutationFn: (values: AuthFormValues) => signInWithPassword(values.email, values.password, '/app'),
+    mutationFn: (values: AuthFormValues) =>
+      signInWithPassword(values.email, values.password, '/app'),
     onSuccess: () => navigate({ to: '/app' }),
   })
 

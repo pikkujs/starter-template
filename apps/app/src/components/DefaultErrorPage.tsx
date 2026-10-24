@@ -12,7 +12,9 @@ export function DefaultErrorPage({ error, reset }: ErrorComponentProps) {
       </div>
       <details className="text-sm text-muted-foreground">
         <summary>{m.error__details()}</summary>
-        <pre className="mt-2 overflow-auto rounded-md bg-muted p-3 text-xs whitespace-pre-wrap">{error instanceof Error ? error.message : String(error)}</pre>
+        <pre className="mt-2 overflow-auto rounded-md bg-muted p-3 text-xs whitespace-pre-wrap">
+          {error instanceof Error ? error.message : String(error)}
+        </pre>
       </details>
     </main>
   )

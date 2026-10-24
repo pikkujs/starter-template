@@ -1,5 +1,12 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import { createRootRoute, HeadContent, Outlet, Scripts, useRouter, type ErrorComponentProps } from '@tanstack/react-router'
+import {
+  createRootRoute,
+  HeadContent,
+  Outlet,
+  Scripts,
+  useRouter,
+  type ErrorComponentProps,
+} from '@tanstack/react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { PikkuProvider, createPikku } from '@pikku/react'
 import { PikkuFetch } from '@project/functions-sdk/pikku/pikku-fetch.gen'
@@ -36,7 +43,9 @@ const schemeScript = `try{var s=localStorage.getItem('${COLOR_SCHEME_KEY}');if(s
 function RootDocument({ children }: { children: ReactNode }) {
   const [locale, setLocaleRaw] = useState<string>(defaultLocale)
   const [queryClient] = useState(() => new QueryClient())
-  const [pikku] = useState(() => createPikku(PikkuFetch, PikkuRPC, { serverUrl: apiUrl(), credentials: 'include' }))
+  const [pikku] = useState(() =>
+    createPikku(PikkuFetch, PikkuRPC, { serverUrl: apiUrl(), credentials: 'include' }),
+  )
   const router = useRouter()
 
   useEffect(() => {
@@ -98,7 +107,9 @@ function RootDocument({ children }: { children: ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: schemeScript }} />
       </head>
       <body>
-        <PreferencesContext.Provider value={{ locale, themeId: 'default', setLocale, setThemeId: () => {} }}>
+        <PreferencesContext.Provider
+          value={{ locale, themeId: 'default', setLocale, setThemeId: () => {} }}
+        >
           <QueryClientProvider client={queryClient}>
             <PikkuProvider pikku={pikku}>{children}</PikkuProvider>
           </QueryClientProvider>

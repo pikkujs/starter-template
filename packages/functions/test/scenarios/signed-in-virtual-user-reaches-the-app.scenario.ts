@@ -29,13 +29,12 @@ export const signedInVirtualUserReachesTheAppScenario = pikkuScenario<
   { pathname: string; email: string }
 >({
   title: 'A signed-in user reaches the app',
-  description:
-    'The session cookie carries into the browser and the route guard admits it',
+  description: 'The session cookie carries into the browser and the route guard admits it',
   tags: ['scenario', 'auth', 'smoke'],
   func: async (_services, _data, { scenario, virtualUsers }) => {
     if (!virtualUsers?.visitor) {
       throw new Error(
-        'signedInVirtualUserReachesTheAppScenario needs the visitor virtual user — run via `pikku scenario run <environment>`'
+        'signedInVirtualUserReachesTheAppScenario needs the visitor virtual user — run via `pikku scenario run <environment>`',
       )
     }
 
@@ -45,7 +44,7 @@ export const signedInVirtualUserReachesTheAppScenario = pikkuScenario<
       { path: APP_HOME },
       {
         virtualUser: virtualUsers.visitor,
-      }
+      },
     )
     if (landed.status != null && landed.status >= 400) {
       throw new Error(`${APP_HOME} answered HTTP ${landed.status}`)
@@ -60,7 +59,7 @@ export const signedInVirtualUserReachesTheAppScenario = pikkuScenario<
       { path: APP_HOME },
       {
         virtualUser: virtualUsers.visitor,
-      }
+      },
     )
 
     // The same session over the API: the browser is admitted AND the server
@@ -73,7 +72,7 @@ export const signedInVirtualUserReachesTheAppScenario = pikkuScenario<
       {},
       {
         virtualUser: virtualUsers.visitor,
-      }
+      },
     )
 
     return { pathname: landed.pathname, email: session.email }

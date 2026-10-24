@@ -39,7 +39,7 @@ export const fills = pikkuScenarioStep({
           `${await addressesOnScreen(virtualUser)} ` +
           `A field is addressed by its i18n message key, so this fails when the key differs ` +
           `from the scenario's or the field has no label to derive one from. ` +
-          `Underlying: ${underlying(error)}`
+          `Underlying: ${underlying(error)}`,
       )
     }
     return { testId: input.testId, value: input.value }

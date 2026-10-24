@@ -1,10 +1,6 @@
 import { betterAuth } from 'better-auth'
 import { magicLink } from 'better-auth/plugins'
-import {
-  VIRTUAL_USER_SIGN_IN_OPT_IN_ENV,
-  pikkuVirtualUser,
-  pikkuBan,
-} from '@pikku/better-auth'
+import { VIRTUAL_USER_SIGN_IN_OPT_IN_ENV, pikkuVirtualUser, pikkuBan } from '@pikku/better-auth'
 import { pikkuBetterAuth } from '#pikku/auth'
 import { sessionCookieCacheMaxAge } from './lib/session-cookie.js'
 import { virtualUserList } from '#pikku/scenarios/pikku-virtual-users.gen.js'
@@ -31,37 +27,24 @@ import { virtualUserList } from '#pikku/scenarios/pikku-virtual-users.gen.js'
 // sendResetPassword/verification emails. It runs lazily after all services exist,
 // so never re-construct a service here or reach for a dynamic import.
 export const auth = pikkuBetterAuth(
-  async ({
-    kysely,
-    secrets,
-    variables,
-    emailService,
-    logger,
-  }) => {
+  async ({ kysely, secrets, variables, emailService, logger }) => {
     // `.reveal()` at the sink, not earlier: getSecret hands back a nominal
     // SecretValue that no concretely-typed parameter accepts, so every disclosure
     // is one greppable call. Better Auth wants the raw string, and this is where
     // it stops being a secret in the type system.
-    const BETTER_AUTH_SECRET = (
-      await secrets.getSecret('BETTER_AUTH_SECRET')
-    ).reveal()
+    const BETTER_AUTH_SECRET = (await secrets.getSecret('BETTER_AUTH_SECRET')).reveal()
     // Optional: the public half of the virtual user key pair. Unset refuses sign-in
     // from outside the app; the gate below still decides whether the route is open.
     const VIRTUAL_USER_VERIFY_KEY = await variables.get('VIRTUAL_USER_VERIFY_KEY')
     // The scenario opt-in, read through `variables` rather than left to
     // process.env: the host pushes it as a binding on every non-production stage,
     // and a Worker has no populated environment for the plugin to find it in.
-    const ALLOW_VIRTUAL_USER_SIGN_IN = await variables.get(
-      VIRTUAL_USER_SIGN_IN_OPT_IN_ENV
-    )
+    const ALLOW_VIRTUAL_USER_SIGN_IN = await variables.get(VIRTUAL_USER_SIGN_IN_OPT_IN_ENV)
 
     // How long the signed session cookie is trusted, in seconds. Declared (with its
     // default and the reasoning) in lib/session-cookie.ts, because the number is a
     // policy decision an operator may want to change per stage.
-    const SESSION_COOKIE_CACHE_MAX_AGE = await sessionCookieCacheMaxAge(
-      variables,
-      logger
-    )
+    const SESSION_COOKIE_CACHE_MAX_AGE = await sessionCookieCacheMaxAge(variables, logger)
 
     return betterAuth({
       secret: BETTER_AUTH_SECRET,
@@ -165,5 +148,5 @@ export const auth = pikkuBetterAuth(
         pikkuBan(),
       ],
     })
-  }
+  },
 )

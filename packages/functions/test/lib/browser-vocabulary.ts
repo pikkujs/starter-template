@@ -65,15 +65,13 @@ export const selectorFor = ({ testId, within, containing }: Control) => ({
  * slightly differently from the scenario, and a control the plugin left unstamped because
  * it has neither a message key nor a `name` — and the second is invisible without this.
  */
-export async function addressesOnScreen(
-  virtualUser: VirtualUserSession
-): Promise<string> {
+export async function addressesOnScreen(virtualUser: VirtualUserSession): Promise<string> {
   try {
     const ids: string[] = await virtualUser.page.evaluate(() =>
       Array.from(document.querySelectorAll('[data-testid]'))
         .filter((node) => (node as HTMLElement).offsetParent !== null)
         .map((node) => node.getAttribute('data-testid') ?? '')
-        .filter(Boolean)
+        .filter(Boolean),
     )
     const unique = [...new Set(ids)].slice(0, 25)
     return unique.length
@@ -89,10 +87,7 @@ export const underlying = (error: unknown) =>
   error instanceof Error ? error.message.split('\n')[0] : String(error)
 
 /** Where the browser currently rests, or the fallback when it never navigated. */
-export function currentPath(
-  virtualUser: VirtualUserSession,
-  fallback = ''
-): string {
+export function currentPath(virtualUser: VirtualUserSession, fallback = ''): string {
   try {
     return new URL(virtualUser.page.url()).pathname
   } catch {
@@ -113,7 +108,7 @@ export const HYDRATED_SELECTOR = 'html[data-app-hydrated="true"]'
  */
 export async function readyToBeUsed(
   virtualUser: VirtualUserSession,
-  timeout = 10_000
+  timeout = 10_000,
 ): Promise<void> {
   try {
     await virtualUser.page.waitForSelector(HYDRATED_SELECTOR, {
@@ -125,7 +120,7 @@ export async function readyToBeUsed(
       `The app never declared itself interactive (\`${HYDRATED_SELECTOR}\` was still absent ` +
         `after ${timeout}ms), so anything typed or pressed here would be thrown away by the ` +
         `first render. Check that apps/app/src/routes/__root.tsx still publishes it. ` +
-        `The browser rests on ${currentPath(virtualUser)} with: ${await addressesOnScreen(virtualUser)}`
+        `The browser rests on ${currentPath(virtualUser)} with: ${await addressesOnScreen(virtualUser)}`,
     )
   }
 }

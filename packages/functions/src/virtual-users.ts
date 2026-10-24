@@ -31,8 +31,7 @@ defineVirtualUsers({
   visitor: {
     name: 'Visitor',
     jobTitle: 'Synthetic health-check user',
-    personality:
-      'Signs in and checks their own session — proves auth end to end',
+    personality: 'Signs in and checks their own session — proves auth end to end',
     account: {},
   },
 })

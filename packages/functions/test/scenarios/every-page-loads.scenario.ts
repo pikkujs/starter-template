@@ -18,27 +18,24 @@
  */
 import { pikkuScenario } from '#pikku/scenarios'
 
-export const everyPageLoadsScenario = pikkuScenario<void, { routes: string[] }>(
-  {
-    title: 'Every page loads cleanly when signed in',
-    description:
-      'The baseline reliability gate — no page errors for a signed-in user',
-    tags: ['scenario', 'pages', 'smoke'],
-    func: async (_services, _data, { scenario, virtualUsers }) => {
-      if (!virtualUsers?.visitor) {
-        throw new Error(
-          'everyPageLoadsScenario needs the visitor virtual user — run via `pikku scenario run <environment>`'
-        )
-      }
-      // `repoRoot` is passed even though the schema defaults it: a step's input
-      // type is the schema's OUTPUT, so a defaulted field is still required here.
-      const swept = await scenario.then(
-        'every page loads without errors',
-        'sweepsAllPages',
-        { repoRoot: '.' },
-        { virtualUser: virtualUsers.visitor }
+export const everyPageLoadsScenario = pikkuScenario<void, { routes: string[] }>({
+  title: 'Every page loads cleanly when signed in',
+  description: 'The baseline reliability gate — no page errors for a signed-in user',
+  tags: ['scenario', 'pages', 'smoke'],
+  func: async (_services, _data, { scenario, virtualUsers }) => {
+    if (!virtualUsers?.visitor) {
+      throw new Error(
+        'everyPageLoadsScenario needs the visitor virtual user — run via `pikku scenario run <environment>`',
       )
-      return { routes: swept.routes }
-    },
-  }
-)
+    }
+    // `repoRoot` is passed even though the schema defaults it: a step's input
+    // type is the schema's OUTPUT, so a defaulted field is still required here.
+    const swept = await scenario.then(
+      'every page loads without errors',
+      'sweepsAllPages',
+      { repoRoot: '.' },
+      { virtualUser: virtualUsers.visitor },
+    )
+    return { routes: swept.routes }
+  },
+})
