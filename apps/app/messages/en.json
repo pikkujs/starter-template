@@ -20,7 +20,7 @@
   "common__name_placeholder": "Ada Lovelace",
   "validation__required": "Required.",
   "validation__email_invalid": "Enter a valid email address.",
-  "app__name": "Fabric Starter",
+  "app__name": "Cloud Starter",
   "auth__or": "or",
   "auth__continue_with_google": "Continue with Google",
   "auth__google_error": "Unable to continue with Google right now.",
@@ -83,6 +83,5 @@
   "preferences__theme": "Theme",
   "preferences__color_scheme": "Color scheme",
   "preferences__dark_mode": "Dark mode",
-  "preferences__light_mode": "Light mode",
-  "dev_actors__cta": "Sign in as…"
+  "preferences__light_mode": "Light mode"
 }

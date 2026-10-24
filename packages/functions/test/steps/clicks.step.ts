@@ -21,8 +21,8 @@ export const ClicksOutput = z.object({
 /**
  * Click a control.
  *
- * `locate` filters to what is VISIBLE, which matters more than it sounds: Mantine's
- * responsive props (`hiddenFrom`/`visibleFrom`) are `display: none` rather than conditional
+ * `locate` filters to what is VISIBLE, which matters more than it sounds: responsive
+ * utilities (`hidden`/`sm:hidden`) are `display: none` rather than conditional
  * rendering, so a control that appears once on screen can match twice in the DOM. An
  * unfiltered match would be a strict-mode violation, and taking the first would wait out a
  * timeout on the copy that is switched off.
@@ -37,19 +37,19 @@ export const clicks = pikkuScenarioStep({
   input: ClicksInput,
   output: ClicksOutput,
   browser: async (_services, input, { browser }) => {
-    const actor = session(browser)
-    await readyToBeUsed(actor)
+    const virtualUser = session(browser)
+    await readyToBeUsed(virtualUser)
     try {
-      await actor.locate(selectorFor(input)).click()
+      await virtualUser.locate(selectorFor(input)).click()
     } catch (error) {
       throw new Error(
         `Could not click \`${input.testId}\`${input.within ? ` within \`${input.within}\`` : ''}. ` +
-          `${await addressesOnScreen(actor)} ` +
+          `${await addressesOnScreen(virtualUser)} ` +
           `If several matched, the key is on more than one control at once — scope it with ` +
           `\`within\` (a component's kebab-cased name) or \`containing\` (text in its row). ` +
-          `Underlying: ${underlying(error)}`,
+          `Underlying: ${underlying(error)}`
       )
     }
-    return { testId: input.testId, pathname: currentPath(actor) }
+    return { testId: input.testId, pathname: currentPath(virtualUser) }
   },
 })

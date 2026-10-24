@@ -1,16 +1,17 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import { paraglideVitePlugin } from '@inlang/paraglide-js'
 import { fileURLToPath, URL } from 'node:url'
 import { crossSiteSession } from './dev/cross-site-session.plugin'
 import { testIds } from './build/testids.plugin'
 
-const base = process.env.FABRIC_FRONTEND_BASE || '/'
+const base = process.env.PIKKUSTUDIO_FRONTEND_BASE || '/'
 
 // Plain TanStack Start config (Node target) — used for local sandbox dev. This
 // template is deploy-provider agnostic: it ships NO @cloudflare/vite-plugin. At
-// deploy, fabric CI injects the CF adapter (vite.config.cf.ts merges cloudflare()
+// deploy, cloud CI injects the CF adapter (vite.config.cf.ts merges cloudflare()
 // on top of this config) to emit the CF Workers SSR bundle. Do not add cloudflare
 // here — that would double-apply it and couple the template to a provider.
 export default defineConfig({
@@ -19,6 +20,7 @@ export default defineConfig({
     // Compile messages/*.json → src/paraglide so `m` resolves, with HMR
     // on message edits. Must run first.
     paraglideVitePlugin({ project: './project.inlang', outdir: './src/paraglide' }),
+    tailwindcss(),
     tanstackStart(),
     // Stamps the `data-testid`s browser scenarios address controls by, derived from each
     // control's i18n message key. A standalone pre-transform rather than a `babel` option

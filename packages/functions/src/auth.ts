@@ -1,13 +1,13 @@
 import { betterAuth } from 'better-auth'
 import { magicLink } from 'better-auth/plugins'
-import { ACTOR_SIGN_IN_OPT_IN_ENV, pikkuActor, pikkuBan, pikkuFabric } from '@pikku/better-auth'
+import {
+  VIRTUAL_USER_SIGN_IN_OPT_IN_ENV,
+  pikkuVirtualUser,
+  pikkuBan,
+} from '@pikku/better-auth'
 import { pikkuBetterAuth } from '#pikku/auth'
 import { sessionCookieCacheMaxAge } from './lib/session-cookie.js'
-import {
-  personaConfigs,
-  personaEnvironments,
-  personaList,
-} from '#pikku/scenarios/pikku-personas.gen.js'
+import { virtualUserList } from '#pikku/scenarios/pikku-virtual-users.gen.js'
 
 /**
  * Better Auth configuration — email + password sign-in.
@@ -31,37 +31,37 @@ import {
 // sendResetPassword/verification emails. It runs lazily after all services exist,
 // so never re-construct a service here or reach for a dynamic import.
 export const auth = pikkuBetterAuth(
-  async ({ kysely, secrets, variables, emailService, scopeService, featureFlags, logger }) => {
+  async ({
+    kysely,
+    secrets,
+    variables,
+    emailService,
+    logger,
+  }) => {
     // `.reveal()` at the sink, not earlier: getSecret hands back a nominal
     // SecretValue that no concretely-typed parameter accepts, so every disclosure
     // is one greppable call. Better Auth wants the raw string, and this is where
     // it stops being a secret in the type system.
-    const BETTER_AUTH_SECRET = (await secrets.getSecret('BETTER_AUTH_SECRET')).reveal()
-    // Optional: the secret alone never opens /api/auth/sign-in/actor. The plugin
-    // gates on `pikku dev`, or on the opt-in below for a stage meant to run
-    // scenarios, and warns when a secret is set against a shut gate.
-    const SCENARIO_ACTOR_SECRET = await secrets
-      .getSecret('SCENARIO_ACTOR_SECRET')
-      .then((value) => value?.reveal())
-      .catch(() => undefined)
-    // Fabric operator admin: the RSA public key the control plane's token is
-    // verified against. The Fabric deployer pushes FABRIC_AUTH_PUBLIC_KEY onto
-    // every stage; locally it's simply absent, which disables /sign-in/fabric.
-    // Asymmetric — the app verifies, it can never forge an operator login.
-    const FABRIC_AUTH_PUBLIC_KEY = await variables.get('FABRIC_AUTH_PUBLIC_KEY')
-    // This stage's own identity. Every stage verifies the same public key, so
-    // without it an operator token is admin on all of them at once; a token
-    // carrying `aud` is refused unless this matches. Fabric binds it on deploy.
-    const FABRIC_STAGE_ID = await variables.get('FABRIC_STAGE_ID')
+    const BETTER_AUTH_SECRET = (
+      await secrets.getSecret('BETTER_AUTH_SECRET')
+    ).reveal()
+    // Optional: the public half of the virtual user key pair. Unset refuses sign-in
+    // from outside the app; the gate below still decides whether the route is open.
+    const VIRTUAL_USER_VERIFY_KEY = await variables.get('VIRTUAL_USER_VERIFY_KEY')
     // The scenario opt-in, read through `variables` rather than left to
-    // process.env: Fabric pushes it as a binding on every non-production stage,
+    // process.env: the host pushes it as a binding on every non-production stage,
     // and a Worker has no populated environment for the plugin to find it in.
-    const ALLOW_ACTOR_SIGN_IN = await variables.get(ACTOR_SIGN_IN_OPT_IN_ENV)
+    const ALLOW_VIRTUAL_USER_SIGN_IN = await variables.get(
+      VIRTUAL_USER_SIGN_IN_OPT_IN_ENV
+    )
 
     // How long the signed session cookie is trusted, in seconds. Declared (with its
     // default and the reasoning) in lib/session-cookie.ts, because the number is a
     // policy decision an operator may want to change per stage.
-    const SESSION_COOKIE_CACHE_MAX_AGE = await sessionCookieCacheMaxAge(variables, logger)
+    const SESSION_COOKIE_CACHE_MAX_AGE = await sessionCookieCacheMaxAge(
+      variables,
+      logger
+    )
 
     return betterAuth({
       secret: BETTER_AUTH_SECRET,
@@ -100,11 +100,13 @@ export const auth = pikkuBetterAuth(
       // apps/app/src/lib/session-refresh.ts re-mints the cookie while the app is
       // open and heals an expired one, so someone using the app is never signed
       // out, and each refresh is the moment a ban lands.
-      session: { cookieCache: { enabled: true, maxAge: SESSION_COOKIE_CACHE_MAX_AGE } },
+      session: {
+        cookieCache: { enabled: true, maxAge: SESSION_COOKIE_CACHE_MAX_AGE },
+      },
       advanced: { database: { generateId: 'uuid' } },
-      // Scenario actors: synthetic users (user.actor = true, see
+      // Scenario virtual users: synthetic users (user.virtualUser = true, see
       // db/sqlite/0001-better-auth.sql) signed in by pikkuScenario via
-      // POST /api/auth/sign-in/actor { email, secret }. Never signs in real users.
+      // POST /api/auth/sign-in/virtual-user { email, secret }. Never signs in real users.
       //
       // ban(): the enforcement half of better-auth's admin() plugin — the
       // banned/banReason/banExpires columns (see db/sqlite/0001-better-auth.sql) and the
@@ -115,12 +117,6 @@ export const auth = pikkuBetterAuth(
       // tab calls — administering an app is ordinary application behaviour and
       // must not depend on better-auth's `role` column.
       //
-      // fabric(): exposes /api/auth/sign-in/fabric — the Fabric control plane
-      // mints a short-lived RS256 token and signs in as a synthetic `fabric: true`
-      // operator (db/sqlite/0001-better-auth.sql) granted the umbrella `admin` scope, so
-      // the console Users tab can list/impersonate real users without the operator
-      // being one of them. Verifies against FABRIC_AUTH_PUBLIC_KEY; missing key
-      // disables the endpoint.
       plugins: [
         // Email sign-in links, and — with `disableSignUp: true` — the invite
         // flow. THE FLAG IS THE WHOLE SEMANTIC:
@@ -159,26 +155,15 @@ export const auth = pikkuBetterAuth(
             })
           },
         }),
-        pikkuActor({
-          secret: SCENARIO_ACTOR_SECRET,
-          allowSignIn: ALLOW_ACTOR_SIGN_IN,
-          personaSignIn: {
-            personas: personaList,
-            featureFlags,
+        pikkuVirtualUser({
+          verifyKey: VIRTUAL_USER_VERIFY_KEY,
+          allowSignIn: ALLOW_VIRTUAL_USER_SIGN_IN,
+          virtualUserSignIn: {
+            virtualUsers: virtualUserList,
           },
         }),
         pikkuBan(),
-        pikkuFabric({
-          publicKey: FABRIC_AUTH_PUBLIC_KEY,
-          audience: FABRIC_STAGE_ID,
-          scopeService,
-          logger,
-          personas: {
-            personas: personaConfigs,
-            environments: personaEnvironments,
-          },
-        }),
       ],
     })
-  },
+  }
 )
