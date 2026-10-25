@@ -3,6 +3,9 @@
 @import 'tw-animate-css';
 @import './domain.css';
 
+/* Workspace packages are symlinked into node_modules, which Tailwind does not scan. */
+@source '../../../../packages/blocks/src';
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

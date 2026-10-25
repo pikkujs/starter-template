@@ -1,5 +1,5 @@
 import type { ErrorComponentProps } from '@tanstack/react-router'
-import { Button } from '@/components/ui/button'
+import { Button } from '@project/blocks/ui/button'
 import { m } from '@/i18n/messages'
 
 export function DefaultErrorPage({ error, reset }: ErrorComponentProps) {

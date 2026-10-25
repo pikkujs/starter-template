@@ -1,0 +1,26 @@
+{
+  "plugins": ["react", "typescript"],
+  "jsPlugins": ["@shadcn/lint"],
+  "rules": {
+    "react/jsx-no-literals": [
+      "error",
+      {
+        "noStrings": true,
+        "ignoreProps": true,
+        "allowedStrings": ["·", "—", "…"]
+      }
+    ],
+    "shadcn/no-restyle": ["error", { "allow": ["layout"] }],
+    "shadcn/no-raw-colors": "error",
+    "shadcn/no-arbitrary-values": "error",
+    "shadcn/no-inline-styles": "error",
+    "shadcn/no-unknown-classes": "error",
+    "shadcn/require-static-classes": "error"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.stories.tsx"],
+      "rules": { "react/jsx-no-literals": "off", "shadcn/no-restyle": "off" }
+    }
+  ]
+}

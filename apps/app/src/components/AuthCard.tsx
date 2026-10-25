@@ -1,5 +1,5 @@
 import type { FC, FormEvent, ReactNode } from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@project/blocks/ui/button'
 import {
   Card,
   CardContent,
@@ -7,9 +7,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+} from '@project/blocks/ui/card'
+import { Input } from '@project/blocks/ui/input'
+import { Label } from '@project/blocks/ui/label'
 import { m } from '@/i18n/messages'
 import type { I18nString } from '@pikku/react'
 

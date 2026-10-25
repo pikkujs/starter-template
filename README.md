@@ -8,10 +8,10 @@ generated `theme.css`). `bunfig.toml` pins bun's hoisted linker; see AGENTS.md f
 
 ```bash
 # edit packages/theme/themes/<id>.json and active.json; theme.css is generated from them
-npx shadcn@latest add dialog                       # from apps/app; copies into src/components/ui
+npx shadcn@latest add dialog                       # from apps/app; lands in packages/blocks/src/ui
 bun run lint                                        # @shadcn/lint + react/jsx-no-literals
 ```
 
-UI is `src/components/ui/*` (shadcn, yours to edit) styled by tokens in `theme.css`. Colours the theme has no
+UI is `packages/blocks/src/ui/*` (shadcn, `@project/blocks`, yours to edit) styled by tokens in `theme.css`. Colours the theme has no
 field for go in `src/styles/domain.css`. Components with stories are visible in the studio Library view;
-bespoke app components belong in `packages/components`.
+bespoke app components stay in `apps/app/src/components`.

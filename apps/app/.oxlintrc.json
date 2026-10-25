@@ -31,7 +31,7 @@
       }
     },
     {
-      "files": ["src/components/ui/**/*.stories.tsx", "**/*.stories.tsx"],
+      "files": ["**/*.stories.tsx"],
       "rules": {
         "react/jsx-no-literals": "off",
         "shadcn/no-restyle": "off"

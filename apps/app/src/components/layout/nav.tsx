@@ -5,7 +5,7 @@ import { HomeIcon } from 'lucide-react'
 import type { FileRouteTypes } from '@/routeTree.gen'
 import { m } from '@/i18n/messages'
 import { useLocale } from '@/i18n/config'
-import { cn } from '@/lib/utils'
+import { cn } from '@project/blocks/lib/utils'
 
 export type AppPath = FileRouteTypes['to']
 
