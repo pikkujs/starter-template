@@ -62,7 +62,7 @@ The runner opens one BrowserContext per virtual user and signs each in at
   (`browser.context.clearCookies()`), because signing up while another user's
   cookie is attached is refused outright.
 - One virtual user exists per virtual user declared with `defineVirtualUsers` (see
-  `src/virtual-users.ts`); pikku derives each address from the virtual user id. Sign-in
+  `src/definitions/virtual-users.ts`); pikku derives each address from the virtual user id. Sign-in
   outside the app presents a signed statement checked against the public
   `VIRTUAL_USER_VERIFY_KEY`; leaving that unset is what keeps the door shut in production.
 
