@@ -4,8 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import { paraglideVitePlugin } from '@inlang/paraglide-js'
 import { fileURLToPath, URL } from 'node:url'
-import { crossSiteSession } from './dev/cross-site-session.plugin'
-import { testIds } from './build/testids.plugin'
+import { pikkuVite } from '@pikku/vite'
 
 const base = process.env.PIKKUSTUDIO_FRONTEND_BASE || '/'
 
@@ -22,16 +21,11 @@ export default defineConfig({
     paraglideVitePlugin({ project: './project.inlang', outdir: './src/paraglide' }),
     tailwindcss(),
     tanstackStart(),
-    // Stamps the `data-testid`s browser scenarios address controls by, derived from each
-    // control's i18n message key. A standalone pre-transform rather than a `babel` option
-    // on react(): @vitejs/plugin-react@6 (rolldown/oxc) drops that option, and this must
-    // not quietly stop running on the bump. NOT dev-only — scenarios drive the built app.
-    testIds(),
+    // Reads pikku.config.json: the data-testid stamping browser scenarios address
+    // controls by, and (dev only) the cross-site session relay Better Auth needs
+    // in the console's preview iframe.
+    pikkuVite(),
     react(),
-    // Dev-only (apply: 'serve'), and nothing in src/ imports it: keeps the app
-    // signed in inside the console's cross-site preview iframe on browsers that
-    // drop third-party cookies. See dev/cross-site-session.plugin.ts.
-    crossSiteSession(),
   ],
   resolve: {
     alias: {
