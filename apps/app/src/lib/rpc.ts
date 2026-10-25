@@ -1,5 +1,5 @@
-import { PikkuFetch } from '@project/functions-sdk/pikku/pikku-fetch.gen'
-import { PikkuRPC } from '@project/functions-sdk/pikku/pikku-rpc.gen'
+import { PikkuFetch } from '@/pikku/pikku-fetch.gen'
+import { PikkuRPC } from '@/pikku/pikku-rpc.gen'
 import { createIsomorphicFn } from '@tanstack/react-start'
 import { getRequestHeader, getRequestUrl } from '@tanstack/react-start/server'
 import { apiUrl } from './env'

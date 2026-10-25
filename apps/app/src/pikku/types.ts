@@ -9,12 +9,12 @@
 // hand-declare `interface Resource { … }` — a second source of truth that
 // silently drifts from the function's schema.
 //
-//   import type { RPCOutput } from '@project/functions-sdk/types'
+//   import type { RPCOutput } from '@/pikku/types'
 //   type Resource = RPCOutput<'listResources'>['resources'][number]
 //
 // The field types then flow from the backend function's `output:` schema, and a
 // schema change breaks the component at compile time instead of at runtime.
-import type { FlattenedRPCMap } from '../../functions/.pikku/rpc/pikku-rpc-wirings-map.gen.d.js'
+import type { FlattenedRPCMap } from '../../../../packages/functions/.pikku/rpc/pikku-rpc-wirings-map.gen.d.js'
 
 export type { FlattenedRPCMap }
 
@@ -29,4 +29,4 @@ export type RPCOutput<Name extends keyof FlattenedRPCMap> = FlattenedRPCMap[Name
 // browser bundle. This is what makes `analytics.event()` typed at the call site:
 // the event name and its payload come from the one zod union the generated
 // ingest validates against, so a typo is a build error rather than a forked series.
-export type { AnalyticsEvent } from '../../functions/src/scaffold/analytics/analytics.gen.js'
+export type { AnalyticsEvent } from '../../../../packages/functions/src/scaffold/analytics/analytics.gen.js'
