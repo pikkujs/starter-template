@@ -40,7 +40,7 @@ shows in the desktop sidebar (`NavList`) and in the phone's bottom bar (`MobileT
 
 ## Virtual users
 
-`packages/functions/src/virtual-users.ts` declares the people. Replace the shipped `visitor` placeholder in four edits:
+`packages/functions/src/definitions/virtual-users.ts` declares the people. Replace the shipped `visitor` placeholder in four edits:
 the `defineVirtualUsers` call, `pikku.config.json` (`scenarios` virtual users), and the two shipped scenarios
 (`test/scenarios/every-page-loads`, `signed-in-virtual-user-reaches-the-app`), which name `virtualUsers.visitor` literally
 (`sed -i '' 's/virtual-users.visitor/virtual-users.<id>/g' packages/functions/test/scenarios/*.ts`).
