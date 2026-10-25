@@ -20,8 +20,20 @@ vendor/
 .pikku-runtime
 __cloud_scaffold.vite.config.mjs
 
-# Local dev secrets — generated on first `bun run dev`
+# Local dev secrets — generated on first dev run; .env.example stays tracked
 .env
+.env.*
+!.env.example
+
+# Framework and tool caches/output — regenerated on every dev or build run
+.tanstack
+.output
+.nitro
+.studio-addons
+*.tsbuildinfo
+coverage
+*.log
+.DS_Store
 
 # Regenerated on every codegen/dev boot — a committed copy shadows the fresh one
 .pikku
