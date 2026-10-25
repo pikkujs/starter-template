@@ -3,8 +3,7 @@ import type { I18nString } from '@pikku/react'
 import { Link, useRouterState } from '@tanstack/react-router'
 import { HomeIcon } from 'lucide-react'
 import type { FileRouteTypes } from '@/routeTree.gen'
-import { m } from '@/i18n/messages'
-import { useLocale } from '@/i18n/config'
+import { m, useLocale } from '@/i18n/messages'
 import { cn } from '@project/blocks/lib/utils'
 
 export type AppPath = FileRouteTypes['to']
