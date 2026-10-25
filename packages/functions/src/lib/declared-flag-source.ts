@@ -1,4 +1,4 @@
-import type { DeclaredFlag } from '@pikku/core/flag'
+import type { DeclaredFlag } from '#pikku/scopes'
 import type { FeatureFlagSource } from '@pikku/core/services'
 import { declaredFeatureFlags } from '#pikku/scopes/pikku-flags-manifest.gen.js'
 
