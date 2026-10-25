@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview --port 7104",
     "lint": "oxlint",
+    "i18n:compile": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide",
     "tsc": "tsc --noEmit --incremental --tsBuildInfoFile node_modules/.cache/app-tsc.tsbuildinfo"
   },
   "dependencies": {

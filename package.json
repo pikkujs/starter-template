@@ -56,6 +56,7 @@
     "@pikku/knowledge": "0.12.21",
     "@pikku/kysely": "0.13.40",
     "@pikku/ws": "0.12.11",
+    "zod": "^4.6.7",
     "typescript": "^6.0.3"
   },
   "packageManager": "bun@1.4.1"

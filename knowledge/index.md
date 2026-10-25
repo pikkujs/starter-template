@@ -93,3 +93,7 @@ and the rules live in the code.
 Keep notes concise and current. Do not store secrets or credentials here.
 
 Spec: https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf
+
+## Sections
+
+- [Entities](entities/index.md)
