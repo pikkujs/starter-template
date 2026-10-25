@@ -1,11 +1,18 @@
 {
   "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
-  "plugins": ["typescript", "react", "react-hooks"],
+  "plugins": [
+    "typescript",
+    "react",
+    "react-hooks"
+  ],
   "env": {
     "browser": true,
     "es2022": true
   },
-  "rules": {},
+  "rules": {
+    "typescript/no-floating-promises": "error",
+    "typescript/no-misused-promises": "error"
+  },
   "ignorePatterns": [
     "**/*.gen.ts",
     "**/*.gen.tsx",
@@ -13,5 +20,8 @@
     "**/.deploy/**",
     "**/node_modules/**",
     "**/next-env.d.ts"
-  ]
+  ],
+  "options": {
+    "typeAware": true
+  }
 }
