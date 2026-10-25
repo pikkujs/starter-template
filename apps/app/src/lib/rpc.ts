@@ -1,9 +1,7 @@
-import { PikkuFetch } from '@/pikku/pikku-fetch.gen'
 import { PikkuRPC } from '@/pikku/pikku-rpc.gen'
 import { createIsomorphicFn } from '@tanstack/react-start'
 import { getRequestHeader, getRequestUrl } from '@tanstack/react-start/server'
 import { apiUrl } from './env'
-import { dispatchFetch } from './cloud-dispatch'
 
 /**
  * A PikkuRPC client for code that runs OUTSIDE React — route `beforeLoad` gates, mostly.
@@ -28,9 +26,6 @@ const resolveRpc = createIsomorphicFn()
   })
   .server((): PikkuRPC => {
     const perRequest = new PikkuRPC()
-    if (dispatchFetch) {
-      perRequest.setPikkuFetch(new PikkuFetch({ fetch: dispatchFetch }))
-    }
     perRequest.setServerUrl(
       import.meta.env.VITE_API_URL ?? new URL('/api', getRequestUrl()).toString(),
     )
