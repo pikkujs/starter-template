@@ -13,12 +13,10 @@
         "@pikku/assistant-ui": "^0.12.14",
         "@pikku/better-auth": "^0.12.59",
         "@pikku/bun-server": "^0.12.15",
-        "@pikku/cloudflare": "^0.12.31",
         "@pikku/core": "0.12.147",
         "@pikku/fetch": "0.12.13",
         "@pikku/kysely": "0.13.40",
         "@pikku/kysely-bun-sqlite": "^0.12.11",
-        "@pikku/kysely-node-sqlite": "^0.12.10",
         "@pikku/kysely-sqlite": "^0.12.18",
         "@pikku/react": "^0.12.17",
         "@pikku/schedule": "^0.12.11",
@@ -28,7 +26,6 @@
       },
       "devDependencies": {
         "@pikku/cli": "0.12.197",
-        "@pikku/deploy-standalone": "^0.12.28",
         "@types/node": "^24",
         "oxfmt": "^0.53.0",
         "oxlint": "^1.78.0",
@@ -109,7 +106,6 @@
         "@pikku/addon-console": "^0.12.65",
         "@pikku/ai-vercel": "^0.12.16",
         "@pikku/better-auth": "^0.12.59",
-        "@pikku/cloudflare": "^0.12.31",
         "@pikku/core": "^0.12.147",
         "@pikku/kysely": "^0.13.40",
         "@pikku/schema-cfworker": "^0.12.9",
@@ -131,16 +127,6 @@
       "name": "@project/theme",
       "version": "0.0.1",
     },
-  },
-  "overrides": {
-    "@pikku/cli": "0.12.197",
-    "@pikku/core": "0.12.147",
-    "@pikku/deploy": "0.12.17",
-    "@pikku/fetch": "0.12.13",
-    "@pikku/knowledge": "0.12.21",
-    "@pikku/kysely": "0.13.40",
-    "@pikku/ws": "0.12.11",
-    "typescript": "^6.0.3",
   },
   "packages": {
     "@ag-ui/client": ["@ag-ui/client@0.0.59", "", { "dependencies": { "@ag-ui/core": "0.0.59", "@ag-ui/encoder": "0.0.59", "@ag-ui/proto": "0.0.59", "@types/uuid": "^10.0.0", "compare-versions": "^6.1.1", "fast-json-patch": "^3.1.1", "rxjs": "7.8.1", "untruncate-json": "^0.0.1", "uuid": "^11.1.0", "zod": "^3.22.4" } }, "sha512-d7++r8sBAq6z9G/D/WKrMznQ1Mdvew14pCqOVATReFIvl06mCi1BPqTwmos3zCDGAIiSgcvxc/8m472rYQgFFQ=="],
@@ -543,8 +529,6 @@
 
     "@pikku/cli": ["@pikku/cli@0.12.197", "", { "dependencies": { "@ai-sdk/openai": "^4.0.96", "@ai-sdk/openai-compatible": "^3.0.71", "@electric-sql/pglite": "0.5.10", "@electric-sql/pglite-pgvector": "0.0.11", "@jridgewell/trace-mapping": "^0.3.31", "@pikku/ai-vercel": "^0.12.16", "@pikku/better-auth": "^0.12.59", "@pikku/bun-server": "^0.12.15", "@pikku/code-edit": "^0.12.8", "@pikku/core": "^0.12.147", "@pikku/deploy": "^0.12.17", "@pikku/deploy-cloudflare": "^0.12.23", "@pikku/deploy-standalone": "^0.12.28", "@pikku/fetch": "^0.12.13", "@pikku/inspector": "^0.12.111", "@pikku/inspector-go": "^0.12.6", "@pikku/knowledge": "^0.12.21", "@pikku/kysely": "^0.13.40", "@pikku/migrator-sql": "^0.12.10", "@pikku/n8n-import": "^0.0.9", "@pikku/node-http-server": "^0.12.21", "@pikku/openapi-parser": "^0.12.25", "@pikku/schedule": "^0.12.11", "@pikku/skills": "^0.12.62", "@pikku/websocket": "^0.12.6", "@types/cookie": "^1.0.0", "@types/json-schema": "^7.0.15", "ai": "^7.0.143", "chalk": "^6.0.1", "chokidar": "^5.0.0", "esbuild": "~0.28.2", "giget": "^3.3.1", "istanbul-lib-instrument": "^6.0.3", "kysely": "^0.29.6", "mysql2": "^3.24.6", "open": "^11.0.4", "openapi-types": "^12.1.3", "path-to-regexp": "^8.4.2", "pg": "^8.23.1", "semver": "^7.8.5", "sqlite-vec": "0.1.9", "tinyglobby": "^0.2.17", "tsx": "^4.23.15", "yaml": "^2.9.1", "zod": "^4.6.7" }, "peerDependencies": { "@pikku/playwright": "^0.12.89", "@pikku/ws": "^0.12.11", "better-auth": "^1.7.5", "ws": "^8.21.3" }, "optionalPeers": ["@pikku/playwright", "@pikku/ws", "better-auth", "ws"], "bin": { "pikku": "dist/bin/pikku.js" } }, "sha512-LqolYV4wLicMJ59kS3e/EYZZaL5x4aHBkwdHr1vxwrH/qoN6yLl6x45rFv+vZwGm0guJ3XWQp62gDEVwnrMlsQ=="],
 
-    "@pikku/cloudflare": ["@pikku/cloudflare@0.12.31", "", { "dependencies": { "kysely-d1": "^0.4.0" }, "peerDependencies": { "@pikku/core": "^0.12.146", "@pikku/kysely": "^0.13.40", "@pikku/modelcontextprotocol": "^0.12.19", "kysely": "^0.29.0" }, "optionalPeers": ["@pikku/modelcontextprotocol"] }, "sha512-umfSRPBwQXpLA33CoHxv7LswT0zcdvSXjYyTPx9CJXD23yTMa4o7qCFwNHet9DgrlYQRmAibTbhNnZi1jKPCBw=="],
-
     "@pikku/code-edit": ["@pikku/code-edit@0.12.8", "", { "dependencies": { "typescript": "^6.0.3" } }, "sha512-F25zrWcGH7f+wTniQOsqRFr2ZzSKncsFJ+Km9E+MbjhEyzlLRu9EGVwGVveJX2dZduZdrYnqx3zJg0ijYaiPtw=="],
 
     "@pikku/core": ["@pikku/core@0.12.147", "", { "dependencies": { "@standard-schema/spec": "^1.1.0", "@types/json-schema": "^7.0.15", "cookie": "^2.0.1", "path-to-regexp": "^8.4.2", "picoquery": "^2.5.0" }, "peerDependencies": { "esbuild": ">=0.28.2 <1" }, "optionalPeers": ["esbuild"] }, "sha512-YoXcFb2ZXTGSfbv3JgK2Kmvm07EnEqH3tNw1HPGz4G1Fi1wao81zvmEiR35v5JLsViq9o3Ts7TmbRyvsw0LtkQ=="],
@@ -568,8 +552,6 @@
     "@pikku/kysely": ["@pikku/kysely@0.13.40", "", { "dependencies": { "kysely": "^0.29.6" }, "peerDependencies": { "@pikku/core": "^0.12.146" }, "bin": { "pikku-kysely-pure": "dist/bin/pikku-kysely-pure.js" } }, "sha512-ut/Cf446Y/Fb/W6gF0CUSjAksRnQua/mOKxtGzuIdrXlH0YRztlqC7SsOniAM1DiFxky7FnrdDeUj3bCZu/Kyg=="],
 
     "@pikku/kysely-bun-sqlite": ["@pikku/kysely-bun-sqlite@0.12.11", "", { "dependencies": { "@pikku/kysely": "^0.13.39", "@pikku/kysely-sqlite": "^0.12.18", "kysely": "^0.29.6" }, "peerDependencies": { "@pikku/core": "^0.12.144" } }, "sha512-EKHkxdnpPNJt+mRC4uSP1Bz3xg8PkgR1tzN5eXpWfRAF2RzkOonw4AMv9OsjUVMJCEYOyIvI0hilUERXD0/HRw=="],
-
-    "@pikku/kysely-node-sqlite": ["@pikku/kysely-node-sqlite@0.12.10", "", { "dependencies": { "@pikku/kysely": "^0.13.39", "@pikku/kysely-sqlite": "^0.12.18", "kysely": "^0.29.6" }, "peerDependencies": { "@pikku/core": "^0.12.144" } }, "sha512-4Z5vpHuSrjiIVip5aMvusJoRiKc9FDxx5iJCLKXorv/Pb24JPbzsOgbq73/p/6ZMdKkiKBDS/u5HV4TWVc/nIA=="],
 
     "@pikku/kysely-sqlite": ["@pikku/kysely-sqlite@0.12.18", "", { "dependencies": { "@pikku/kysely": "^0.13.39", "kysely": "^0.29.6" }, "peerDependencies": { "@pikku/core": "^0.12.144" } }, "sha512-arGFJ6AXqFFok5bnAwfrUzUEJKHSSTiSadW9/tQXnXhuzgI6Ng4iLYz1ENOFKHjmqDRf9TguNbRrHQLbGH5LPg=="],
 
@@ -1116,8 +1098,6 @@
     "json5": ["json5@2.2.3", "", { "bin": { "json5": "lib/cli.js" } }, "sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg=="],
 
     "kysely": ["kysely@0.29.6", "", {}, "sha512-hHaB8C/rfzDDtr/t8YZwxAuPJTT0zHyaPoVzcXwDYhYNAgH/4sIfVhi/XLLIY+bL/FqaIJnjATDbi8ObSELmxg=="],
-
-    "kysely-d1": ["kysely-d1@0.4.0", "", { "peerDependencies": { "kysely": "*" } }, "sha512-wUcVvQNtm30OTfuo7Ad5vYJ1qHqPXOCZc+zWchVKNyuvqY3u8OuGw4gmUx1Ypdx2wRVFLHVQC9I7v0pTmF7Nkw=="],
 
     "lightningcss": ["lightningcss@1.32.0", "", { "dependencies": { "detect-libc": "^2.0.3" }, "optionalDependencies": { "lightningcss-android-arm64": "1.32.0", "lightningcss-darwin-arm64": "1.32.0", "lightningcss-darwin-x64": "1.32.0", "lightningcss-freebsd-x64": "1.32.0", "lightningcss-linux-arm-gnueabihf": "1.32.0", "lightningcss-linux-arm64-gnu": "1.32.0", "lightningcss-linux-arm64-musl": "1.32.0", "lightningcss-linux-x64-gnu": "1.32.0", "lightningcss-linux-x64-musl": "1.32.0", "lightningcss-win32-arm64-msvc": "1.32.0", "lightningcss-win32-x64-msvc": "1.32.0" } }, "sha512-NXYBzinNrblfraPGyrbPoD19C1h9lfI/1mzgWYvXUTe414Gz/X1FD2XBZSZM7rRTrMA8JL3OtAaGifrIKhQ5yQ=="],
 
