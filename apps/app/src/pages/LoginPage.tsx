@@ -1,10 +1,9 @@
 import type { FC } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
-import { m } from '@/i18n/messages'
-import { useLocale } from '@/i18n/config'
+import { m, useLocale } from '@/i18n/messages'
 import { AuthCard, type AuthFormValues } from '@/components/AuthCard'
-import { INVALID_CREDENTIALS, signInWithPassword } from '@/lib/auth'
+import { INVALID_CREDENTIALS, signInWithPassword } from '@/pikku/auth.gen'
 
 export const LoginPage: FC = () => {
   useLocale()
@@ -12,7 +11,7 @@ export const LoginPage: FC = () => {
 
   const signIn = useMutation({
     mutationFn: (values: AuthFormValues) =>
-      signInWithPassword(values.email, values.password, '/app'),
+      signInWithPassword(values.email, values.password),
     onSuccess: () => navigate({ to: '/app' }),
   })
 

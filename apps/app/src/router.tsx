@@ -2,7 +2,7 @@ import { createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 import { DefaultErrorPage } from '@/components/DefaultErrorPage'
 import { DefaultNotFoundPage } from '@/components/DefaultNotFoundPage'
-import { basePath } from '@/lib/env'
+import { basePath } from '@/pikku/env.gen'
 
 // TanStack Start discovers this `getRouter` factory to build a router per
 // request (server) and once on the client (hydration). routeTree.gen.ts is

@@ -19,7 +19,7 @@ import type { SingletonServices } from '#pikku/function'
  * A day suits an ordinary app. Something handling money or health records wants
  * it shorter and pays for it in database reads; nothing needs it longer, because
  * the app re-mints the cookie while it is open and heals an expired one on the
- * spot (apps/app/src/lib/session-refresh.ts). It is NOT the session length —
+ * spot (@pikku/better-auth/client (session-refresh)). It is NOT the session length —
  * that stays `session.expiresIn`, better-auth's rolling seven days.
  */
 export const DEFAULT_SESSION_COOKIE_CACHE_MAX_AGE = 60 * 60 * 24

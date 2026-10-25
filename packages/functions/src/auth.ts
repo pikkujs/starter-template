@@ -80,7 +80,7 @@ export const auth = pikkuBetterAuth(
       //
       // The value, its default of one day, and what it costs to change are all in
       // lib/session-cookie.ts. It is not how long a user stays signed in:
-      // apps/app/src/lib/session-refresh.ts re-mints the cookie while the app is
+      // @pikku/better-auth/client (session-refresh) re-mints the cookie while the app is
       // open and heals an expired one, so someone using the app is never signed
       // out, and each refresh is the moment a ban lands.
       session: {
