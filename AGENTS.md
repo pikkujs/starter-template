@@ -1,6 +1,6 @@
 # Frontend rules
 
-- UI is Tailwind v4 over shadcn components in `apps/app/src/components/ui`. Use the component for the job;
+- UI is Tailwind v4 over shadcn components in `packages/blocks/src/ui`. Use the component for the job;
   add a missing one from `apps/app` with `npx shadcn@latest add <name>`, then make it lint-clean (strings through `m.*()`, flow-relative classes).
 - Every colour, radius and font comes from `packages/theme/theme.css` tokens. Change the look with
   the preset files in `packages/theme/themes` (they name the Google Fonts to load), never by editing `theme.css` or adding literals.

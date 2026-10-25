@@ -11,9 +11,9 @@
   },
   "aliases": {
     "components": "@/components",
-    "utils": "@/lib/utils",
-    "ui": "@/components/ui",
-    "lib": "@/lib",
+    "utils": "@project/blocks/lib/utils",
+    "ui": "@project/blocks/ui",
+    "lib": "@project/blocks/lib",
     "hooks": "@/hooks"
   },
   "iconLibrary": "lucide"
