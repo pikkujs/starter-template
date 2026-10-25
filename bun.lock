@@ -40,9 +40,9 @@
       "name": "@project/app",
       "version": "0.0.1",
       "dependencies": {
+        "@pikku/fetch": "^0.12.13",
         "@pikku/react": "^0.12.17",
         "@project/blocks": "workspace:*",
-        "@project/functions-sdk": "workspace:*",
         "@project/theme": "workspace:*",
         "@tanstack/react-query": "^5.66.0",
         "@tanstack/react-router": "^1.132.0",
@@ -127,15 +127,6 @@
         "@playwright/test": "^1.50.0",
         "@types/node": "^24",
         "typescript": "^6.0.3",
-      },
-    },
-    "packages/functions-sdk": {
-      "name": "@project/functions-sdk",
-      "version": "0.0.1",
-      "dependencies": {
-        "@pikku/fetch": "^0.12.13",
-        "@pikku/react": "^0.12.17",
-        "@tanstack/react-query": "^5.66.0",
       },
     },
     "packages/theme": {
@@ -630,8 +621,6 @@
     "@project/blocks": ["@project/blocks@workspace:packages/blocks"],
 
     "@project/functions": ["@project/functions@workspace:packages/functions"],
-
-    "@project/functions-sdk": ["@project/functions-sdk@workspace:packages/functions-sdk"],
 
     "@project/theme": ["@project/theme@workspace:packages/theme"],
 

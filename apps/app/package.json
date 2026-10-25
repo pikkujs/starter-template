@@ -12,9 +12,9 @@
     "tsc": "tsc --noEmit --incremental --tsBuildInfoFile node_modules/.cache/app-tsc.tsbuildinfo"
   },
   "dependencies": {
+    "@pikku/fetch": "^0.12.13",
     "@pikku/react": "^0.12.17",
     "@project/blocks": "workspace:*",
-    "@project/functions-sdk": "workspace:*",
     "@project/theme": "workspace:*",
     "@tanstack/react-query": "^5.66.0",
     "@tanstack/react-router": "^1.132.0",
