@@ -1,6 +1,6 @@
 import { Outlet } from '@tanstack/react-router'
 import { m } from '@/i18n/messages'
-import { signOut } from '@/lib/auth'
+import { signOut } from '@/pikku/auth.gen'
 import { Button } from '@project/blocks/ui/button'
 import { MobileTabBar, NavList, useNavItems } from './layout/nav'
 

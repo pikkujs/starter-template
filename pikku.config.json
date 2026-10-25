@@ -12,7 +12,16 @@
     "rpcWiringsFile": "apps/app/src/pikku/pikku-rpc.gen.ts",
     "reactQueryFile": "apps/app/src/pikku/api.gen.ts",
     "websocketFile": "apps/app/src/pikku/pikku-websocket.gen.ts",
-    "realtimeFile": "apps/app/src/pikku/realtime.gen.ts"
+    "realtimeFile": "apps/app/src/pikku/realtime.gen.ts",
+    "typesFile": "apps/app/src/pikku/types.gen.ts",
+    "envFile": "apps/app/src/pikku/env.gen.ts",
+    "rpcFile": "apps/app/src/pikku/rpc.gen.ts",
+    "authClientFile": "apps/app/src/pikku/auth.gen.ts"
+  },
+  "clientAuth": {
+    "loginPath": "/app/auth/login",
+    "homePath": "/app",
+    "resetPasswordPath": "/app/auth/reset-password"
   },
   "packageMappings": {
     "packages/functions": "@project/functions"
