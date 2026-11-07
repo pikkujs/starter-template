@@ -59,6 +59,10 @@
       "apiUrl": "http://localhost:4010",
       "signInPath": "/api/auth/sign-in/virtual-user"
     },
+    "ci": {
+      "apiUrl": "http://localhost:4020",
+      "signInPath": "/api/auth/sign-in/virtual-user"
+    },
     "stage": {
       "apiUrl": "https://replaced-by-the-deployer/api",
       "signInPath": "/auth/sign-in/virtual-user"

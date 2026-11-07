@@ -13,6 +13,7 @@
     "build": "bun run --filter '*' --if-present build",
     "dev": "bun scripts/dev.mjs",
     "tsc": "bun run --filter '*' tsc",
+    "test": "bunx --bun pikku scenario run ci --spawn",
     "lint": "oxlint apps packages",
     "format": "oxfmt apps packages",
     "format:check": "oxfmt --check apps packages"

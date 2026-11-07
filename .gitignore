@@ -33,3 +33,6 @@ __cloud_scaffold.vite.config.mjs
 
 # Claude Code worktrees — local checkouts, never part of the repo
 .claude/worktrees/
+
+# pikku deploy plan output
+.deploy
