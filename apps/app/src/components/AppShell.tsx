@@ -15,7 +15,7 @@ export function AppShell() {
           variant="ghost"
           className="mt-auto justify-start"
           onClick={() =>
-            signOut().finally(() => {
+            void signOut().finally(() => {
               window.location.href = '/app/auth/login'
             })
           }

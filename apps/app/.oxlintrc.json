@@ -1,8 +1,10 @@
 {
+  "extends": ["../../.oxlintrc.json"],
   "plugins": ["react", "typescript"],
   "jsPlugins": ["@shadcn/lint"],
   "ignorePatterns": ["src/paraglide", "src/routeTree.gen.ts", "dist"],
   "rules": {
+    "node/no-process-env": "off",
     "react/jsx-no-literals": [
       "error",
       {
