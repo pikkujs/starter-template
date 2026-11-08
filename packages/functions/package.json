@@ -19,7 +19,7 @@
     "@pikku/addon-console": "^0.12.65",
     "@pikku/ai-vercel": "^0.12.16",
     "@pikku/better-auth": "^0.12.59",
-    "@pikku/core": "^0.12.148",
+    "@pikku/core": "^0.12.152",
     "@pikku/kysely": "^0.13.40",
     "@pikku/schema-cfworker": "^0.12.9",
     "@pikku/ws": "^0.12.11",
@@ -34,6 +34,6 @@
     "@pikku/playwright": "^0.12.89",
     "@playwright/test": "^1.50.0",
     "@types/node": "^24",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   }
 }
