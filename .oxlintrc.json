@@ -3,7 +3,8 @@
   "plugins": [
     "typescript",
     "react",
-    "react-hooks"
+    "react-hooks",
+    "node"
   ],
   "env": {
     "browser": true,
@@ -11,7 +12,37 @@
   },
   "rules": {
     "typescript/no-floating-promises": "error",
-    "typescript/no-misused-promises": "error"
+    "typescript/no-misused-promises": "error",
+    "no-empty": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "fs",
+            "allowTypeImports": true,
+            "message": "Use the `content` service: keyed, project-scoped, with signed reads and writes."
+          },
+          {
+            "name": "node:fs",
+            "allowTypeImports": true,
+            "message": "Use the `content` service: keyed, project-scoped, with signed reads and writes."
+          },
+          {
+            "name": "fs/promises",
+            "allowTypeImports": true,
+            "message": "Use the `content` service: keyed, project-scoped, with signed reads and writes."
+          },
+          {
+            "name": "node:fs/promises",
+            "allowTypeImports": true,
+            "message": "Use the `content` service: keyed, project-scoped, with signed reads and writes."
+          }
+        ]
+      }
+    ],
+    "typescript/no-require-imports": "error",
+    "node/no-process-env": "error"
   },
   "ignorePatterns": [
     "**/*.gen.ts",
@@ -23,5 +54,20 @@
   ],
   "options": {
     "typeAware": true
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx"
+      ],
+      "rules": {
+        "no-restricted-imports": "off",
+        "typescript/no-require-imports": "off",
+        "node/no-process-env": "off"
+      }
+    }
+  ]
 }
