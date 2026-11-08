@@ -20,6 +20,7 @@
   "schema": {
     "supportsImportAttributes": true
   },
+  "db": { "engine": "sqlite" },
   "dev": {
     "db": true
   },
