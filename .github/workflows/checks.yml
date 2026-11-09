@@ -1,0 +1,10 @@
+name: Checks
+
+on:
+  push:
+    branches: [main, ci-reusable-checks]
+  pull_request:
+
+jobs:
+  checks:
+    uses: pikkujs/pikku/.github/workflows/pikku-checks.yml@ci-reusable-workflow
