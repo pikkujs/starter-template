@@ -1,36 +1,20 @@
 {
-  "plugins": [
-    "react",
-    "typescript",
-    "react-hooks"
-  ],
-  "jsPlugins": [
-    "@shadcn/lint"
-  ],
-  "ignorePatterns": [
-    "src/paraglide",
-    "src/routeTree.gen.ts",
-    "dist"
-  ],
+  "plugins": ["react", "typescript", "react-hooks"],
+  "jsPlugins": ["@shadcn/lint"],
+  "ignorePatterns": ["src/paraglide", "src/routeTree.gen.ts", "dist"],
   "rules": {
     "react/jsx-no-literals": [
       "error",
       {
         "noStrings": true,
         "ignoreProps": true,
-        "allowedStrings": [
-          "\u00b7",
-          "\u2014",
-          "\u2026"
-        ]
+        "allowedStrings": ["\u00b7", "\u2014", "\u2026"]
       }
     ],
     "shadcn/no-restyle": [
       "error",
       {
-        "allow": [
-          "layout"
-        ]
+        "allow": ["layout"]
       }
     ],
     "shadcn/no-raw-colors": "error",
@@ -72,18 +56,13 @@
   },
   "overrides": [
     {
-      "files": [
-        "src/components/dev/**"
-      ],
+      "files": ["src/components/dev/**"],
       "rules": {
         "react/jsx-no-literals": "off"
       }
     },
     {
-      "files": [
-        "src/components/ui/**/*.stories.tsx",
-        "**/*.stories.tsx"
-      ],
+      "files": ["src/components/ui/**/*.stories.tsx", "**/*.stories.tsx"],
       "rules": {
         "react/jsx-no-literals": "off",
         "shadcn/no-restyle": "off"
