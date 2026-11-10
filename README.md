@@ -15,3 +15,4 @@ bun run lint                                        # @shadcn/lint + react/jsx-n
 UI is `src/components/ui/*` (shadcn, yours to edit) styled by tokens in `theme.css`. Colours the theme has no
 field for go in `src/styles/domain.css`. Components with stories are visible in the studio Library view;
 bespoke app components belong in `packages/components`.
+second release
