@@ -27,7 +27,6 @@
     "ai": "^7.0.122",
     "better-auth": "^1.7.6",
     "kysely": "^0.29.0",
-    "tsx": "^4.21.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {

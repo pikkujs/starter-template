@@ -8,7 +8,6 @@
   instead; do not add disable comments.
 - User-visible strings go through `m.*()` from `@/i18n/messages`; `react/jsx-no-literals` enforces it.
 - Layout classes are flow-relative (`ms-*`, `pe-*`, `start-*`, `text-start`) so RTL works.
-- Dates are formatted with dayjs before rendering.
 
 ## Checks before you stop
 

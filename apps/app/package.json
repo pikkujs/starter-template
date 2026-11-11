@@ -20,7 +20,6 @@
     "@tanstack/react-router": "^1.132.0",
     "@tanstack/react-start": "^1.132.0",
     "better-auth": "^1.7.6",
-    "dayjs": "^1.11.13",
     "lucide-react": "^0.456.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5"

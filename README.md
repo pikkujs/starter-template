@@ -13,5 +13,5 @@ bun run lint                                        # @shadcn/lint + react/jsx-n
 ```
 
 UI is `packages/blocks/src/ui/*` (shadcn, `@project/blocks`, yours to edit) styled by tokens in `theme.css`. Colours the theme has no
-field for go in `src/styles/domain.css`. Components with stories are visible in the studio Library view;
+field for go in a stylesheet you add and import from `src/styles/globals.css`. Components with stories are visible in the studio Library view;
 bespoke app components stay in `apps/app/src/components`.

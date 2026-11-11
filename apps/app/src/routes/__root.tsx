@@ -17,7 +17,6 @@ import { apiUrl } from '@/pikku/env.gen'
 import type { AnalyticsEvent } from '@/pikku/types.gen'
 import type { FeatureFlagName } from '@project/functions/.pikku/scopes/pikku-flags.gen.js'
 import { PageViews } from '@/lib/page-views'
-import { PreferencesContext } from '@/contexts/preferences'
 import { DefaultErrorPage } from '@/components/DefaultErrorPage'
 import { DefaultNotFoundPage } from '@/components/DefaultNotFoundPage'
 import globals from '@/styles/globals.css?url'
@@ -42,6 +41,14 @@ export const Route = createRootRoute({
 
 // Applies the saved colour scheme before first paint so a dark user never flashes light.
 const schemeScript = `try{var s=localStorage.getItem('${COLOR_SCHEME_KEY}');if(s==='dark')document.documentElement.classList.add('dark')}catch(e){}`
+
+function referrerOrigin(): string | undefined {
+  try {
+    return document.referrer ? new URL(document.referrer).origin : undefined
+  } catch {
+    return undefined
+  }
+}
 
 function RootDocument({ children }: { children: ReactNode }) {
   const [locale, setLocaleRaw] = useState<string>(defaultLocale)
@@ -85,10 +92,13 @@ function RootDocument({ children }: { children: ReactNode }) {
   }, [locale])
 
   // Studio and console live preview: they post the generated theme.css and we swap it in without persisting.
+  // Dev only, and only from the page that frames this one: in production nothing may inject CSS.
   useEffect(() => {
+    if (!import.meta.env.DEV) return
+    const framer = window.location.ancestorOrigins?.[0] ?? referrerOrigin()
     const onMessage = (event: MessageEvent) => {
       const data = event.data
-      if (event.source !== window.parent) return
+      if (event.source !== window.parent || !framer || event.origin !== framer) return
       if (data?.source !== 'cloud-console' || data.type !== 'set-theme-css') return
       let style = document.getElementById('theme-preview')
       if (!style) {
@@ -115,16 +125,12 @@ function RootDocument({ children }: { children: ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: schemeScript }} />
       </head>
       <body>
-        <PreferencesContext.Provider
-          value={{ locale, themeId: 'default', setLocale, setThemeId: () => {} }}
-        >
-          <QueryClientProvider client={queryClient}>
-            <PikkuProvider pikku={pikku}>
-              <PageViews />
-              {children}
-            </PikkuProvider>
-          </QueryClientProvider>
-        </PreferencesContext.Provider>
+        <QueryClientProvider client={queryClient}>
+          <PikkuProvider pikku={pikku}>
+            <PageViews />
+            {children}
+          </PikkuProvider>
+        </QueryClientProvider>
         <Scripts />
       </body>
     </html>
