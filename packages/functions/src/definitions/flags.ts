@@ -7,6 +7,10 @@
  * Flags fail closed, so codegen builds a `FeatureFlagName` union from these
  * declarations: a typo'd flag reads `false`, hides its feature permanently, and
  * leaves every test and screenshot green.
+ *
+ * Put `featureFlag: 'name'` on the function, and read it in a screen with
+ * `useFlag('name')` (apps/app/src/lib/product.ts). Hiding the screen alone
+ * leaves the feature callable.
  */
 import { defineFeatureFlags } from '#pikku/scopes'
 

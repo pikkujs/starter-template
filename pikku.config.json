@@ -49,6 +49,7 @@
     "scenarios": true,
     "events": true,
     "analytics": true,
+    "featureFlags": true,
     "virtualUser": true
   },
   "scenarios": {
