@@ -14,11 +14,11 @@ export function AppShell() {
         <Button
           variant="ghost"
           className="mt-auto justify-start"
-          onClick={() =>
-            signOut().finally(() => {
+          onClick={() => {
+            void signOut().finally(() => {
               window.location.href = '/app/auth/login'
             })
-          }
+          }}
         >
           {m.app_shell__sign_out()}
         </Button>

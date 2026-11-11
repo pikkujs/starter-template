@@ -51,6 +51,11 @@ export const auth = pikkuBetterAuth(
       database: { db: kysely, type: 'sqlite' },
       emailAndPassword: {
         enabled: true,
+        // Invite-only: closes /api/auth/sign-up/email so nobody can self-register.
+        // Accounts come from admin:createUser (which writes through the internal
+        // adapter, so it is unaffected) and the magic-link invite below. Password
+        // sign-in and reset for existing users are unchanged.
+        disableSignUp: true,
         // Without this, `requestPasswordReset` succeeds on the client and silently
         // sends nothing — the "Forgot password?" flow looks wired and dead-ends.
         // Better Auth builds `url` from its baseURL + the client's redirectTo, so

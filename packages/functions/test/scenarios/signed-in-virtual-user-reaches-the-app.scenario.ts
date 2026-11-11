@@ -46,7 +46,7 @@ export const signedInVirtualUserReachesTheAppScenario = pikkuScenario<
         virtualUser: virtualUsers.visitor,
       },
     )
-    if (landed.status != null && landed.status >= 400) {
+    if (landed.status !== null && landed.status >= 400) {
       throw new Error(`${APP_HOME} answered HTTP ${landed.status}`)
     }
 
