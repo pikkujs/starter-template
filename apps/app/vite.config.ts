@@ -30,6 +30,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      // The generated client for the api backend (written by `pikku all`).
+      '@sdk/api': fileURLToPath(
+        new URL('../../packages/functions/.pikku/sdk/api/exposed', import.meta.url),
+      ),
     },
   },
   server: {
