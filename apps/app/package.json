@@ -12,8 +12,8 @@
     "tsc": "tsc --noEmit --incremental --tsBuildInfoFile node_modules/.cache/app-tsc.tsbuildinfo"
   },
   "dependencies": {
-    "@pikku/fetch": "^0.12.13",
-    "@pikku/react": "^0.12.17",
+    "@pikku/fetch": "0.12.15",
+    "@pikku/react": "^0.12.20",
     "@project/blocks": "workspace:*",
     "@project/theme": "workspace:*",
     "@tanstack/react-query": "^5.66.0",
@@ -29,10 +29,8 @@
     "@pikku/vite": "^0.12.0",
     "@shadcn/lint": "^0.2.0",
     "@tailwindcss/vite": "^4.1.0",
-    "@tanstack/router-generator": "^1.132.0",
     "@types/node": "^24",
     "@types/react": "^19",
-    "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^4.5.2",
     "oxlint": "^1.80.0",
     "tailwindcss": "^4.1.0",
