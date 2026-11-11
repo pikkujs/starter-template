@@ -554,7 +554,7 @@
 
     "@pikku/inspector": ["@pikku/inspector@0.12.116", "", { "dependencies": { "@openapi-contrib/json-schema-to-openapi-schema": "^4.3.4" }, "peerDependencies": { "@pikku/core": "^0.12.152" } }, "sha512-M30Hk1RDKnFANPyYaSAS/zmp7Os0M6EM40vUlP2dTW/4jjV1tc1DckAtRpMRA/DaxLP8L/RaeiR8kQSoJiJ5/Q=="],
 
-    "@pikku/inspector-go": ["@pikku/inspector-go@0.12.9", "", { "dependencies": { "@pikku/inspector": "^0.12.115", "tsx": "^4.23.15", "zod": "^4.6.7" }, "peerDependencies": { "@pikku/core": "^0.12.151" } }, "sha512-6sfF36yvfxXLrdftn5Y/haZbllQE8vUSpc96C7FLdiivbHf1fGshqs/8B0ogMTXOkVEUgpj0Sk2sHu0MRwjERg=="],
+    "@pikku/inspector-go": ["@pikku/inspector-go@0.12.12", "", { "dependencies": { "@pikku/inspector": "^0.12.118", "tsx": "^4.23.15", "zod": "^4.6.7" }, "peerDependencies": { "@pikku/core": "^0.12.154" } }, "sha512-iUGgyfzhcuwjlP9jluDM4naVsKUh1ylMMBN31OHvhAVdguXI8r7NE3zmGDJxGw7bsQkCvS2ISxPHoe0GVnvRRA=="],
 
     "@pikku/jose": ["@pikku/jose@0.12.10", "", { "dependencies": { "jose": "^6.2.12" }, "peerDependencies": { "@pikku/core": "^0.12.144" } }, "sha512-XmeUiUakSVRBNWlOs1b7Rwei9Q46llgXopyAW/DOqZhPz4pMha9xknu7VRqJuwV1c6nWm5yY2DSJ1e83Qagu3w=="],
 
@@ -1535,6 +1535,8 @@
     "@inlang/sdk/kysely": ["kysely@0.28.19", "", {}, "sha512-sXoKWuQjtorwxDLiws0ZSPGGne/hs+fGHIII7vXquSBFgHwLXgFIHN9tTv3kNdVkJ5d3xtXC84GjjWMYLqdFWg=="],
 
     "@inlang/sdk/uuid": ["uuid@14.0.3", "", { "bin": { "uuid": "dist-node/bin/uuid" } }, "sha512-Sc5u1VVln93y1Xnz4R+CunOZc7R9LUcTmhj7Rc7Eg3HVcf7rVn2FOoa812fe0W8p3jD7xeoGSYbfqCGGH2B6xw=="],
+
+    "@pikku/inspector-go/@pikku/inspector": ["@pikku/inspector@0.12.118", "", { "dependencies": { "@openapi-contrib/json-schema-to-openapi-schema": "^4.3.4" }, "peerDependencies": { "@pikku/core": "^0.12.154" } }, "sha512-RXhr7xas0Bs1o2d+TYBl7E39/sE0HJOObEyL2ECVx5Lei4ZsJkkADZYuxQpMHc/bYhFk1NEq50TO0CHFPNRhXQ=="],
 
     "@project/app/@types/node": ["@types/node@24.19.2", "", { "dependencies": { "undici-types": ">=7.24.0 <7.24.7" } }, "sha512-93d49wCWJkCyN87MxLpNN6KXPCwFw7bVUg79mGUV1OS40JGWwVCr8n61DXCSqz7CV6/VfPkb7xec7uP2M+QHWQ=="],
 
