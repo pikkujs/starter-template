@@ -16,7 +16,8 @@
     "checkJs": false,
     "types": ["vite/client", "node"],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@sdk/api/*": ["../../packages/functions/.pikku/sdk/api/exposed/*"]
     }
   },
   "include": ["src", "dev", "build", "vite.config.ts", "wrangler.jsonc"]

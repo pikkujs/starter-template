@@ -1,0 +1,123 @@
+{
+  "$schema": "https://raw.githubusercontent.com/pikkujs/pikku/refs/heads/main/packages/cli/cli.schema.json",
+  "rootDir": ".",
+  "tsconfig": "../../tsconfig.json",
+  "srcDirectories": [
+    "src",
+    "test"
+  ],
+  "emailTemplatesDir": "emails",
+  "clientFiles": {
+    "typesFile": "../../apps/app/src/pikku/types.gen.ts",
+    "envFile": "../../apps/app/src/pikku/env.gen.ts",
+    "rpcFile": "../../apps/app/src/pikku/rpc.gen.ts",
+    "authClientFile": "../../apps/app/src/pikku/auth.gen.ts"
+  },
+  "clientAuth": {
+    "loginPath": "/app/auth/login",
+    "homePath": "/app",
+    "resetPasswordPath": "/app/auth/reset-password"
+  },
+  "packageMappings": {
+    ".": "@project/functions"
+  },
+  "schema": {
+    "supportsImportAttributes": true
+  },
+  "deploy": {
+    "bundler": "esbuild"
+  },
+  "scaffold": {
+    "pikkuDir": "src/scaffold",
+    "console": true,
+    "rpc": true,
+    "agent": true,
+    "workflow": true,
+    "scenarios": true,
+    "events": true,
+    "analytics": true,
+    "featureFlags": true,
+    "virtualUser": true
+  },
+  "scenarios": {
+    "emailDomain": "virtualuser.invalid"
+  },
+  "environments": {
+    "local": {
+      "backends": {
+        "api": {
+          "signInPath": "/api/auth/sign-in/virtual-user"
+        }
+      },
+      "frontends": {
+        "app": "http://localhost:7104"
+      }
+    },
+    "sandbox": {
+      "backends": {
+        "api": {
+          "signInPath": "/api/auth/sign-in/virtual-user",
+          "url": "http://localhost:4000"
+        }
+      }
+    },
+    "coverage": {
+      "backends": {
+        "api": {
+          "signInPath": "/api/auth/sign-in/virtual-user",
+          "url": "http://localhost:4010"
+        }
+      }
+    },
+    "stage": {
+      "backends": {
+        "api": {
+          "signInPath": "/auth/sign-in/virtual-user",
+          "url": "https://replaced-by-the-deployer/api"
+        }
+      }
+    }
+  },
+  "frontends": {
+    "app": {
+      "cwd": "../../apps/app",
+      "primary": true,
+      "deploy": true,
+      "kind": "ssr",
+      "dev": {
+        "command": [
+          "bun",
+          "run",
+          "dev"
+        ],
+        "port": 7104,
+        "healthPath": "/"
+      },
+      "serves": "visitor",
+      "virtualUsers": [
+        "visitor"
+      ]
+    }
+  },
+  "backends": {
+    "api": {
+      "filter": {},
+      "dev": {
+        "port": 3000
+      },
+      "content": {
+        "buckets": [
+          "files"
+        ],
+        "uploadUrlPrefix": "/upload",
+        "assetUrlPrefix": "/content"
+      }
+    }
+  },
+  "content": {
+    "sizeLimit": "10mb",
+    "buckets": [
+      "files"
+    ]
+  }
+}
