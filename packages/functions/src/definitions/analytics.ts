@@ -1,7 +1,9 @@
 /**
  * What this app measures.
  *
- * Event names are the wire names the browser sends (`analytics.event('signed_up', {})`),
+ * A screen records one with `useAnalytics().event('signed_up', {})`
+ * (apps/app/src/lib/product.ts) and a function with
+ * `analytics.record({ name: 'signed_up' })`. Event names are the wire names the browser sends,
  * and the `POST /analytics` ingest is generated from this declaration
  * (`scaffold.analytics`) — a typo in an event name is a build error, and the schema
  * reaches the browser through `AnalyticsEvent`. `page_viewed` and `signed_up` are

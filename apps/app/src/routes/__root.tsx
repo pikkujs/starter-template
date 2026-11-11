@@ -8,12 +8,15 @@ import {
   type ErrorComponentProps,
 } from '@tanstack/react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { PikkuProvider, createPikku } from '@pikku/react'
+import { PikkuProvider, createAnalytics, createFeatureFlags, createPikku } from '@pikku/react'
 import { PikkuFetch } from '@/pikku/pikku-fetch.gen'
 import { PikkuRPC } from '@/pikku/pikku-rpc.gen'
 import { defaultLocale, localeDir, supportedLocales, setActiveLocale } from '@/i18n/messages'
 import { appMeta } from '@/app-meta'
 import { apiUrl } from '@/pikku/env.gen'
+import type { AnalyticsEvent } from '@/pikku/types.gen'
+import type { FeatureFlagName } from '@project/functions/.pikku/scopes/pikku-flags.gen.js'
+import { PageViews } from '@/lib/page-views'
 import { PreferencesContext } from '@/contexts/preferences'
 import { DefaultErrorPage } from '@/components/DefaultErrorPage'
 import { DefaultNotFoundPage } from '@/components/DefaultNotFoundPage'
@@ -43,9 +46,14 @@ const schemeScript = `try{var s=localStorage.getItem('${COLOR_SCHEME_KEY}');if(s
 function RootDocument({ children }: { children: ReactNode }) {
   const [locale, setLocaleRaw] = useState<string>(defaultLocale)
   const [queryClient] = useState(() => new QueryClient())
-  const [pikku] = useState(() =>
-    createPikku(PikkuFetch, PikkuRPC, { serverUrl: apiUrl(), credentials: 'include' }),
-  )
+  const [pikku] = useState(() => ({
+    ...createPikku(PikkuFetch, PikkuRPC, { serverUrl: apiUrl(), credentials: 'include' }),
+    // Not made by createPikku: without these two, useAnalytics and useFlag throw.
+    analytics: createAnalytics<AnalyticsEvent>({ endpoint: () => `${apiUrl()}/analytics` }),
+    featureFlags: createFeatureFlags<FeatureFlagName>({
+      endpoint: () => `${apiUrl()}/feature-flags`,
+    }),
+  }))
   const router = useRouter()
 
   useEffect(() => {
@@ -111,7 +119,10 @@ function RootDocument({ children }: { children: ReactNode }) {
           value={{ locale, themeId: 'default', setLocale, setThemeId: () => {} }}
         >
           <QueryClientProvider client={queryClient}>
-            <PikkuProvider pikku={pikku}>{children}</PikkuProvider>
+            <PikkuProvider pikku={pikku}>
+              <PageViews />
+              {children}
+            </PikkuProvider>
           </QueryClientProvider>
         </PreferencesContext.Provider>
         <Scripts />

@@ -4,12 +4,14 @@ import type {
   CoreConfig,
   CoreUserSession,
 } from '@pikku/core/types'
-import type { AuditLog, EmailService } from '@pikku/core/services'
+import type { AuditLog, ContentService, EmailService } from '@pikku/core/services'
+import type { AnalyticsLog } from '#pikku/analytics'
 import type { Kysely } from 'kysely'
 import type { DB } from '#pikku/db/schema.gen.js'
 import type { TypedSecretService } from '../.pikku/secrets/pikku-secrets.gen.js'
 import type { TypedVariablesService } from '../.pikku/variables/pikku-variables.gen.js'
 import type { auth } from './auth.js'
+import type { AnalyticsEvent } from './scaffold/analytics/analytics.gen.js'
 
 export interface UserSession extends CoreUserSession {
   userId: string
@@ -33,6 +35,9 @@ export interface SingletonServices extends CoreSingletonServices<Config> {
   // optional in CoreSingletonServices, which otherwise makes every emailService
   // use read as possibly-undefined and forces needless `!`/guards in functions.
   emailService: EmailService
+  // File storage, supplied by the runtime. Optional in CoreSingletonServices, so
+  // it is declared here to spare every function that uses it a guard.
+  content: ContentService
   // Per-invocation audit log, ALWAYS returned from createWireServices (see
   // services.ts) so general activity logging is available in every function —
   // `await auditLog.write({ type, source: 'explicit', metadata })`. Declared
@@ -40,6 +45,11 @@ export interface SingletonServices extends CoreSingletonServices<Config> {
   // read as possibly-undefined and force needless `?.`/guards. A function with
   // `audit: true` ADDITIONALLY gets a kysely wrapped to capture every table write.
   auditLog: AuditLog
+  // Per-invocation analytics buffer, injected into every function by the runner.
+  // Narrowed to the declared events so `analytics.record({ name: 'signed_up' })`
+  // is checked against definitions/analytics.ts: an undeclared event is a build
+  // error here, and nothing else would catch it.
+  analytics: AnalyticsLog<AnalyticsEvent>
 }
 
 export interface Services extends CoreServices<SingletonServices> {}
