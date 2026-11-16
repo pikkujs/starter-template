@@ -33,7 +33,10 @@ jobs:
         run: bun test --pass-with-no-tests
 
       - name: Standalone build
-        run: bunx --bun pikku deploy apply -p standalone --runtime bun
+        run: |
+          # Standalone cannot host the ssr frontend (it deploys through cloud), so build the backend from a throwaway config without it.
+          jq '.frontends.app.deploy = false' pikku.config.json > pikku.ci.config.json
+          bunx --bun pikku deploy apply -p standalone --runtime bun --config pikku.ci.config.json
 
       - name: Standalone boots
         working-directory: .deploy/standalone/root-dist

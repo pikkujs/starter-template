@@ -4,7 +4,7 @@ import {
   type SendEmailInput,
   type SendEmailResult,
 } from '@pikku/core/services'
-import { renderEmailTemplate, type EmailTemplateName } from '../../.pikku/email/pikku-emails.gen.js'
+import { renderEmailTemplate, type EmailTemplateName } from '#pikku/email/pikku-emails.gen.js'
 
 type GeneratedTemplateEmailServiceOptions = {
   delegate?: EmailService

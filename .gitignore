@@ -45,3 +45,7 @@ coverage
 
 # Claude Code worktrees — local checkouts, never part of the repo
 .claude/worktrees/
+
+# Standalone deploy output and the CI-only throwaway config (written at run time, never committed)
+.deploy
+pikku.ci.config.json

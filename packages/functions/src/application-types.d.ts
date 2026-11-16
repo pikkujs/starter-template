@@ -8,8 +8,8 @@ import type { AuditLog, ContentService, EmailService } from '@pikku/core/service
 import type { AnalyticsLog } from '#pikku/analytics'
 import type { Kysely } from 'kysely'
 import type { DB } from '#pikku/db/schema.gen.js'
-import type { TypedSecretService } from '../.pikku/secrets/pikku-secrets.gen.js'
-import type { TypedVariablesService } from '../.pikku/variables/pikku-variables.gen.js'
+import type { TypedSecretService } from '#pikku/secrets/pikku-secrets.gen.js'
+import type { TypedVariablesService } from '#pikku/variables/pikku-variables.gen.js'
 import type { auth } from './auth.js'
 import type { AnalyticsEvent } from './scaffold/analytics/analytics.gen.js'
 

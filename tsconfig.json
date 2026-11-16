@@ -11,6 +11,10 @@
     "noEmit": true,
     "outDir": "dist",
     "rootDir": ".",
+    "paths": {
+      "#pikku/*.js": ["./.pikku/*.ts"],
+      "#pikku/*": ["./.pikku/*/index.ts"]
+    },
     "types": ["node", "@pikku/playwright"],
     "typeRoots": [
       "./node_modules/@types",

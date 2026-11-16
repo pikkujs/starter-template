@@ -1,18 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/pikkujs/pikku/refs/heads/main/packages/cli/cli.schema.json",
   "rootDir": ".",
-  "tsconfig": "tsconfig.json",
+  "tsconfig": "./tsconfig.json",
   "srcDirectories": ["packages/functions/src", "packages/functions/test"],
-  "outDir": "packages/functions/.pikku",
   "emailTemplatesDir": "emails",
   "clientFiles": {
-    "rpcMapDeclarationFile": "apps/app/src/pikku/rpc-map.gen.d.ts",
-    "httpMapDeclarationFile": "apps/app/src/pikku/http-map.gen.d.ts",
-    "fetchFile": "apps/app/src/pikku/pikku-fetch.gen.ts",
-    "rpcWiringsFile": "apps/app/src/pikku/pikku-rpc.gen.ts",
-    "reactQueryFile": "apps/app/src/pikku/api.gen.ts",
-    "websocketFile": "apps/app/src/pikku/pikku-websocket.gen.ts",
-    "realtimeFile": "apps/app/src/pikku/realtime.gen.ts",
     "typesFile": "apps/app/src/pikku/types.gen.ts",
     "envFile": "apps/app/src/pikku/env.gen.ts",
     "rpcFile": "apps/app/src/pikku/rpc.gen.ts",
@@ -29,16 +21,8 @@
   "schema": {
     "supportsImportAttributes": true
   },
-  "dev": {
-    "db": true
-  },
   "deploy": {
     "bundler": "esbuild"
-  },
-  "content": {
-    "uploadUrlPrefix": "/upload",
-    "assetUrlPrefix": "/content",
-    "sizeLimit": "10mb"
   },
   "scaffold": {
     "pikkuDir": "packages/functions/src/scaffold",
@@ -57,21 +41,38 @@
   },
   "environments": {
     "local": {
-      "apiUrl": "http://localhost:3000",
-      "appUrl": "http://localhost:7104",
-      "signInPath": "/api/auth/sign-in/virtual-user"
+      "backends": {
+        "api": {
+          "signInPath": "/api/auth/sign-in/virtual-user"
+        }
+      },
+      "frontends": {
+        "app": "http://localhost:7104"
+      }
     },
     "sandbox": {
-      "apiUrl": "http://localhost:4000",
-      "signInPath": "/api/auth/sign-in/virtual-user"
+      "backends": {
+        "api": {
+          "signInPath": "/api/auth/sign-in/virtual-user",
+          "url": "http://localhost:4000"
+        }
+      }
     },
     "coverage": {
-      "apiUrl": "http://localhost:4010",
-      "signInPath": "/api/auth/sign-in/virtual-user"
+      "backends": {
+        "api": {
+          "signInPath": "/api/auth/sign-in/virtual-user",
+          "url": "http://localhost:4010"
+        }
+      }
     },
     "stage": {
-      "apiUrl": "https://replaced-by-the-deployer/api",
-      "signInPath": "/auth/sign-in/virtual-user"
+      "backends": {
+        "api": {
+          "signInPath": "/auth/sign-in/virtual-user",
+          "url": "https://replaced-by-the-deployer/api"
+        }
+      }
     }
   },
   "frontends": {
@@ -88,5 +89,22 @@
       "serves": "visitor",
       "virtualUsers": ["visitor"]
     }
+  },
+  "backends": {
+    "api": {
+      "filter": {},
+      "dev": {
+        "port": 3000
+      },
+      "content": {
+        "buckets": ["files"],
+        "uploadUrlPrefix": "/upload",
+        "assetUrlPrefix": "/content"
+      }
+    }
+  },
+  "content": {
+    "sizeLimit": "10mb",
+    "buckets": ["files"]
   }
 }

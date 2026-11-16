@@ -2,6 +2,7 @@
   "name": "@project/root",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "workspaces": [
     "apps/*",
     "packages/*",
@@ -9,7 +10,7 @@
     "!apps/_app_template_"
   ],
   "scripts": {
-    "prebuild": "cd packages/functions && bunx --bun pikku all",
+    "prebuild": "bunx --bun pikku all",
     "build": "bun run --filter '*' --if-present build",
     "dev": "bunx --bun pikku dev",
     "tsc": "bun run --filter '*' tsc",
@@ -19,13 +20,14 @@
   },
   "dependencies": {
     "@pikku/bun-server": "^0.12.15",
-    "@pikku/core": "0.12.154",
-    "@pikku/kysely": "0.13.42",
+    "@pikku/core": "0.12.157",
+    "@pikku/fetch": "0.12.16",
+    "@pikku/kysely": "0.13.44",
     "@pikku/kysely-bun-sqlite": "^0.12.11",
     "@pikku/schedule": "^0.12.12"
   },
   "devDependencies": {
-    "@pikku/cli": "0.12.208",
+    "@pikku/cli": "0.12.211",
     "@types/node": "^26.6.6",
     "oxfmt": "^0.77.0",
     "oxlint": "^1.92.0",

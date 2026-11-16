@@ -12,7 +12,7 @@
     "tsc": "tsc --noEmit --incremental --tsBuildInfoFile node_modules/.cache/app-tsc.tsbuildinfo"
   },
   "dependencies": {
-    "@pikku/fetch": "0.12.15",
+    "@pikku/fetch": "0.12.16",
     "@pikku/react": "^0.12.20",
     "@project/blocks": "workspace:*",
     "@project/theme": "workspace:*",
