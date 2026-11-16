@@ -33,18 +33,22 @@ jobs:
         run: bun test --pass-with-no-tests
 
       - name: Standalone build
-        run: bunx --bun pikku deploy apply -p standalone --runtime bun --config packages/functions/pikku.config.json
+        working-directory: packages/functions
+        run: |
+          # Standalone cannot host the ssr frontend (it deploys through cloud), so build the backend from a throwaway config without it.
+          jq '.frontends.app.deploy = false' pikku.config.json > pikku.ci.config.json
+          bunx --bun pikku deploy apply -p standalone --runtime bun --config pikku.ci.config.json
 
       - name: Standalone boots
-        working-directory: .deploy/standalone/root-dist
+        working-directory: packages/functions/.deploy/standalone/functions-dist
         env:
           PORT: '3000'
           PIKKU_DATA_DIR: ${{ runner.temp }}/pikku-data
           BETTER_AUTH_SECRET: ci-only-not-a-real-secret-0123456789
         run: |
           mkdir -p "$PIKKU_DATA_DIR"
-          ./root db migrate
-          ./root > "$RUNNER_TEMP/standalone.log" 2>&1 &
+          ./functions db migrate
+          ./functions > "$RUNNER_TEMP/standalone.log" 2>&1 &
           if ! curl -fsS --retry 30 --retry-delay 1 --retry-all-errors -o /dev/null http://localhost:3000/api/auth/get-session; then
             cat "$RUNNER_TEMP/standalone.log"
             exit 1
@@ -53,4 +57,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: standalone
-          path: .deploy/standalone/root-dist.zip
+          path: packages/functions/.deploy/standalone/functions-dist.zip
