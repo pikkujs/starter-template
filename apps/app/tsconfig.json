@@ -17,6 +17,8 @@
     "types": ["vite/client", "node"],
     "paths": {
       "@/*": ["./src/*"],
+      "#pikku/*.js": ["../../.pikku/*.ts"],
+      "#pikku/*": ["../../.pikku/*/index.ts"],
       "@sdk/api/*": ["../../.pikku/sdk/api/exposed/*"]
     }
   },

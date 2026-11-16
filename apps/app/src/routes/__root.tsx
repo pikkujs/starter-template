@@ -15,7 +15,7 @@ import { defaultLocale, localeDir, supportedLocales, setActiveLocale } from '@/i
 import { appMeta } from '@/app-meta'
 import { apiUrl } from '@/pikku/env.gen'
 import type { AnalyticsEvent } from '@/pikku/types.gen'
-import type { FeatureFlagName } from '@project/functions/.pikku/scopes/pikku-flags.gen.js'
+import type { FeatureFlagName } from '#pikku/scopes/pikku-flags.gen.js'
 import { PageViews } from '@/lib/page-views'
 import { DefaultErrorPage } from '@/components/DefaultErrorPage'
 import { DefaultNotFoundPage } from '@/components/DefaultNotFoundPage'

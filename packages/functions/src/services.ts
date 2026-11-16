@@ -13,8 +13,8 @@ import {
   KyselyVirtualUserScheduleStore,
 } from '@pikku/kysely'
 import { pikkuServices, pikkuWireServices } from '#pikku/setup'
-import { TypedSecretService } from '../.pikku/secrets/pikku-secrets.gen.js'
-import { TypedVariablesService } from '../.pikku/variables/pikku-variables.gen.js'
+import { TypedSecretService } from '#pikku/secrets/pikku-secrets.gen.js'
+import { TypedVariablesService } from '#pikku/variables/pikku-variables.gen.js'
 import { CFWorkerSchemaService } from '@pikku/schema-cfworker'
 import type { Kysely } from 'kysely'
 import { GeneratedTemplateEmailService } from './lib/email-service.js'
