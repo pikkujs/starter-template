@@ -45,3 +45,10 @@ coverage
 
 # Claude Code worktrees — local checkouts, never part of the repo
 .claude/worktrees/
+
+# The functions package reaches the root .pikku through this symlink (package imports cannot leave the package)
+!/packages/functions/.pikku
+
+# Standalone deploy output and the CI-only throwaway config (written at run time, never committed)
+.deploy
+pikku.ci.config.json

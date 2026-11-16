@@ -1,14 +1,14 @@
 {
   "$schema": "https://raw.githubusercontent.com/pikkujs/pikku/refs/heads/main/packages/cli/cli.schema.json",
   "rootDir": ".",
-  "tsconfig": "../../tsconfig.json",
-  "srcDirectories": ["src", "test"],
+  "tsconfig": "./tsconfig.json",
+  "srcDirectories": ["packages/functions/src", "packages/functions/test"],
   "emailTemplatesDir": "emails",
   "clientFiles": {
-    "typesFile": "../../apps/app/src/pikku/types.gen.ts",
-    "envFile": "../../apps/app/src/pikku/env.gen.ts",
-    "rpcFile": "../../apps/app/src/pikku/rpc.gen.ts",
-    "authClientFile": "../../apps/app/src/pikku/auth.gen.ts"
+    "typesFile": "apps/app/src/pikku/types.gen.ts",
+    "envFile": "apps/app/src/pikku/env.gen.ts",
+    "rpcFile": "apps/app/src/pikku/rpc.gen.ts",
+    "authClientFile": "apps/app/src/pikku/auth.gen.ts"
   },
   "clientAuth": {
     "loginPath": "/app/auth/login",
@@ -16,7 +16,7 @@
     "resetPasswordPath": "/app/auth/reset-password"
   },
   "packageMappings": {
-    ".": "@project/functions"
+    "packages/functions": "@project/functions"
   },
   "schema": {
     "supportsImportAttributes": true
@@ -25,7 +25,7 @@
     "bundler": "esbuild"
   },
   "scaffold": {
-    "pikkuDir": "src/scaffold",
+    "pikkuDir": "packages/functions/src/scaffold",
     "console": true,
     "rpc": true,
     "agent": true,
@@ -77,7 +77,7 @@
   },
   "frontends": {
     "app": {
-      "cwd": "../../apps/app",
+      "cwd": "apps/app",
       "primary": true,
       "deploy": true,
       "kind": "ssr",

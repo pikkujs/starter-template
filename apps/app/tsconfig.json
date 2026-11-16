@@ -17,7 +17,7 @@
     "types": ["vite/client", "node"],
     "paths": {
       "@/*": ["./src/*"],
-      "@sdk/api/*": ["../../packages/functions/.pikku/sdk/api/exposed/*"]
+      "@sdk/api/*": ["../../.pikku/sdk/api/exposed/*"]
     }
   },
   "include": ["src", "dev", "build", "vite.config.ts", "wrangler.jsonc"]

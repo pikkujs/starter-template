@@ -2,6 +2,7 @@
   "name": "@project/root",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "workspaces": [
     "apps/*",
     "packages/*",
@@ -9,9 +10,9 @@
     "!apps/_app_template_"
   ],
   "scripts": {
-    "prebuild": "cd packages/functions && bunx --bun pikku all",
+    "prebuild": "bunx --bun pikku all",
     "build": "bun run --filter '*' --if-present build",
-    "dev": "cd packages/functions && bunx --bun pikku dev",
+    "dev": "bunx --bun pikku dev",
     "tsc": "bun run --filter '*' tsc",
     "lint": "oxlint apps packages",
     "format": "oxfmt apps packages",

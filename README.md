@@ -1,6 +1,6 @@
 # starter-template
 
-The Tailwind v4 + shadcn/ui Pikku Studio Cloud starter, self-contained: backend (`packages/functions`, with its `pikku.config.json`, `db`, `emails`; plus `knowledge`), `apps/app` (TanStack Start) and `packages/theme` (`themes/<id>.json`, `active.json`,
+The Tailwind v4 + shadcn/ui Pikku Studio Cloud starter, self-contained: `pikku.config.json`, `db`, `emails` and `knowledge` at the root, the backend in `packages/functions`, `apps/app` (TanStack Start) and `packages/theme` (`themes/<id>.json`, `active.json`,
 generated `theme.css`). `bunfig.toml` pins bun's hoisted linker; see AGENTS.md for first run.
 
 ## The loop
