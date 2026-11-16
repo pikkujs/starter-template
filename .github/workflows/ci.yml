@@ -33,7 +33,7 @@ jobs:
         run: bun test --pass-with-no-tests
 
       - name: Standalone build
-        run: bunx --bun pikku deploy apply -p standalone --runtime bun
+        run: bunx --bun pikku deploy apply -p standalone --runtime bun --config packages/functions/pikku.config.json
 
       - name: Standalone boots
         working-directory: .deploy/standalone/root-dist
