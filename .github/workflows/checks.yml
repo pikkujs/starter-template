@@ -8,3 +8,8 @@ on:
 jobs:
   checks:
     uses: pikkujs/pikku/.github/workflows/pikku-checks.yml@main
+    with:
+      # The template ships no migrations, so they are generated here. A project that has them skips this, so CI never
+      # covers for a migration that was not committed. `db generate` needs the full `pikku all` first: after
+      # `bootstrap` alone it leaves out the tables the scaffolded wirings need.
+      pre-step: '[ -d db/sqlite ] || { bunx --bun pikku bootstrap && bunx --bun pikku all && bunx --bun pikku db generate; }'

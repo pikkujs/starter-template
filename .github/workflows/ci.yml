@@ -21,6 +21,14 @@ jobs:
 
       - run: bun install --frozen-lockfile
 
+      - name: Generate the database migrations
+        # Only the template has none; a project's own committed migrations are what gets built.
+        run: |
+          [ -d db/sqlite ] && exit 0
+          bunx --bun pikku bootstrap
+          bunx --bun pikku all
+          bunx --bun pikku db generate
+
       - name: Build
         run: bun run build
 

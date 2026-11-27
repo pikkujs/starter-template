@@ -22,6 +22,8 @@ Run these and fix every failure; they are the rules, there is no other rulebook.
 
 `bun install` (the `bunfig.toml` pins the hoisted linker; the isolated one installs two copies of vite and every
 page 404s silently), then `pikku all`, `pikku db generate`, `pikku db migrate`, then `bun run dev`.
+The template ships no migrations: commit the `db/sqlite` files `db generate` writes. After code starts using a new
+service, run it again, since it only writes tables for the services the project reaches.
 Dev needs a restart after adding a function.
 
 ## Routing
