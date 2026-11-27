@@ -26,7 +26,6 @@
   },
   "scaffold": {
     "pikkuDir": "packages/functions/src/scaffold",
-    "console": true,
     "rpc": true,
     "agent": true,
     "workflow": true,
