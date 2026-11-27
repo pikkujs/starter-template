@@ -1,0 +1,4 @@
+artifacts/**/*.png filter=lfs diff=lfs merge=lfs -text
+artifacts/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+artifacts/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
+artifacts/**/*.webp filter=lfs diff=lfs merge=lfs -text
