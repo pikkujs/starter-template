@@ -19,15 +19,15 @@
     "format:check": "oxfmt --check apps packages"
   },
   "dependencies": {
-    "@pikku/bun-server": "^0.12.15",
-    "@pikku/core": "0.12.157",
+    "@pikku/bun-server": "^0.12.18",
+    "@pikku/core": "0.12.162",
     "@pikku/fetch": "0.12.16",
-    "@pikku/kysely": "0.13.44",
-    "@pikku/kysely-bun-sqlite": "^0.12.11",
-    "@pikku/schedule": "^0.12.12"
+    "@pikku/kysely": "0.13.47",
+    "@pikku/kysely-bun-sqlite": "^0.12.12",
+    "@pikku/schedule": "^0.12.13"
   },
   "devDependencies": {
-    "@pikku/cli": "0.12.211",
+    "@pikku/cli": "0.12.213",
     "@types/node": "^26.6.6",
     "oxfmt": "^0.77.0",
     "oxlint": "^1.92.0",
