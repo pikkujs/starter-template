@@ -1,18 +1,11 @@
 /**
- * Replaces the login half of e2e/tests/features/auth.feature.
+ * Proves a real session, carried in a real cookie, is admitted to the gated area
+ * by opening `/app` and not being bounced to `/app/auth/login`. It also covers
+ * the virtual user sign-in endpoint, which every other browser scenario depends on.
  *
- * The gherkin drove the login form: "a test account exists" → "the user signs
- * in through the login form" → "they land on the app". Scenario virtual users are
- * signed in by the runner before the first step, so there is no form to drive
- * and no signed-out state to start from. What that gherkin actually proved —
- * a real session, carried in a real cookie, admitted to the gated area — is
- * proved here by opening `/app` and not being bounced to `/app/auth/login`.
- *
- * This is the same claim over a shorter path, and it now covers the virtual user
- * sign-in endpoint too, which is what every other browser scenario depends on.
- * The login FORM itself is no longer covered; if that matters to your app, test
- * it as an API scenario against `/api/auth/sign-in/email`, which is where a
- * wrong password is actually refused.
+ * Scenario virtual users are signed in by the runner before the first step, so the
+ * login FORM is not covered. If that matters to your app, test it as an API scenario
+ * against `/api/auth/sign-in/email`, which is where a wrong password is refused.
  *
  * `virtualUsers.visitor` below is the template's PLACEHOLDER virtual user. When you replace it
  * with this app's real roles (see AGENTS.md), swap all four references here for your

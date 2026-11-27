@@ -1,5 +1,5 @@
 /**
- * Replaces e2e/tests/features/pages.feature — the build gate.
+ * The build gate.
  *
  * Signed in, every static route must render without an HTTP error, a failed or
  * 5xx app API call, an uncaught exception, or a console error. Routes are read
