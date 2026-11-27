@@ -1,5 +1,9 @@
 name: CI
 
+# The pikku checks (bootstrap, all, app build, validate, audit, test, tsc) live in checks.yml, a call to the
+# reusable pikku-checks workflow. This file keeps what that workflow does not do: lint, format, unit tests and
+# the standalone build + boot smoke test.
+
 on:
   push:
     branches: [main]
@@ -19,9 +23,6 @@ jobs:
 
       - name: Build
         run: bun run build
-
-      - name: Typecheck
-        run: bun run tsc
 
       - name: Lint
         run: bun run lint

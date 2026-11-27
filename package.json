@@ -14,6 +14,7 @@
     "build": "bun run --filter '*' --if-present build",
     "dev": "bunx --bun pikku dev",
     "tsc": "bun run --filter '*' tsc",
+    "test": "bunx --bun pikku scenario run ci --spawn --flows sessionHealthScenario",
     "lint": "oxlint apps packages",
     "format": "oxfmt apps packages",
     "format:check": "oxfmt --check apps packages"

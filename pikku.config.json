@@ -21,6 +21,7 @@
   "schema": {
     "supportsImportAttributes": true
   },
+  "db": { "engine": "sqlite" },
   "deploy": {
     "bundler": "esbuild"
   },
@@ -62,6 +63,14 @@
         "api": {
           "signInPath": "/api/auth/sign-in/virtual-user",
           "url": "http://localhost:4010"
+        }
+      }
+    },
+    "ci": {
+      "backends": {
+        "api": {
+          "signInPath": "/api/auth/sign-in/virtual-user",
+          "url": "http://localhost:4020"
         }
       }
     },

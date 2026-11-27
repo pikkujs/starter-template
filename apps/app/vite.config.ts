@@ -51,6 +51,9 @@ export default defineConfig({
       '/api': {
         target: process.env.VITE_API_PROXY ?? 'http://localhost:3000',
         changeOrigin: false,
+        // Sends x-forwarded-proto/host so the backend's analytics origin check
+        // sees http://localhost, not the https it assumes without the header.
+        xfwd: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
         // Forward the WebSocket upgrade too, so a pikku channel over /api works
         // the day someone adds one. Nothing here opens a socket yet; without
