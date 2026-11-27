@@ -2,7 +2,6 @@
   "$schema": "https://raw.githubusercontent.com/pikkujs/pikku/refs/heads/main/packages/cli/cli.schema.json",
   "rootDir": ".",
   "tsconfig": "./tsconfig.json",
-  "srcDirectories": ["packages/functions/src", "packages/functions/test"],
   "emailTemplatesDir": "emails",
   "clientFiles": {
     "typesFile": "apps/app/src/pikku/types.gen.ts",

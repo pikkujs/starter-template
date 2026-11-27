@@ -1,8 +1,8 @@
 # test — end-to-end scenarios (pikku scenarios + Playwright)
 
 Scenarios run against the **live app** — the sandbox dev server, or a local
-`bun run dev`. They are discovered by `pikku` because `packages/functions/test`
-is in `srcDirectories`, so a file here needs no registration.
+`bun run dev`. They are discovered by `pikku` because `packages/functions` is the
+main package, so a file here needs no registration.
 
 ## Layout — one declaration per file
 

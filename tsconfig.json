@@ -12,8 +12,8 @@
     "outDir": "dist",
     "rootDir": ".",
     "paths": {
-      "#pikku/*.js": ["./.pikku/*.ts"],
-      "#pikku/*": ["./.pikku/*/index.ts"]
+      "#pikku/*.js": ["./packages/functions/.pikku/*.ts"],
+      "#pikku/*": ["./packages/functions/.pikku/*/index.ts"]
     },
     "types": ["node", "@pikku/playwright"],
     "typeRoots": [
